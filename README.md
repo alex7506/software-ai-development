@@ -15,9 +15,8 @@ INTAKE → DISCOVERY → DEFINITION → DESIGN → ARCHITECTURE → TECHNOLOGY �
 | `agents/` | Capacidades, políticas, contrato y registro de agentes. |
 | `schemas/` | JSON Schemas para validar documentos y configuración. |
 | `templates/` | Plantillas de documentos con metadatos. |
-| `technology-profiles/` | Perfiles tecnológicos opcionales. |
+| `technology-profiles/` | Plantilla genérica de perfil tecnológico y un perfil de referencia (Google). |
 | `adapters/` | Plantillas para AGENTS.md, Claude Code, Cursor, Copilot y Gemini CLI. |
-| `tools/` | Especificaciones de los motores operativos. |
 | `cli/` | CLI determinista `ai-dev` (en desarrollo). |
 | `governance/` | Gobierno y evolución de la metodología. |
 

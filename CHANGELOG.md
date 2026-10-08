@@ -22,6 +22,4 @@ Fase 0: fundamentos y coherencia. La versión baja a 0.9.0 hasta validar la herr
 
 ### Eliminado
 - Carpeta `projects/` (plantilla de proyecto y piloto TaskFlow). Los proyectos viven en repos propios y se crean con `ai-dev init`; la herramienta se validará con un proyecto independiente.
-
-## 1.0.0 — 2026-10-08 (retirada)
-- Primera versión del esqueleto conceptual. Reclasificada como borrador previo a 0.9.0.
+- Carpetas sin contenido o redundantes: `tools/` (especificaciones absorbidas por el catálogo y la futura CLI), `docs/`, `scripts/`, perfiles vacíos AWS/Azure/Supabase y la plantilla ambigua `tdd.md`.
