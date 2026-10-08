@@ -1,0 +1,43 @@
+LICENCIA DE USO — SOFTWARE AI DEVELOPMENT
+Versión 1.0
+
+Copyright (c) 2026 Ing. Alexander Patiño Londoño. Todos los derechos reservados, salvo los que esta licencia concede expresamente.
+
+1. OBJETO
+"El Software" es el contenido de este repositorio: la metodología, su documentación, catálogos, plantillas, esquemas, adaptadores y la herramienta de línea de comandos `ai-dev`, en cualquiera de sus versiones publicadas por el titular.
+
+2. LO QUE PUEDES HACER
+Se te concede, de forma gratuita, mundial y no exclusiva, permiso para:
+  a) Usar el Software para cualquier fin, personal, académico o comercial, incluido el desarrollo de software para terceros.
+  b) Instalar y ejecutar el Software, y hacer las copias necesarias para ello.
+  c) Adaptar tu copia del Software para tu uso interno o el de tu organización, siempre que esa versión adaptada no se distribuya ni se ponga a disposición de terceros.
+  d) Compartir copias sin modificar del Software, completas, con esta licencia y el aviso de copyright incluidos.
+
+3. LO QUE NO PUEDES HACER
+  a) Distribuir, publicar, vender, sublicenciar o poner a disposición de terceros versiones modificadas del Software u obras derivadas de él, por cualquier medio.
+  b) Eliminar o alterar los avisos de copyright, de autoría o de esta licencia.
+  c) Presentar el Software, o una versión adaptada, como propio, ni usar el nombre "Software AI Development" ni el del titular para promocionar productos derivados sin permiso escrito.
+
+4. LO QUE CREAS CON EL SOFTWARE ES TUYO
+Los proyectos, documentos, código, configuraciones y demás archivos que generes o completes al usar el Software (incluidas las plantillas que rellenes y los archivos que genere `ai-dev` en tus proyectos) te pertenecen, y puedes usarlos, modificarlos y distribuirlos sin ninguna restricción derivada de esta licencia.
+
+5. SUGERENCIAS Y CONTRIBUCIONES
+Si envías sugerencias, informes o propuestas de cambio (por ejemplo, pull requests), concedes al titular una licencia perpetua, gratuita e irrevocable para usarlas, modificarlas e incorporarlas al Software, y declaras que tienes derecho a hacerlo.
+
+6. SIN GARANTÍA
+El Software se ofrece "tal cual", sin garantías de ningún tipo, expresas ni implícitas, incluidas las de comerciabilidad, idoneidad para un fin determinado y no infracción. El uso de la metodología no garantiza la calidad, seguridad ni conformidad normativa del software que desarrolles con ella.
+
+7. LIMITACIÓN DE RESPONSABILIDAD
+En la máxima medida permitida por la ley, el titular no será responsable de ningún daño, directo o indirecto, derivado del uso o de la imposibilidad de uso del Software.
+
+8. TERMINACIÓN
+Esta licencia termina automáticamente si incumples sus condiciones. Desde ese momento debes dejar de usar el Software y eliminar las copias que tengas. Las secciones 4, 6 y 7 subsisten tras la terminación.
+
+9. LEY APLICABLE
+Esta licencia se rige por las leyes de la República de Colombia.
+
+---
+
+USE LICENSE — SOFTWARE AI DEVELOPMENT (English summary, for reference only; the Spanish text above prevails)
+
+You may use, install and run the Software for any purpose, including commercial use; adapt your own copy for internal use within your organization as long as the adapted version is not distributed; and share unmodified copies that include this license. You may not distribute, publish, sell or sublicense modified versions or derivative works, remove copyright or license notices, or present the Software as your own. Everything you create with the Software (your projects, documents, code and generated files) is yours without restriction. Provided "as is", without warranty or liability. Governed by the laws of Colombia.

@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 1.1.0 — 2026-10-08
+Primera versión pública. Incorpora lo aprendido al recorrer con MiAdmin una solicitud de cambio completa (CHANGE-001, release v0.2.0).
+
+### Añadido
+- Licencia de uso (`LICENSE`): uso gratuito, también comercial, y adaptación interna; sin distribución de versiones modificadas. Lo creado con la herramienta pertenece a quien la usa.
+- `ai-dev review` reingresa automáticamente al ciclo tras aprobar una solicitud de cambio en EVOLUTION y continúa la sesión.
+- Trailers `Release: REL-NNN` y `Change: CHANGE-NNN` para trazar commits de release o de cambio; las referencias inexistentes degradan la integridad.
+
+### Cambiado
+- `ai-dev phase reenter` marca la solicitud de cambio como IMPLEMENTING y se niega a aplicarla dos veces.
+
 ## 1.0.0 — 2026-10-08
 Primera versión estable. La metodología y `ai-dev` se validaron con un proyecto real e independiente (MiAdmin) que recorrió el ciclo completo hasta una release; esta versión resuelve todas las fricciones que dejó el piloto.
 

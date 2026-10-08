@@ -19,7 +19,7 @@ title: ...
 version: 1.0.0
 status: DRAFT
 project: <project_id>
-methodology_version: 1.0.0
+methodology_version: 1.1.0
 created_at: 2026-10-08
 updated_at: 2026-10-08
 author: <persona o agente>
