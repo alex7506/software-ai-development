@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## 0.9.0 — 2026-10-08
-Fase 0: fundamentos y coherencia. La versión baja a 0.9.0 hasta validar la metodología con el piloto; 1.0.0 se publicará tras completarlo.
+Fase 0: fundamentos y coherencia. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
 
 ### Añadido
 - `methodology/catalog/`: fuente única legible por máquina (estados, fases, modos, tipos de documento, ciclo de ejecución, roles, riesgo, clasificación de datos y límites).
@@ -20,8 +20,8 @@ Fase 0: fundamentos y coherencia. La versión baja a 0.9.0 hasta validar la meto
 - `TDD` se sustituye por `TECH_DESIGN` (TD) y `TEST_STRATEGY` (TST); requisitos `RF` → `FR`/`NFR`.
 - `max_auto_fix_attempts` se define solo en `catalog/limits.yaml`.
 
-### Corregido
-- Piloto: estado contradictorio (`READY_FOR_DEVELOPMENT` vs `BOOTSTRAPPING`), estado inexistente `BLOCKED_BY_PREVIOUS_TASK` y política `no_secret_storage` no catalogada.
+### Eliminado
+- Carpeta `projects/` (plantilla de proyecto y piloto TaskFlow). Los proyectos viven en repos propios y se crean con `ai-dev init`; la herramienta se validará con un proyecto independiente.
 
 ## 1.0.0 — 2026-10-08 (retirada)
 - Primera versión del esqueleto conceptual. Reclasificada como borrador previo a 0.9.0.

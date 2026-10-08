@@ -1,7 +1,0 @@
-project:
-  id: project-name
-  name: Project Name
-  version: 0.1.0
-methodology:
-  id: software-ai-development
-  version: 0.9.0
