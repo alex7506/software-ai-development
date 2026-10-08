@@ -17,12 +17,19 @@ INTAKE → DISCOVERY → DEFINITION → DESIGN → ARCHITECTURE → TECHNOLOGY �
 | `templates/` | `documents/`: plantillas de documentos con metadatos. `project/`: archivos base que instala `ai-dev init`. |
 | `technology-profiles/` | Plantilla genérica de perfil tecnológico y un perfil de referencia (Google). |
 | `adapters/` | Plantillas para AGENTS.md, Claude Code, Cursor, Copilot y Gemini CLI. |
-| `cli/` | CLI determinista `ai-dev` (en desarrollo) y pruebas de integridad del estándar. |
-| `docs/` | Manual de usuario. |
+| `cli/` | CLI determinista `ai-dev` y pruebas de integridad del estándar. |
+| `docs/` | Manual de usuario: conceptos, roles, guías y referencia generada. |
 | `governance/` | Gobierno y evolución de la metodología. |
 
 ## Uso en proyectos
 Cada proyecto vive en su propio repositorio y fija la versión de la metodología en `.ai-dev/methodology.yaml`, instalada con `ai-dev init`.
+
+```bash
+ai-dev init --name "Mi Proyecto" --mode STANDARD
+ai-dev status
+```
+
+Empieza por el [manual de usuario](docs/index.md).
 
 ## Convenciones
 Prosa en español; claves, enums, identificadores y comandos en inglés. Archivos de datos en `.yaml`.

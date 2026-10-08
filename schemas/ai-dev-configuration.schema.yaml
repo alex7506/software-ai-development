@@ -37,6 +37,12 @@ properties:
       max_auto_fix_attempts: { type: integer, minimum: 0 }
       max_context_files_without_justification: { type: integer, minimum: 1 }
       max_ai_context_md_lines: { type: integer, minimum: 10 }
+  gate_commands:
+    description: Comando que verifica cada gate (p. ej. TEST = "npm test"). La CLI los ejecuta al cerrar tareas.
+    type: object
+    propertyNames:
+      enum: [CODE, BUILD, TEST, SECURITY]
+    additionalProperties: { type: string, minLength: 1 }
   environments:
     type: array
     items:

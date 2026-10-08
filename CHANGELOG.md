@@ -1,7 +1,14 @@
 # CHANGELOG
 
 ## 0.9.0 — 2026-10-08
-Fases 0 y 1: fundamentos, coherencia y contenido del estándar. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
+Fases 0, 1 y 2: fundamentos, contenido del estándar y CLI `ai-dev`. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
+
+### Añadido (Fase 2)
+- CLI `ai-dev` (TypeScript, determinista): `init` (proyectos nuevos y adopción de existentes, idempotente), `new`, `submit`, `revise`, `approve` (solo terminal interactiva), `validate`, `trace [--git]`, `status`, `context`, `doctor`, `phase check|advance|reenter` y `task new|list|ready|start|review|wait|validate|complete|block|cancel|fail|evidence|attempt|provenance`.
+- Aprobaciones con huella de contenido: editar un documento aprobado invalida su aprobación.
+- Gates ejecutables por proyecto (`gate_commands`), Definition of Ready y Definition of Done comprobadas al mover tareas.
+- Empaquetado con la metodología incluida (`assets/`), referencia del manual generada (`docs/referencia/`) y guías de uso (`docs/guias/`).
+- Esquemas: `target_hash` en aprobaciones, `phase_started_at` en el estado y `gate_commands` en la configuración.
 
 ### Añadido (Fase 1)
 - Normativa: estándar de trabajo (tareas, DoR/DoD, evidencia, commits, aprobaciones), evolución y operación (cambios, incidentes, rollback, deuda), estructura y configuración de proyectos (incluida la adopción en proyectos existentes), estrategia de pruebas y controles contra prompt injection.
