@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(ai-dev approve *)",
+      "Bash(npx ai-dev approve *)",
+      "Edit(/.ai-dev/approvals.yaml)",
+      "Edit(/.ai-dev/state.yaml)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(!.env.example)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(npm install *)",
+      "Bash(npm i *)",
+      "Bash(pnpm add *)",
+      "Bash(yarn add *)",
+      "Bash(pip install *)",
+      "Bash(ai-dev revise *)"
+    ]
+  }
+}

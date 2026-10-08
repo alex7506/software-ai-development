@@ -163,3 +163,28 @@ describe("los esquemas rechazan lo que deben", () => {
     expect(registry.validate("ai-dev-policies", { local_policies: [policy] }).valid).toBe(false);
   });
 });
+
+describe("adaptadores", () => {
+  const registry = cat.adapters;
+
+  it("el registro es coherente: base existente y plantillas presentes", () => {
+    expect(registry.adapters[registry.base]).toBeDefined();
+    expect(readYaml<{ version: string }>(join(cat.root, "adapters/registry.yaml")).version).toBe(methodologyVersion);
+    for (const [id, def] of Object.entries(registry.adapters)) {
+      for (const file of def.files) {
+        expect(existsSync(join(cat.root, "adapters", file.template)), `${id}: ${file.template}`).toBe(true);
+        if (file.block) expect(existsSync(join(cat.root, "adapters", file.block)), `${id}: ${file.block}`).toBe(true);
+        if (file.kind === "markdown") expect(readFileSync(join(cat.root, "adapters", file.template), "utf8"), file.template).toContain("{{block}}");
+        else expect(() => JSON.parse(readFileSync(join(cat.root, "adapters", file.template), "utf8"))).not.toThrow();
+      }
+    }
+  });
+
+  it("los permisos de Claude Code usan solo reglas que Claude Code consulta", () => {
+    const settings = JSON.parse(readFileSync(join(cat.root, "adapters/claude-code/settings.json"), "utf8"));
+    const rules: string[] = [...settings.permissions.deny, ...settings.permissions.ask];
+    // Las reglas de ruta solo se aplican con Edit(...) y Read(...); Write(ruta) se ignora.
+    expect(rules.filter((r) => /^(Write|MultiEdit|NotebookEdit)\(/.test(r))).toEqual([]);
+    expect(rules.filter((r) => /:\*\)$/.test(r))).toEqual([]);
+  });
+});

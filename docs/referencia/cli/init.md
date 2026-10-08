@@ -24,4 +24,5 @@ ai-dev init [dir] [opciones]
 | `--profile <perfil>` | Perfil tecnológico (p. ej. google). |
 | `--author <nombre>` | Autor de los documentos iniciales (por defecto, git user.name). |
 | `--phase <fase>` | Fase inicial al adoptar un proyecto existente. |
+| `--adapters <lista>` | Adaptadores separados por comas: agents-md, claude-code, cursor, copilot, gemini (por defecto, todos). |
 

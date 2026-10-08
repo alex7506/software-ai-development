@@ -1,3 +1,4 @@
+import { adapterStatus } from "./adapters.js";
 import type { Catalog } from "./catalog.js";
 import { isGitRepo } from "./git.js";
 import { error, info, warning, type Issue } from "./issues.js";
@@ -34,6 +35,12 @@ export function runDoctor(cwd: string, cat: Catalog, registry: SchemaRegistry, c
         ),
       );
     }
+  }
+  try {
+    const pending = adapterStatus(p).filter((a) => a.status !== "UP_TO_DATE");
+    issues.push(pending.length ? warning("adapters", `Adaptadores pendientes: ${pending.map((a) => `${a.target} (${a.status})`).join(", ")}. Ejecuta \`ai-dev adapters sync\`.`) : info("adapters", "Adaptadores al día."));
+  } catch {
+    // La configuración inválida ya la reporta validate.
   }
   const errors = validateProject(p, registry, cliVersion).filter((i) => i.level === "ERROR");
   issues.push(errors.length ? error("validate", `\`ai-dev validate\` encuentra ${errors.length} errores.`) : info("validate", "`ai-dev validate` sin errores."));

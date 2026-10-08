@@ -1,7 +1,14 @@
 # CHANGELOG
 
 ## 0.9.0 — 2026-10-08
-Fases 0, 1 y 2: fundamentos, contenido del estándar y CLI `ai-dev`. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
+Fases 0 a 3: fundamentos, contenido del estándar, CLI `ai-dev` y adaptadores de asistentes de IA. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
+
+### Añadido (Fase 3)
+- Adaptadores para AGENTS.md (base), Claude Code, Cursor, GitHub Copilot y Gemini CLI, generados desde una sola fuente (`adapters/core.md`) con el catálogo y la configuración del proyecto.
+- `ai-dev adapters sync|status` e integración en `init`, `validate`, `doctor` y el check `adapters_generated` de BOOTSTRAPPING.
+- Bloque gestionado entre marcadores: el texto propio fuera del bloque se conserva y las ediciones dentro del bloque se detectan y no se sobrescriben sin `--force`.
+- Claude Code: permisos que bloquean `ai-dev approve`, la edición de `approvals.yaml` y `state.yaml` y la lectura de `.env`, fusionados con los existentes.
+- Guías por asistente (`docs/guias/agentes/`).
 
 ### Añadido (Fase 2)
 - CLI `ai-dev` (TypeScript, determinista): `init` (proyectos nuevos y adopción de existentes, idempotente), `new`, `submit`, `revise`, `approve` (solo terminal interactiva), `validate`, `trace [--git]`, `status`, `context`, `doctor`, `phase check|advance|reenter` y `task new|list|ready|start|review|wait|validate|complete|block|cancel|fail|evidence|attempt|provenance`.

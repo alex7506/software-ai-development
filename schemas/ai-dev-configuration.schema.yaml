@@ -43,6 +43,11 @@ properties:
     propertyNames:
       enum: [CODE, BUILD, TEST, SECURITY]
     additionalProperties: { type: string, minLength: 1 }
+  adapters:
+    description: Adaptadores de asistentes de IA que genera `ai-dev adapters sync` (agents-md siempre se incluye).
+    type: array
+    uniqueItems: true
+    items: { $ref: "enums.schema.yaml#/$defs/adapter" }
   environments:
     type: array
     items:

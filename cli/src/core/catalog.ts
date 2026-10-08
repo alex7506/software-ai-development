@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { AdapterRegistry } from "./adapters.js";
 import { readYaml } from "./yaml.js";
 
 type Dict<T = unknown> = Record<string, T>;
@@ -49,8 +50,9 @@ export interface Catalog {
   dataClassification: { destination_types: Dict<string>; levels: Dict<{ risk: string; allowed_destinations: string[] }> };
   limits: Dict<number | string>;
   definitions: { definition_of_ready: { id: string }[]; definition_of_done: { id: string }[]; task_kinds: Dict<string> };
-  capabilities: { capabilities: Dict<{ risk: string; human_only?: boolean }> };
+  capabilities: { capabilities: Dict<{ risk: string; human_only?: boolean }>; autonomy_levels?: Record<number, { id: string; description: string }> };
   policies: { policies: { id: string; severity: string }[] };
+  adapters: AdapterRegistry;
 }
 
 export function loadCatalog(root = DEFAULT_ROOT): Catalog {
@@ -69,6 +71,7 @@ export function loadCatalog(root = DEFAULT_ROOT): Catalog {
     definitions: c("definitions.yaml"),
     capabilities: readYaml(join(root, "agents/capabilities.yaml")),
     policies: readYaml(join(root, "agents/policies/agent-policies.yaml")),
+    adapters: readYaml(join(root, "adapters/registry.yaml")),
   };
 }
 
@@ -102,6 +105,7 @@ export function buildEnums(cat: Catalog): Dict<string[]> {
     executor: cat.lifecycle.executors,
     task_kind: Object.keys(cat.definitions.task_kinds),
     project_feature: Object.keys(cat.phases.project_features),
+    adapter: Object.keys(cat.adapters.adapters),
   });
   return enums;
 }

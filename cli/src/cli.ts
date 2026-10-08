@@ -1,6 +1,7 @@
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { Command, CommanderError, Option } from "commander";
+import { adapterStatus, syncAdapters } from "./core/adapters.js";
 import { recordApproval } from "./core/approvals.js";
 import { DEFAULT_ROOT, loadCatalog, methodologyVersion, type Catalog } from "./core/catalog.js";
 import { buildContext } from "./core/context.js";
@@ -59,9 +60,10 @@ export function buildProgram(env: Env): { program: Command; exitCode: () => numb
     .option("--profile <perfil>", "Perfil tecnológico (p. ej. google)")
     .option("--author <nombre>", "Autor de los documentos iniciales (por defecto, git user.name)")
     .option("--phase <fase>", "Fase inicial al adoptar un proyecto existente")
+    .option("--adapters <lista>", "Adaptadores separados por comas: agents-md, claude-code, cursor, copilot, gemini (por defecto, todos)", (v: string) => v.split(",").map((s) => s.trim()).filter(Boolean))
     .action((dir: string, o) => {
       const root = resolve(env.cwd, dir);
-      const r = initProject(catalog(), root, { name: o.name, id: o.id, mode: o.mode, profile: o.profile, author: author(o.author), phase: o.phase, methodologyVersion: version, now: env.now() });
+      const r = initProject(catalog(), root, { name: o.name, id: o.id, mode: o.mode, profile: o.profile, author: author(o.author), phase: o.phase, adapters: o.adapters, methodologyVersion: version, now: env.now() });
       env.out(`${r.adopted ? "Proyecto existente adoptado" : "Proyecto inicializado"} en ${root} (metodología ${version}, modo ${o.mode}).`);
       if (r.created.length) env.out(`\nCreados:\n${r.created.map((f) => `  + ${f}`).join("\n")}`);
       if (r.kept.length) env.out(`\nYa existían (sin cambios):\n${r.kept.map((f) => `  = ${f}`).join("\n")}`);
@@ -188,6 +190,31 @@ export function buildProgram(env: Env): { program: Command; exitCode: () => numb
       const issues = runDoctor(env.cwd, catalog(), schemas(), version);
       env.out(formatIssues(issues));
       if (hasErrors(issues)) code = 1;
+    });
+
+  const adapters = program.command("adapters").description("Genera y comprueba los archivos de instrucciones de cada asistente de IA.");
+  adapters
+    .command("sync")
+    .description("Genera o actualiza AGENTS.md, CLAUDE.md, GEMINI.md, reglas de Cursor e instrucciones de Copilot desde la metodología y .ai-dev/.")
+    .option("--force", "Sobrescribe también los bloques generados que se editaron a mano")
+    .action((o) => {
+      const results = syncAdapters(project(), { force: o.force });
+      env.out(table([["ADAPTADOR", "ARCHIVO", "ACCIÓN"], ...results.map((r) => [r.adapter, r.target, r.action])]));
+      const skipped = results.filter((r) => r.action.startsWith("SKIPPED"));
+      if (skipped.length) {
+        env.out(`\n${skipped.map((r) => r.status === "MODIFIED" ? `▲ ${r.target}: el bloque generado se editó a mano. Mueve tus cambios fuera del bloque o usa --force.` : `✖ ${r.target}: JSON inválido; corrígelo y vuelve a ejecutar.`).join("\n")}`);
+        code = 1;
+      }
+    });
+  adapters
+    .command("status")
+    .description("Muestra si cada archivo de adaptador existe y está al día.")
+    .option("--json", "Salida en JSON")
+    .action((o) => {
+      const states = adapterStatus(project());
+      if (o.json) return json(states);
+      env.out(table([["ADAPTADOR", "ARCHIVO", "ESTADO"], ...states.map((s) => [s.adapter, s.target, s.status])]));
+      if (states.some((s) => s.status !== "UP_TO_DATE")) code = 1;
     });
 
   // --- Fases -------------------------------------------------------------------

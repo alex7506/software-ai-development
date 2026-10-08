@@ -30,6 +30,7 @@ export interface ConfigurationFile {
   limits?: Record<string, number>;
   environments?: string[];
   gate_commands?: Record<string, string>;
+  adapters?: string[];
 }
 
 export interface StateFile {
