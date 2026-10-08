@@ -2,6 +2,23 @@
 
 Registro de fricciones encontradas al usar la metodología y `ai-dev` en un proyecto real e independiente ([MiAdmin](https://github.com/alex7506/miadmin)). Cada entrada termina en una corrección con prueba, un cambio de la metodología o una decisión de no actuar.
 
+## Balance (2026-10-08)
+MiAdmin recorrió el ciclo completo en modo LITE, de INTAKE a EVOLUTION, en un día:
+- 13 documentos, 5 requisitos y 4 tareas, todos con evidencia.
+- 20 aprobaciones humanas en 2 sesiones de `ai-dev review`.
+- 18 pruebas del producto y release `v0.1.0`.
+
+| Resultado | Fricciones |
+|---|---|
+| Corregidas en la herramienta, con prueba | 3, 7, 8, 13, 17 |
+| Controles que funcionaron como se esperaba | 14, 15 |
+| Decisión de no actuar | 9 |
+| Pendientes antes de la 1.0.0 | 1, 2, 4, 5, 6, 10, 11, 12, 16 |
+
+El hallazgo más importante fue la 7: los requisitos podían aprobarse sin intervención humana. Era un hueco en el control central de la metodología y quedó cerrado.
+
+## Registro
+
 | # | Fase | Fricción | Impacto | Acción |
 |---|---|---|---|---|
 | 1 | Planificación | Una política local no puede exigir un entregable adicional (MiAdmin necesita QUALITY_SECURITY en STANDARD); hoy la política es solo texto y `phase check` no la aplica. | Un control de seguridad depende de la memoria del equipo. | Pendiente: CHANGE para `required_deliverables` locales evaluados por `phase check`. |
@@ -20,3 +37,4 @@ Registro de fricciones encontradas al usar la metodología y `ai-dev` en un proy
 | 14 | DEVELOPMENT | (Positivo) El gate SECURITY detectó vulnerabilidades críticas en Vitest 2 y Vite 5 al configurar el proyecto. | Se actualizó a versiones seguras antes de escribir código. | El control funcionó. Nota: la propia CLI usa Vitest 2.1.8; revisar sus dependencias antes de la 1.0.0. |
 | 15 | DEVELOPMENT | (Positivo) Probar la interfaz requería una dependencia no aprobada (jsdom); la política `no_unapproved_dependencies` impidió añadirla en silencio y la limitación quedó documentada en la validación. | Interfaz verificada manualmente. | El control funcionó. |
 | 16 | DEVELOPMENT | Una incógnita de un documento aprobado (proveedor de IA en el INTAKE) se resolvió después; actualizar el INTAKE invalidaría su aprobación y obligaría a `revise` + nueva aprobación por un cambio menor. | Se registró en `.ai-dev/configuration.yaml`, que es su lugar definitivo, pero el INTAKE sigue mostrando la incógnita abierta. | Pendiente: registro de resolución de incógnitas fuera del documento aprobado (p. ej. `ai-dev resolve`), o aceptar que el INTAKE es una foto del inicio. |
+| 17 | EVOLUTION | `ai-dev status` pedía aprobar EVOLUTION, que es la fase final y no se cierra. | Mensaje engañoso al terminar el ciclo. | **Corregido**: `status` explica que en EVOLUTION los cambios entran con CHANGE_REQUEST y `phase reenter`. |

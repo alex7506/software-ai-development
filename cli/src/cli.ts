@@ -184,6 +184,9 @@ export function buildProgram(env: Env): { program: Command; exitCode: () => numb
       env.out(`${m.project.name} (${m.project.id}) · modo ${m.mode} · metodología ${m.methodology.version}`);
       env.out(`Fase: ${state.phase} · Estado: ${state.status}${state.current_task ? ` · Tarea actual: ${state.current_task}` : ""}`);
       env.out(`Tareas: ${tasks.length ? Object.entries(counts).map(([s, n]) => `${s} ${n}`).join(", ") : "ninguna"}`);
+      if (state.phase === p.cat.phases.order.at(-1)) {
+        return env.out(`\n${state.phase} es la fase de operación y no se cierra: los cambios entran con \`ai-dev new CHANGE_REQUEST\` y, una vez aprobados, \`ai-dev phase reenter --change CHANGE-NNN\`.`);
+      }
       env.out(pending.length ? `\nPara cerrar ${state.phase} falta:\n${pending.map((i) => `  - ${i.kind} ${i.name}: ${i.detail}`).join("\n")}` : `\n${state.phase} lista y aprobada: \`ai-dev phase advance\`.`);
     });
 
