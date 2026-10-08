@@ -1,0 +1,43 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/ai-dev-configuration.schema.yaml
+title: .ai-dev/configuration.yaml
+description: Características del producto, proveedores de IA permitidos, agentes registrados y límites locales.
+
+type: object
+additionalProperties: false
+required: [features]
+properties:
+  features:
+    description: Determina qué entregables condicionales (`when`) de phases.yaml son obligatorios.
+    type: object
+    propertyNames: { $ref: "enums.schema.yaml#/$defs/project_feature" }
+    additionalProperties: { type: boolean }
+  data_classification_max:
+    description: Clasificación más alta de los datos que maneja el producto.
+    $ref: "enums.schema.yaml#/$defs/data_classification"
+  providers:
+    description: Proveedores concretos y el tipo de destino que representan (data-classification.yaml).
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [name, destination_type]
+      properties:
+        name: { $ref: "common.schema.yaml#/$defs/non_empty" }
+        destination_type: { $ref: "enums.schema.yaml#/$defs/destination_type" }
+        note: { type: string }
+  agents:
+    type: array
+    items: { $ref: "agent.schema.yaml" }
+  limits:
+    description: Solo pueden ser iguales o menores que los de catalog/limits.yaml (lo verifica la CLI).
+    type: object
+    additionalProperties: false
+    properties:
+      max_auto_fix_attempts: { type: integer, minimum: 0 }
+      max_context_files_without_justification: { type: integer, minimum: 1 }
+      max_ai_context_md_lines: { type: integer, minimum: 10 }
+  environments:
+    type: array
+    items:
+      enum: [local, development, staging, production]

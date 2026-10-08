@@ -1,0 +1,13 @@
+# Requisitos del proyecto (docs/01-product/requirements.yaml). El PRD da el contexto; aquí vive el detalle verificable.
+project: "{{project_id}}"
+prd_ref: PRD-001
+requirements: []
+#  - id: FR-001
+#    title: <título corto>
+#    description: <qué debe hacer el sistema>
+#    status: PROPOSED
+#    priority: MUST
+#    acceptance_criteria:
+#      - id: AC-1
+#        description: <condición verificable>
+#    source: INTAKE-001

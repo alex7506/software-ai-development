@@ -1,0 +1,27 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/ai-dev-policies.schema.yaml
+title: .ai-dev/policies.yaml
+description: >
+  Políticas locales. Todas las políticas del catálogo están siempre activas; este archivo solo
+  añade políticas propias del proyecto, que deben ser más restrictivas.
+
+type: object
+additionalProperties: false
+required: [local_policies]
+properties:
+  local_policies:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [id, severity, description]
+      properties:
+        id:
+          type: string
+          pattern: "^local_[a-z0-9_]+$"
+        severity:
+          enum: [BLOCKING, WARNING]
+        description: { $ref: "common.schema.yaml#/$defs/non_empty" }
+        extends:
+          description: Política del catálogo que esta regla endurece.
+          $ref: "enums.schema.yaml#/$defs/policy_id"

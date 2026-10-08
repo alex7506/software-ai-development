@@ -1,9 +1,18 @@
 # CHANGELOG
 
 ## 0.9.0 — 2026-10-08
-Fase 0: fundamentos y coherencia. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
+Fases 0 y 1: fundamentos, coherencia y contenido del estándar. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
 
-### Añadido
+### Añadido (Fase 1)
+- Normativa: estándar de trabajo (tareas, DoR/DoD, evidencia, commits, aprobaciones), evolución y operación (cambios, incidentes, rollback, deuda), estructura y configuración de proyectos (incluida la adopción en proyectos existentes), estrategia de pruebas y controles contra prompt injection.
+- `catalog/definitions.yaml`: Definition of Ready, Definition of Done y tipos de tarea.
+- JSON Schemas completos (draft 2020-12) para documentos, tareas, ADR, cambios, validaciones, releases, requisitos y archivos `.ai-dev/`. Los enums se derivan del catálogo en tiempo de carga.
+- Plantillas reales con metadatos y secciones propias (`templates/documents/`) y archivos base de proyecto (`templates/project/`).
+- Formato común de perfiles tecnológicos; perfil Google como referencia.
+- Manual de usuario: conceptos y guías por rol (`docs/`).
+- Base de la CLI (`cli/`): carga del catálogo, registro de esquemas, renderizado de plantillas y pruebas de integridad del estándar; CI en GitHub Actions.
+
+### Añadido (Fase 0)
 - `methodology/catalog/`: fuente única legible por máquina (estados, fases, modos, tipos de documento, ciclo de ejecución, roles, riesgo, clasificación de datos y límites).
 - Modos de rigor LITE / STANDARD / CRITICAL.
 - Matriz de fases con entrada, entregables por modo, salida, gate y aprobador.

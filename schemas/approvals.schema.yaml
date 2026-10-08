@@ -1,0 +1,35 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/approvals.schema.yaml
+title: .ai-dev/approvals.yaml
+description: Registro inmutable (solo se añaden entradas) de aprobaciones humanas.
+
+type: object
+additionalProperties: false
+required: [approvals]
+properties:
+  approvals:
+    type: array
+    items: { $ref: "#/$defs/approval" }
+
+$defs:
+  approval:
+    type: object
+    additionalProperties: false
+    required: [id, target_type, target, decision, by, role, at]
+    properties:
+      id:
+        type: string
+        pattern: "^APR-[0-9]{3,}$"
+      target_type:
+        enum: [PHASE, DOCUMENT, TASK, CHANGE, RELEASE]
+      target:
+        description: Nombre de fase (PHASE) o ID del artefacto.
+        type: string
+      target_version:
+        description: Versión del documento aprobada; un cambio posterior invalida la aprobación.
+        $ref: "common.schema.yaml#/$defs/semver"
+      decision: { $ref: "enums.schema.yaml#/$defs/approval_decision" }
+      by: { $ref: "common.schema.yaml#/$defs/non_empty" }
+      role: { $ref: "enums.schema.yaml#/$defs/human_role" }
+      at: { $ref: "common.schema.yaml#/$defs/datetime" }
+      comment: { type: string }

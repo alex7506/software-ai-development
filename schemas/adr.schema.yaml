@@ -1,0 +1,31 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/adr.schema.yaml
+title: ADR
+description: Frontmatter de un Architecture Decision Record. Su estado es el de la decisión, no el del documento.
+
+type: object
+allOf:
+  - $ref: "common.schema.yaml#/$defs/document_base"
+  - if:
+      properties: { status: { const: ACCEPTED } }
+    then:
+      properties:
+        approved_by: { $ref: "common.schema.yaml#/$defs/non_empty" }
+  - if:
+      properties: { status: { const: SUPERSEDED } }
+    then:
+      required: [superseded_by]
+
+required: [decision_date]
+properties:
+  document_type: { const: ADR }
+  document_id:
+    type: string
+    pattern: "^ADR-[0-9]{3}[A-Z]?$"
+  status: { $ref: "enums.schema.yaml#/$defs/adr_status" }
+  decision_date: { $ref: "common.schema.yaml#/$defs/date" }
+  deciders:
+    type: array
+    items: { type: string }
+  superseded_by: { $ref: "common.schema.yaml#/$defs/id" }
+unevaluatedProperties: false

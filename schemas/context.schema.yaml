@@ -1,2 +1,0 @@
-$id: context
-required: [task, sources, constraints, priority]
