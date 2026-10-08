@@ -1,0 +1,29 @@
+version: 0.9.0
+description: >
+  Roles humanos y tipos de agente. Un rol con human_only true nunca puede ser asumido por un agente.
+  agents/registry.yaml toma los tipos de agente de este archivo.
+
+roles:
+  PRODUCT_OWNER:   { name: Responsable de producto, human_only: true,  approves: [INTAKE, DISCOVERY, DEFINITION, DESIGN, RELEASE, EVOLUTION] }
+  TECH_LEAD:       { name: Líder técnico,           human_only: true,  approves: [ARCHITECTURE, TECHNOLOGY, PLANNING, BOOTSTRAPPING, DEVELOPMENT] }
+  QA_LEAD:         { name: Responsable de calidad,  human_only: true,  approves: [VALIDATION] }
+  SECURITY_OFFICER: { name: Responsable de seguridad, human_only: true, approves: [], notes: Aprobador obligatorio adicional en modo CRITICAL. }
+  OPERATOR:        { name: Operador,                human_only: true,  approves: [], notes: Ejecuta despliegues a producción y operaciones irreversibles. }
+  ANALYST:         { name: Analista,                agent_type: ANALYST }
+  RESEARCHER:      { name: Investigador,            agent_type: RESEARCHER }
+  UX_DESIGNER:     { name: Diseñador UX/UI,         agent_type: UX_DESIGNER }
+  ARCHITECT:       { name: Arquitecto,              agent_type: ARCHITECT }
+  DEVELOPER:       { name: Desarrollador,           agent_type: DEVELOPER }
+  TESTER:          { name: Tester,                  agent_type: TESTER }
+  REVIEWER:        { name: Revisor,                 agent_type: REVIEWER }
+  SECURITY:        { name: Analista de seguridad,   agent_type: SECURITY }
+  DOCUMENTATION:   { name: Documentación,           agent_type: DOCUMENTATION }
+  DEVOPS:          { name: DevOps,                  agent_type: DEVOPS }
+  DATA:            { name: Datos,                   agent_type: DATA }
+
+agent_types: [ANALYST, RESEARCHER, UX_DESIGNER, ARCHITECT, DEVELOPER, TESTER, REVIEWER, SECURITY, DOCUMENTATION, DEVOPS, DATA, GENERAL]
+
+rules:
+  - Quien produce un entregable no puede aprobarlo (modos con separation_of_duties).
+  - approved_by siempre identifica a una persona con un rol human_only.
+  - GENERAL solo se usa cuando ningún tipo específico aplica y hereda la autonomía más restrictiva.

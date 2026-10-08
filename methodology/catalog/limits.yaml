@@ -1,0 +1,6 @@
+version: 0.9.0
+description: Límites operativos numéricos. Único lugar donde se definen; los proyectos solo pueden reducirlos.
+
+max_auto_fix_attempts: 3
+max_context_files_without_justification: 20
+max_ai_context_md_lines: 150

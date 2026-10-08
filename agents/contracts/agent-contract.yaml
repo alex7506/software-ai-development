@@ -1,6 +1,15 @@
-version: 1.0.0
+version: 0.9.0
 provider_agnostic: true
+description: >
+  Contrato que todo agente cumple, independientemente de proveedor, modelo o herramienta.
+  Su ciclo es una vista del ciclo canónico (methodology/catalog/lifecycle.yaml#views.agent_contract).
+
 lifecycle: [RECEIVE, VALIDATE_CONTEXT, ANALYZE, PLAN, CHECK_PERMISSIONS, EXECUTE, TEST, REPORT]
-outputs: [SUCCESS, PARTIAL_SUCCESS, BLOCKED, FAILED, WAITING_APPROVAL, REQUIRES_REVIEW]
-max_retry: 3
+outputs_source: methodology/catalog/states.yaml#agent_output
+retry_limit_source: methodology/catalog/limits.yaml#max_auto_fix_attempts
+
+report_must_include: [task_id, output, changes, evidence, open_questions, provenance]
+
+provenance_fields: [generated_by, model, model_version, context_ref]
+
 orchestrator_owns: [state, context, permissions, policies, approvals, validation, traceability, documentation, git]

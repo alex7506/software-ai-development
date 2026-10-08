@@ -1,0 +1,48 @@
+version: 0.9.0
+description: Tipos de documento canónicos. `id_prefix` define el patrón de ID <PREFIX>-<NNN>.
+
+folders:
+  "00-intake": Ingreso del proyecto
+  "01-product": Producto y requisitos
+  "02-ux": Experiencia e interfaz
+  "03-architecture": Arquitectura y diseño técnico
+  "04-data": Modelo de datos
+  "05-ai": Especificación de uso de IA
+  "06-execution": Planificación, tareas y estado
+  "07-quality": Calidad, pruebas y seguridad
+  "08-decisions": ADR y solicitudes de cambio
+  "09-release": Validaciones y releases
+  "10-operations": Despliegue y operación
+
+types:
+  PROJECT_INTAKE:        { id_prefix: INTAKE, template: project-intake.md,        folder: "00-intake" }
+  PROJECT_SUMMARY:       { id_prefix: SUM,    template: project-summary.md,       folder: "00-intake" }
+  PRD:                   { id_prefix: PRD,    template: prd.md,                   folder: "01-product" }
+  UX_UI:                 { id_prefix: UX,     template: ux-ui.md,                 folder: "02-ux" }
+  ARCHITECTURE:          { id_prefix: ARCH,   template: architecture.md,          folder: "03-architecture" }
+  TECH_DESIGN:           { id_prefix: TD,     template: tech-design.md,           folder: "03-architecture" }
+  API_SPECIFICATION:     { id_prefix: API,    template: api-specification.md,     folder: "03-architecture" }
+  DATA_MODEL:            { id_prefix: DATA,   template: data-model.md,            folder: "04-data" }
+  AI_SPECIFICATION:      { id_prefix: AI,     template: ai-specification.md,      folder: "05-ai" }
+  IMPLEMENTATION_PLAN:   { id_prefix: PLAN,   template: implementation-plan.md,   folder: "06-execution" }
+  TASK:                  { id_prefix: TASK,   template: task.md,                  folder: "06-execution/tasks" }
+  TEST_STRATEGY:         { id_prefix: TST,    template: test-strategy.md,         folder: "07-quality" }
+  QUALITY_SECURITY:      { id_prefix: QA,     template: quality-security.md,      folder: "07-quality" }
+  ADR:                   { id_prefix: ADR,    template: adr.md,                   folder: "08-decisions/adr" }
+  CHANGE_REQUEST:        { id_prefix: CHANGE, template: change-request.md,        folder: "08-decisions/changes" }
+  VALIDATION_REPORT:     { id_prefix: VAL,    template: validation-report.md,     folder: "09-release" }
+  RELEASE:               { id_prefix: REL,    template: release.md,               folder: "09-release" }
+  DEPLOYMENT_OPERATIONS: { id_prefix: OPS,    template: deployment-operations.md, folder: "10-operations" }
+
+requirements:
+  file: docs/01-product/requirements.yaml
+  prefixes:
+    FR: Requisito funcional
+    NFR: Requisito no funcional
+
+id_pattern: "^[A-Z]+-[0-9]{3}[A-Z]?$"
+
+notes: >
+  "TDD" queda eliminado por ambiguo: el diseño técnico es TECH_DESIGN (TD) y la estrategia de pruebas
+  es TEST_STRATEGY (TST). Las plantillas tech-design.md y test-strategy.md sustituyen a tdd.md en la Fase 1.
+  Los requisitos usan FR/NFR (antes RF).

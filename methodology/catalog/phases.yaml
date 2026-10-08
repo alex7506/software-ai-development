@@ -1,0 +1,137 @@
+version: 0.9.0
+description: >
+  Ciclo canónico del proyecto y matriz de fases. Es el único orden válido del ciclo.
+  Un entregable es obligatorio si el modo del proyecto >= min_mode (ver modes.yaml) y, cuando
+  declara `when`, si la característica correspondiente está activa en .ai-dev/configuration.yaml.
+  Los roles referenciados están definidos en roles.yaml; los gates en el bloque `gates`.
+
+project_features:
+  has_ui: El producto tiene interfaz de usuario.
+  has_api: El producto expone una API a terceros o a otros sistemas.
+  has_persistent_data: El producto almacena datos de forma persistente.
+  uses_ai_in_product: El producto incorpora IA como funcionalidad (no solo como herramienta de desarrollo).
+
+order: [INTAKE, DISCOVERY, DEFINITION, DESIGN, ARCHITECTURE, TECHNOLOGY, PLANNING, BOOTSTRAPPING, DEVELOPMENT, VALIDATION, RELEASE, EVOLUTION]
+
+phases:
+  INTAKE:
+    purpose: Registrar la idea, el problema, el objetivo y el alcance inicial.
+    entry: Existe una solicitud de proyecto.
+    deliverables:
+      - { type: PROJECT_INTAKE, min_mode: LITE }
+    exit: Intake con problema, objetivo, alcance y fuera de alcance; incógnitas marcadas como UNKNOWN.
+    approver: PRODUCT_OWNER
+
+  DISCOVERY:
+    purpose: Investigar contexto, usuarios, restricciones y riesgos.
+    entry: INTAKE aprobado.
+    deliverables:
+      - { type: PROJECT_SUMMARY, min_mode: STANDARD }
+    exit: Riesgos, supuestos y restricciones documentados; clasificación de datos y modo de rigor propuestos.
+    approver: PRODUCT_OWNER
+
+  DEFINITION:
+    purpose: Definir qué se construye y cómo se acepta.
+    entry: DISCOVERY aprobado (o INTAKE en LITE).
+    deliverables:
+      - { type: PRD, min_mode: LITE }
+      - { type: REQUIREMENTS, min_mode: LITE }
+    exit: Cada requisito FR/NFR tiene criterio de aceptación verificable y estado APPROVED.
+    approver: PRODUCT_OWNER
+
+  DESIGN:
+    purpose: Diseñar la experiencia y la interacción.
+    entry: DEFINITION aprobado.
+    deliverables:
+      - { type: UX_UI, min_mode: STANDARD, when: has_ui }
+    exit: Flujos principales cubren los requisitos FR con interfaz.
+    approver: PRODUCT_OWNER
+
+  ARCHITECTURE:
+    purpose: Decidir la estructura del sistema sin fijar aún proveedores concretos.
+    entry: DEFINITION aprobado (y DESIGN si aplica).
+    deliverables:
+      - { type: ARCHITECTURE, min_mode: LITE }
+      - { type: DATA_MODEL, min_mode: STANDARD, when: has_persistent_data }
+      - { type: ADR, min_mode: STANDARD }
+    exit: Decisiones relevantes registradas como ADR ACCEPTED; NFR cubiertos por la arquitectura.
+    approver: TECH_LEAD
+
+  TECHNOLOGY:
+    purpose: Seleccionar tecnologías y perfil tecnológico con justificación.
+    entry: ARCHITECTURE aprobado.
+    deliverables:
+      - { type: TECHNOLOGY_PROFILE, min_mode: LITE }
+      - { type: TECH_DESIGN, min_mode: STANDARD }
+      - { type: API_SPECIFICATION, min_mode: STANDARD, when: has_api }
+      - { type: AI_SPECIFICATION, min_mode: STANDARD }
+    exit: Cada tecnología tiene justificación y ADR; la clasificación de datos es compatible con los proveedores elegidos.
+    approver: TECH_LEAD
+
+  PLANNING:
+    purpose: Descomponer el trabajo en tareas trazables.
+    entry: TECHNOLOGY aprobado.
+    deliverables:
+      - { type: IMPLEMENTATION_PLAN, min_mode: LITE }
+      - { type: TASK, min_mode: LITE }
+      - { type: TEST_STRATEGY, min_mode: STANDARD }
+      - { type: QUALITY_SECURITY, min_mode: CRITICAL }
+    exit: Toda tarea cumple Definition of Ready y todo requisito APPROVED tiene al menos una tarea que lo implementa.
+    approver: TECH_LEAD
+
+  BOOTSTRAPPING:
+    purpose: Preparar repositorio, entorno, configuración .ai-dev y adaptadores de agentes.
+    entry: PLANNING aprobado.
+    deliverables: []
+    checks: [git_initialized, ai_dev_valid, adapters_generated, secrets_excluded]
+    exit: Proyecto READY_FOR_DEVELOPMENT; validate sin errores.
+    approver: TECH_LEAD
+
+  DEVELOPMENT:
+    purpose: Implementar tareas bajo el protocolo operativo IA.
+    entry: BOOTSTRAPPING aprobado.
+    deliverables: []
+    checks: [planned_tasks_closed]
+    gates: [CODE, BUILD, TEST, SECURITY]
+    exit: Todas las tareas planificadas en COMPLETED o CANCELLED con justificación.
+    approver: TECH_LEAD
+
+  VALIDATION:
+    purpose: Verificar con evidencia que el producto cumple los requisitos.
+    entry: DEVELOPMENT aprobado.
+    deliverables:
+      - { type: VALIDATION_REPORT, min_mode: LITE }
+    gates: [TRACEABILITY, VALIDATION]
+    exit: Resultado APPROVED o APPROVED_WITH_WARNINGS; trazabilidad >= traceability_minimum del modo.
+    approver: QA_LEAD
+
+  RELEASE:
+    purpose: Publicar una versión controlada y reversible.
+    entry: VALIDATION aprobado.
+    deliverables:
+      - { type: RELEASE, min_mode: LITE }
+      - { type: DEPLOYMENT_OPERATIONS, min_mode: STANDARD }
+    gates: [RELEASE]
+    exit: Versión desplegada, plan de rollback verificado y CHANGELOG actualizado.
+    approver: PRODUCT_OWNER
+
+  EVOLUTION:
+    purpose: Operar, mantener e incorporar cambios.
+    entry: RELEASE aprobado.
+    deliverables:
+      - { type: CHANGE_REQUEST, min_mode: LITE, when: on_change }
+    exit: Cada cambio aprobado reingresa al ciclo en DEFINITION, ARCHITECTURE o PLANNING según su impacto.
+    approver: PRODUCT_OWNER
+
+gates:
+  CODE: Lint, formato y revisión de código sin hallazgos bloqueantes.
+  BUILD: Compilación o empaquetado reproducible sin errores.
+  TEST: Pruebas definidas en TEST_STRATEGY en PASS; ninguna prueba deshabilitada para obtenerlo.
+  SECURITY: Sin secretos expuestos ni vulnerabilidades críticas o altas sin aceptación de riesgo.
+  TRACEABILITY: Integridad >= traceability_minimum del modo.
+  VALIDATION: VALIDATION_REPORT con evidencia por requisito.
+  RELEASE: Versión, CHANGELOG, aprobación y plan de rollback presentes.
+
+non_document_deliverables:
+  REQUIREMENTS: docs/01-product/requirements.yaml
+  TECHNOLOGY_PROFILE: perfil declarado en .ai-dev/methodology.yaml y documentado en docs/03-architecture/

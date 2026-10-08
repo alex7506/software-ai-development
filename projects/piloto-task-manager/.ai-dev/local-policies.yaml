@@ -1,5 +1,0 @@
-policies:
-  - no_scope_expansion
-  - no_secret_storage
-  - approval_required_for_production
-  - approval_required_for_architecture_changes
