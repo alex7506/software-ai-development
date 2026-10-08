@@ -40,6 +40,23 @@ Los datos se clasifican en cuatro niveles, y cada nivel indica a qué tipo de se
 
 Cada proyecto declara qué proveedores concretos usa y a qué tipo pertenece cada uno. Así la regla funciona igual con cualquier proveedor.
 
+### Cómo clasificar un proveedor de IA
+| Situación del proveedor | Tipo de destino | Datos que puede recibir |
+|---|---|---|
+| Modelo ejecutado en tu propia infraestructura | `local_model` | Hasta CONFIDENTIAL |
+| API o plan empresarial con contrato que excluye entrenamiento y limita la retención | `enterprise_llm` | Hasta CONFIDENTIAL (minimizado) |
+| Plan individual (de pago o no) con la opción de entrenar con tus datos **desactivada** | `consumer_llm_no_training` | Hasta INTERNAL: código y documentos del proyecto, nunca datos de clientes |
+| Plan con el entrenamiento activado, o sin información sobre su uso de datos | `public_llm` | Solo PUBLIC |
+
+Revisa la configuración de privacidad de tu cuenta antes de declarar el proveedor, y vuelve a revisarla si cambian los términos del servicio. Se declara en `.ai-dev/configuration.yaml`:
+
+```yaml
+providers:
+  - name: Mi asistente (plan individual)
+    destination_type: consumer_llm_no_training
+    note: Entrenamiento desactivado en la configuración de privacidad el AAAA-MM-DD.
+```
+
 ## Valores exactos
 `methodology/catalog/risk.yaml`, `methodology/catalog/data-classification.yaml` y `agents/capabilities.yaml`.
 

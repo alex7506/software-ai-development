@@ -16,17 +16,30 @@ export function isApproved(doc: DocumentRecord): boolean {
 
 export const isRequirementApproved = (status: string) => ["APPROVED", "IMPLEMENTED", "VERIFIED"].includes(status);
 
-/** Campos que cambian al aprobar o revisar y no forman parte del contenido aprobado. */
-const VOLATILE_FIELDS = new Set(["status", "approved_by", "approved_at", "updated_at"]);
+/** Campos que cambian al aprobar, revisar o publicar y no forman parte del contenido aprobado. */
+const VOLATILE_FIELDS = new Set(["status", "approved_by", "approved_at", "updated_at", "released_at"]);
+/** Campos excluidos por la huella de la metodología 0.9.0 (antes de excluir `released_at`). */
+const VOLATILE_FIELDS_0_9 = new Set(["status", "approved_by", "approved_at", "updated_at"]);
 
-/** Huella del contenido de un documento: detecta ediciones posteriores a su aprobación. */
-export function contentHash(doc: { data: Record<string, unknown>; content: string }): string {
+type Hashable = { data: Record<string, unknown>; content: string };
+
+function hashWith(doc: Hashable, volatile: Set<string>): string {
   const stable = Object.fromEntries(
     Object.entries(doc.data)
-      .filter(([k]) => !VOLATILE_FIELDS.has(k))
+      .filter(([k]) => !volatile.has(k))
       .sort(([a], [b]) => a.localeCompare(b)),
   );
   return createHash("sha256").update(JSON.stringify(stable)).update("\0").update(doc.content.trim()).digest("hex").slice(0, 16);
+}
+
+/** Huella del contenido de un documento: detecta ediciones posteriores a su aprobación. */
+export function contentHash(doc: Hashable): string {
+  return hashWith(doc, VOLATILE_FIELDS);
+}
+
+/** ¿Coincide la huella aprobada con el documento? Acepta también huellas de la 0.9.0 para no invalidar aprobaciones existentes. */
+export function hashMatches(doc: Hashable, approvedHash: string): boolean {
+  return approvedHash === contentHash(doc) || approvedHash === hashWith(doc, VOLATILE_FIELDS_0_9);
 }
 
 export function phaseIndex(cat: Catalog, phase: string): number {

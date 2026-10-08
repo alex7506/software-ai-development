@@ -43,6 +43,17 @@ properties:
     propertyNames:
       enum: [CODE, BUILD, TEST, SECURITY]
     additionalProperties: { type: string, minLength: 1 }
+  additional_deliverables:
+    description: Entregables que el proyecto exige además de los de su modo (p. ej. QUALITY_SECURITY en STANDARD). `phase check` los aplica.
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [phase, type, reason]
+      properties:
+        phase: { $ref: "enums.schema.yaml#/$defs/phase" }
+        type: { $ref: "enums.schema.yaml#/$defs/document_type" }
+        reason: { $ref: "common.schema.yaml#/$defs/non_empty" }
   adapters:
     description: Adaptadores de asistentes de IA que genera `ai-dev adapters sync` (agents-md siempre se incluye).
     type: array

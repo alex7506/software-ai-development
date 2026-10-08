@@ -20,6 +20,8 @@ Cada proyecto vive en **su propio repositorio** y fija la versión de la metodol
 
 Esquemas de cada archivo de `.ai-dev/`: `schemas/ai-dev-*.schema.yaml`.
 
+Un proyecto puede exigir entregables además de los de su modo con `additional_deliverables` en `configuration.yaml` (por ejemplo, QUALITY_SECURITY en STANDARD cuando trabaja una sola persona con datos sensibles). `ai-dev phase check` los aplica igual que los del modo.
+
 ## AI-CONTEXT.md
 Resumen breve y actualizado de lo que un agente necesita al empezar: propósito, fase actual, stack aprobado, alcance y fuera de alcance, reglas locales y dónde está cada fuente de verdad. No duplica documentos: los referencia. Se actualiza al cerrar cada tarea que cambie su contenido.
 
@@ -37,3 +39,5 @@ Resumen breve y actualizado de lo que un agente necesita al empezar: propósito,
 
 ## Actualización de la versión de la metodología
 Los proyectos no se actualizan automáticamente. Actualizar la versión fijada es un CHANGE_REQUEST del proyecto: se revisa el CHANGELOG de la metodología, se aplica la nueva versión, se regeneran los adaptadores y se ejecuta `ai-dev validate`.
+
+La CLI aplica siempre la metodología de su propia versión: usa una CLI de la misma versión que fija el proyecto. Si no coinciden, `ai-dev validate` y `ai-dev doctor` lo avisan. Las aprobaciones registradas con versiones anteriores siguen siendo válidas.

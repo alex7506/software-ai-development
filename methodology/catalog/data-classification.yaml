@@ -1,4 +1,4 @@
-version: 0.9.0
+version: 1.0.0
 description: >
   Clasificación de datos y destinos permitidos. Un dato solo puede enviarse a un destino listado en
   allowed_destinations. El proyecto declara qué proveedores concretos pertenecen a cada tipo de destino
@@ -7,18 +7,19 @@ description: >
 destination_types:
   local_model: Modelo ejecutado en infraestructura controlada por la organización.
   enterprise_llm: LLM externo con contrato que excluye entrenamiento y garantiza retención limitada.
-  public_llm: LLM externo sin garantías contractuales de privacidad.
+  consumer_llm_no_training: LLM externo de un plan individual, sin contrato empresarial, con el uso para entrenamiento desactivado por el titular.
+  public_llm: LLM externo que puede usar los datos para entrenar o sin garantías conocidas de privacidad.
   third_party_tool: Servicio externo distinto de un LLM (CI, analítica, monitorización).
 
 levels:
   PUBLIC:
     description: Información publicable sin daño.
     risk: LOW
-    allowed_destinations: [local_model, enterprise_llm, public_llm, third_party_tool]
+    allowed_destinations: [local_model, enterprise_llm, consumer_llm_no_training, public_llm, third_party_tool]
   INTERNAL:
     description: Uso interno; su divulgación causa daño menor (código propietario, documentación interna).
     risk: MEDIUM
-    allowed_destinations: [local_model, enterprise_llm, third_party_tool]
+    allowed_destinations: [local_model, enterprise_llm, consumer_llm_no_training, third_party_tool]
   CONFIDENTIAL:
     description: Datos personales, de clientes o de negocio sensibles.
     risk: HIGH

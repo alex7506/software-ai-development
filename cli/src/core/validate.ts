@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { adapterStatus } from "./adapters.js";
 import { AI_DEV_DIR, AI_DEV_FILES, REQUIREMENTS_FILE, type AiDevFile, type Project } from "./project.js";
 import { error, info, warning, type Issue } from "./issues.js";
-import { contentHash, isApproved, isRequirementApproved, latestApproval, latestApproved, requirementsHash } from "./rules.js";
+import { hashMatches, isApproved, isRequirementApproved, latestApproval, latestApproved, requirementsHash } from "./rules.js";
 import { schemaForDocumentType, type SchemaRegistry } from "./schema.js";
 import { readYaml } from "./yaml.js";
 
@@ -91,7 +91,7 @@ export function validateProject(p: Project, registry: SchemaRegistry, cliVersion
       const approval = latestApproval(p, doc.id);
       if (!approval || approval.decision !== "APPROVED") {
         issues.push(error("approval_missing", `${doc.id} figura como ${String(doc.data.status)} sin aprobación registrada. Usa \`ai-dev approve ${doc.id}\`.`, doc.rel));
-      } else if (approval.target_hash && approval.target_hash !== contentHash(doc)) {
+      } else if (approval.target_hash && !hashMatches(doc, approval.target_hash)) {
         issues.push(error("modified_after_approval", `${doc.id} cambió después de aprobarse. Usa \`ai-dev revise ${doc.id}\` y vuelve a aprobarlo.`, doc.rel));
       }
     }

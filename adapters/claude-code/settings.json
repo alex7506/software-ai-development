@@ -20,7 +20,8 @@
       "Bash(pnpm add *)",
       "Bash(yarn add *)",
       "Bash(pip install *)",
-      "Bash(ai-dev revise *)"
+      "Bash(ai-dev revise *)",
+      "Bash(ai-dev mode *)"
     ]
   }
 }

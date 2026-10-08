@@ -1,6 +1,8 @@
 # Software AI Development Methodology
 
-Metodología profesional, reutilizable y agnóstica de proveedores para desarrollar software con asistencia de IA.
+Metodología profesional, reutilizable y agnóstica de proveedores para desarrollar software con asistencia de IA, con su herramienta determinista `ai-dev`.
+
+**Versión 1.0.0**, validada con un proyecto real ([MiAdmin](https://github.com/alex7506/miadmin)). Empieza por el [manual](docs/index.md): [instalar](docs/guias/instalar.md) y [tutorial](docs/tutorial/primer-proyecto.md).
 
 ## Principio central
 La metodología define **cómo** se desarrolla software; no depende de OpenAI, Anthropic, Google, Microsoft, AWS, Azure, un LLM, IDE, agente, framework o nube concretos. Las tecnologías concretas entran como perfiles tecnológicos y adaptadores.

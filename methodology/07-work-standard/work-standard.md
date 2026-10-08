@@ -37,5 +37,8 @@ La evidencia referencia artefactos verificables (salida de comandos, commits, in
 - Los requisitos se aprueban como conjunto (`ai-dev approve REQUIREMENTS`, rol PRODUCT_OWNER); la huella cubre el contenido de los requisitos aprobados, no su estado.
 - Quien asume varios roles puede revisar todo lo pendiente en una sesión interactiva (`ai-dev review`); cada decisión se registra por separado y sigue siendo explícita.
 
+## Incógnitas resueltas después de aprobar
+Un documento aprobado es una foto de su momento: no se reabre para cerrar una incógnita que se resolvió más tarde. La resolución se registra donde vive el dato (por ejemplo, el proveedor de IA en `.ai-dev/configuration.yaml`, una decisión técnica en un ADR o un requisito en `requirements.yaml`). Solo se revisa el documento (`ai-dev revise`) si la resolución cambia lo que se aprobó.
+
 ## Reintentos
 Un ciclo automático de corrección es: ejecutar → fallar → corregir. Al alcanzar `catalog/limits.yaml#max_auto_fix_attempts` la tarea pasa a REQUIRES_REVIEW con el registro de los intentos.

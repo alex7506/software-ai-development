@@ -18,8 +18,21 @@ Hazte estas preguntas:
 
 En caso de duda, elige el modo más alto: bajar de modo es fácil, pero reconstruir controles que no se aplicaron es costoso.
 
+## Si trabajas solo
+CRITICAL exige dos personas distintas en arquitectura, tecnología y release: es intencionado, porque un producto crítico no debería depender de una sola mirada. Si eres el único responsable de un producto sensible, usa **STANDARD** y refuerza lo que necesites:
+
+- **Entregables adicionales:** exige, por ejemplo, el plan de calidad y seguridad en STANDARD.
+  ```yaml
+  # .ai-dev/configuration.yaml
+  additional_deliverables:
+    - phase: PLANNING
+      type: QUALITY_SECURITY
+      reason: Guardamos credenciales de terceros.
+  ```
+- **Políticas locales** en `.ai-dev/policies.yaml` (cifrado obligatorio, datos ficticios en desarrollo…).
+
 ## Cambiar de modo
-El modo se fija al iniciar el proyecto. Un prototipo LITE que se convierte en producto pasa a STANDARD mediante una **solicitud de cambio**: se revisan los documentos que faltan y se completan antes de seguir.
+El modo se fija al iniciar el proyecto. Mientras no haya ninguna aprobación, se puede corregir con `ai-dev mode <MODO> --reason "..."`. Después, forma parte de lo aprobado: un prototipo LITE que se convierte en producto pasa a STANDARD mediante una **solicitud de cambio**, y se completan los documentos que falten antes de seguir.
 
 ## Valores exactos
 `methodology/catalog/modes.yaml`.

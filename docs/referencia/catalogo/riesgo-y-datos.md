@@ -44,8 +44,8 @@ Fuentes: `methodology/catalog/risk.yaml`, `methodology/catalog/data-classificati
 
 | Nivel | Riesgo | Destinos permitidos |
 |---|---|---|
-| `PUBLIC` | `LOW` | `local_model`, `enterprise_llm`, `public_llm`, `third_party_tool` |
-| `INTERNAL` | `MEDIUM` | `local_model`, `enterprise_llm`, `third_party_tool` |
+| `PUBLIC` | `LOW` | `local_model`, `enterprise_llm`, `consumer_llm_no_training`, `public_llm`, `third_party_tool` |
+| `INTERNAL` | `MEDIUM` | `local_model`, `enterprise_llm`, `consumer_llm_no_training`, `third_party_tool` |
 | `CONFIDENTIAL` | `HIGH` | `local_model`, `enterprise_llm` |
 | `RESTRICTED` | `CRITICAL` | ninguno |
 
@@ -55,5 +55,6 @@ Fuentes: `methodology/catalog/risk.yaml`, `methodology/catalog/data-classificati
 |---|---|
 | `local_model` | Modelo ejecutado en infraestructura controlada por la organización. |
 | `enterprise_llm` | LLM externo con contrato que excluye entrenamiento y garantiza retención limitada. |
-| `public_llm` | LLM externo sin garantías contractuales de privacidad. |
+| `consumer_llm_no_training` | LLM externo de un plan individual, sin contrato empresarial, con el uso para entrenamiento desactivado por el titular. |
+| `public_llm` | LLM externo que puede usar los datos para entrenar o sin garantías conocidas de privacidad. |
 | `third_party_tool` | Servicio externo distinto de un LLM (CI, analítica, monitorización). |

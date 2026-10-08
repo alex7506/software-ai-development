@@ -1,4 +1,4 @@
-version: 0.9.0
+version: 1.0.0
 provider_agnostic: true
 description: >
   Contrato que todo agente cumple, independientemente de proveedor, modelo o herramienta.

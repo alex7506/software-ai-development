@@ -1,4 +1,4 @@
-version: 0.9.0
+version: 1.0.0
 description: Tipos de documento canónicos. `id_prefix` define el patrón de ID <PREFIX>-<NNN>.
 
 folders:
