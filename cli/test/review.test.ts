@@ -99,6 +99,19 @@ describe("ai-dev review", () => {
     expect(s.yaml<{ phase: string }>(".ai-dev/state.yaml").phase).toBe("INTAKE");
   });
 
+  it("ofrece los documentos en el orden del ciclo: la validación antes que la release", async () => {
+    const s = new Sandbox();
+    await lite(s);
+    s.setState({ phase: "DEVELOPMENT" });
+    await s.run(["new", "RELEASE", "--title", "Release"]);
+    await s.run(["new", "VALIDATION_REPORT", "--title", "Validación"]);
+    await s.run(["submit", "REL-001"]);
+    await s.run(["submit", "VAL-001"]);
+    const r = await review(s, ["s", "t"]);
+    expect(r.out).toContain("APPROVED: VAL-001");
+    expect(r.out).not.toContain("APPROVED: REL-001");
+  });
+
   it("se detiene si la fase la aprueba un rol que la persona no asumió", async () => {
     const s = new Sandbox();
     await lite(s);

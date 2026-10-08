@@ -57,8 +57,8 @@ export async function reviewSession(p: Project, registry: SchemaRegistry, cliVer
   for (;;) {
     p.invalidate();
 
-    // 1. Documentos enviados a revisión.
-    for (const doc of p.documents()) {
+    // 1. Documentos enviados a revisión, en el orden de las fases que los exigen.
+    for (const doc of [...p.documents()].sort((a, b) => phaseOf(p, a.type) - phaseOf(p, b.type))) {
       if (doc.type === "TASK" || skipped.has(doc.id) || doc.data.status !== reviewStatus(doc.type)) continue;
       const role = roleFor(p, doc.type, opts.roles);
       if (!role) {
@@ -108,6 +108,12 @@ function finish(p: Project, summary: ReviewSummary, reason: string): ReviewSumma
   summary.finalPhase = p.state.phase;
   summary.stopReason = reason;
   return summary;
+}
+
+/** Posición en el ciclo de la primera fase que exige un tipo de documento (al final si ninguna lo exige). */
+function phaseOf(p: Project, type: string): number {
+  const index = p.cat.phases.order.findIndex((name) => p.cat.phases.phases[name]?.deliverables?.some((d) => d.type === type));
+  return index < 0 ? p.cat.phases.order.length : index;
 }
 
 /** Rol que aprueba un tipo de documento: el aprobador de la fase que lo exige, si la persona lo asume. */
