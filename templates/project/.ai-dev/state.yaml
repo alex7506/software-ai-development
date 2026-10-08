@@ -1,0 +1,7 @@
+# Estado operativo del proyecto. Lo mantiene la CLI; no editar a mano.
+phase: INTAKE
+status: ACTIVE
+current_task: null
+pending_decisions: []
+blocked_reason: null
+updated_at: "{{datetime}}"

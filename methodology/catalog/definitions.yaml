@@ -1,0 +1,30 @@
+version: 0.9.0
+description: >
+  Definition of Ready y Definition of Done de una tarea. Cada criterio tiene un id estable;
+  `automated: true` indica que la CLI puede verificarlo sin intervención humana.
+
+definition_of_ready:
+  - { id: objective_defined,       automated: true,  description: La tarea tiene objetivo. }
+  - { id: acceptance_criteria,     automated: true,  description: Tiene al menos un criterio de aceptación verificable. }
+  - { id: traced_to_requirement,   automated: true,  description: Tiene una relación IMPLEMENTS hacia un FR/NFR, o declara `kind` técnica (TECHNICAL, CHORE) con justificación. }
+  - { id: dependencies_resolved,   automated: true,  description: Toda tarea en blocked_by está COMPLETED. }
+  - { id: executor_assigned,       automated: true,  description: Tiene executor (ver lifecycle.yaml#executors). }
+  - { id: risk_assessed,           automated: true,  description: Declara risk (ver risk.yaml) y capabilities requeridas. }
+  - { id: data_classified,         automated: true,  description: Declara la clasificación de datos máxima que maneja. }
+  - { id: context_identified,      automated: false, description: Las fuentes de contexto necesarias están identificadas. }
+
+definition_of_done:
+  - { id: acceptance_met,          automated: false, description: Cada criterio de aceptación está cumplido. }
+  - { id: evidence_attached,       automated: true,  description: Existe al menos una evidencia por criterio de aceptación. }
+  - { id: gates_passed,            automated: true,  description: Los gates de DEVELOPMENT exigidos por el modo están en PASS. }
+  - { id: tests_not_weakened,      automated: false, description: Ninguna prueba se deshabilitó, omitió o debilitó. }
+  - { id: commits_traced,          automated: true,  description: "Los commits de la tarea incluyen el trailer `Task: <ID>`." }
+  - { id: docs_updated,            automated: false, description: Documentos afectados actualizados y AI-CONTEXT.md vigente. }
+  - { id: provenance_recorded,     automated: true,  description: Si intervino IA, la tarea registra provenance. }
+  - { id: reviewed,                automated: true,  description: En modos con separation_of_duties, revisada por alguien distinto al ejecutor. }
+
+task_kinds:
+  FEATURE: Implementa uno o más requisitos FR/NFR.
+  TECHNICAL: Trabajo técnico necesario que no implementa un requisito directamente (infraestructura, configuración).
+  CHORE: Mantenimiento menor (dependencias, formato, limpieza).
+  FIX: Corrige un defecto; referencia la tarea, requisito o incidente afectado.

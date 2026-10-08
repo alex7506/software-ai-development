@@ -1,2 +1,17 @@
-$id: document
-required: [document_id, document_type, title, version, status, project]
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/document.schema.yaml
+title: Documento
+description: Frontmatter de cualquier documento cuyo tipo no declara un esquema propio.
+
+# Los condicionales van dentro de allOf: en la raíz, Ajv descarta las propiedades evaluadas por $ref.
+type: object
+allOf:
+  - $ref: "common.schema.yaml#/$defs/document_base"
+  - if:
+      properties: { status: { const: APPROVED } }
+    then:
+      properties:
+        approved_by: { $ref: "common.schema.yaml#/$defs/non_empty" }
+properties:
+  status: { $ref: "enums.schema.yaml#/$defs/document_status" }
+unevaluatedProperties: false

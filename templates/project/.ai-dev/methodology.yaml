@@ -1,0 +1,11 @@
+# Identidad del proyecto y versión fijada de la metodología. Cambiar mode o version requiere un CHANGE_REQUEST.
+methodology:
+  id: software-ai-development
+  version: "{{methodology_version}}"
+project:
+  id: "{{project_id}}"
+  name: "{{project_name}}"
+  description: ""
+mode: "{{mode}}"
+technology_profile: null
+adopted_at: null

@@ -57,6 +57,13 @@ agent_output:
 authorization_decision:
   values: [ALLOW, DENY, REQUIRES_APPROVAL]
 
+approval_decision:
+  values: [APPROVED, REJECTED, CHANGES_REQUESTED]
+
+incident_severity:
+  values: [SEV1, SEV2, SEV3, SEV4]
+  notes: SEV1 servicio caído o datos comprometidos; SEV4 impacto cosmético.
+
 relation_types:
   values: [IMPLEMENTS, DEPENDS_ON, AFFECTS, DERIVED_FROM, VALIDATES, TESTS, DOCUMENTS, REPLACES, SUPERSEDES, CONFLICTS_WITH, BLOCKS, REQUIRES]
   notes: Una relación inferida por IA debe declarar confidence (0–1) y no cuenta para INTEGRITY_OK hasta ser confirmada por una persona.

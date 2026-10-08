@@ -1,2 +1,34 @@
-$id: release
-required: [release_id, version, validation_status, traceability_status]
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/release.schema.yaml
+title: Release
+
+type: object
+allOf:
+  - $ref: "common.schema.yaml#/$defs/document_base"
+  - if:
+      properties: { status: { const: APPROVED } }
+    then:
+      properties:
+        approved_by: { $ref: "common.schema.yaml#/$defs/non_empty" }
+        rollback_verified: { const: true }
+
+required: [release_version, environment, validation_ref, traceability_status, rollback_verified]
+properties:
+  document_type: { const: RELEASE }
+  document_id:
+    type: string
+    pattern: "^REL-[0-9]{3}[A-Z]?$"
+  status: { $ref: "enums.schema.yaml#/$defs/document_status" }
+  release_version: { $ref: "common.schema.yaml#/$defs/semver" }
+  environment:
+    enum: [development, staging, production]
+  validation_ref:
+    type: string
+    pattern: "^VAL-[0-9]{3}[A-Z]?$"
+  traceability_status: { $ref: "enums.schema.yaml#/$defs/integrity_status" }
+  rollback_verified: { type: boolean }
+  released_at:
+    oneOf:
+      - { $ref: "common.schema.yaml#/$defs/date" }
+      - { type: "null" }
+unevaluatedProperties: false

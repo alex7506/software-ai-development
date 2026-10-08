@@ -47,4 +47,7 @@ Roles humanos aprobadores (PRODUCT_OWNER, TECH_LEAD, QA_LEAD, SECURITY_OFFICER, 
 | Seguridad | `04-security-principles/` |
 | Calidad | `05-quality-principles/` |
 | Eficiencia LLM | `06-llm-efficiency-principles/` |
+| Tareas, evidencia y aprobaciones | `07-work-standard/` |
+| Evolución y operación | `08-evolution-operations/` |
+| Estructura y configuración de proyectos | `09-project-setup/` |
 | Gobierno | `governance/` |

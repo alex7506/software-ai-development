@@ -1,0 +1,20 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/ai-dev-state.schema.yaml
+title: .ai-dev/state.yaml
+description: Estado operativo actual del proyecto. Lo mantiene la CLI.
+
+type: object
+additionalProperties: false
+required: [phase, status, updated_at]
+properties:
+  phase: { $ref: "enums.schema.yaml#/$defs/phase" }
+  status: { $ref: "enums.schema.yaml#/$defs/project_status" }
+  current_task:
+    oneOf:
+      - { type: string, pattern: "^TASK-[0-9]{3}[A-Z]?$" }
+      - { type: "null" }
+  pending_decisions:
+    type: array
+    items: { type: string }
+  blocked_reason: { type: [string, "null"] }
+  updated_at: { $ref: "common.schema.yaml#/$defs/datetime" }

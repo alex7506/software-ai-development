@@ -13,6 +13,7 @@ Fuente única de verdad **legible por máquina**. La normativa (`methodology/0x-
 | `risk.yaml` | Niveles de riesgo, autonomía máxima y aprobación requerida. |
 | `data-classification.yaml` | Clasificación de datos y destinos permitidos. |
 | `limits.yaml` | Límites operativos numéricos. |
+| `definitions.yaml` | Definition of Ready, Definition of Done y tipos de tarea. |
 
 ## Convenciones
 - Prosa en español. Claves, enums, identificadores y comandos en inglés (`UPPER_SNAKE_CASE` para enums, `snake_case` para claves).

@@ -1,0 +1,41 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/requirements.schema.yaml
+title: Requisitos
+description: docs/01-product/requirements.yaml — catálogo legible por máquina de los requisitos FR/NFR del proyecto.
+
+type: object
+additionalProperties: false
+required: [project, prd_ref, requirements]
+properties:
+  project: { $ref: "common.schema.yaml#/$defs/non_empty" }
+  prd_ref:
+    type: string
+    pattern: "^PRD-[0-9]{3}[A-Z]?$"
+  requirements:
+    type: array
+    items: { $ref: "#/$defs/requirement" }
+
+$defs:
+  requirement:
+    type: object
+    additionalProperties: false
+    required: [id, title, description, status, priority, acceptance_criteria]
+    properties:
+      id: { $ref: "common.schema.yaml#/$defs/requirement_id" }
+      title: { $ref: "common.schema.yaml#/$defs/non_empty" }
+      description: { $ref: "common.schema.yaml#/$defs/non_empty" }
+      status: { $ref: "enums.schema.yaml#/$defs/requirement_status" }
+      priority:
+        enum: [MUST, SHOULD, COULD, WONT]
+        description: Priorización MoSCoW.
+      category:
+        type: string
+        description: En NFR, el atributo de calidad (rendimiento, seguridad, accesibilidad…).
+      acceptance_criteria:
+        type: array
+        minItems: 1
+        items: { $ref: "common.schema.yaml#/$defs/acceptance_criterion" }
+      relations: { $ref: "common.schema.yaml#/$defs/relations" }
+      source:
+        type: string
+        description: Origen del requisito (intake, entrevista, CHANGE-NNN).

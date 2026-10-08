@@ -25,13 +25,13 @@ types:
   DATA_MODEL:            { id_prefix: DATA,   template: data-model.md,            folder: "04-data" }
   AI_SPECIFICATION:      { id_prefix: AI,     template: ai-specification.md,      folder: "05-ai" }
   IMPLEMENTATION_PLAN:   { id_prefix: PLAN,   template: implementation-plan.md,   folder: "06-execution" }
-  TASK:                  { id_prefix: TASK,   template: task.md,                  folder: "06-execution/tasks" }
+  TASK:                  { id_prefix: TASK,   template: task.md,                  folder: "06-execution/tasks", schema: task }
   TEST_STRATEGY:         { id_prefix: TST,    template: test-strategy.md,         folder: "07-quality" }
   QUALITY_SECURITY:      { id_prefix: QA,     template: quality-security.md,      folder: "07-quality" }
-  ADR:                   { id_prefix: ADR,    template: adr.md,                   folder: "08-decisions/adr" }
-  CHANGE_REQUEST:        { id_prefix: CHANGE, template: change-request.md,        folder: "08-decisions/changes" }
-  VALIDATION_REPORT:     { id_prefix: VAL,    template: validation-report.md,     folder: "09-release" }
-  RELEASE:               { id_prefix: REL,    template: release.md,               folder: "09-release" }
+  ADR:                   { id_prefix: ADR,    template: adr.md,                   folder: "08-decisions/adr", schema: adr }
+  CHANGE_REQUEST:        { id_prefix: CHANGE, template: change-request.md,        folder: "08-decisions/changes", schema: change-request }
+  VALIDATION_REPORT:     { id_prefix: VAL,    template: validation-report.md,     folder: "09-release", schema: validation-report }
+  RELEASE:               { id_prefix: REL,    template: release.md,               folder: "09-release", schema: release }
   DEPLOYMENT_OPERATIONS: { id_prefix: OPS,    template: deployment-operations.md, folder: "10-operations" }
 
 requirements:
@@ -42,7 +42,9 @@ requirements:
 
 id_pattern: "^[A-Z]+-[0-9]{3}[A-Z]?$"
 
+default_schema: document  # tipos sin `schema` propio
+
 notes: >
   "TDD" queda eliminado por ambiguo: el diseño técnico es TECH_DESIGN (TD) y la estrategia de pruebas
-  es TEST_STRATEGY (TST). Las plantillas tech-design.md y test-strategy.md sustituyen a tdd.md en la Fase 1.
+  es TEST_STRATEGY (TST). Las plantillas tech-design.md y test-strategy.md sustituyen a tdd.md.
   Los requisitos usan FR/NFR (antes RF).

@@ -1,0 +1,25 @@
+# Características del producto: determinan qué entregables condicionales son obligatorios (catalog/phases.yaml).
+features:
+  has_ui: true
+  has_api: false
+  has_persistent_data: true
+  uses_ai_in_product: false
+
+# Clasificación más alta de los datos que maneja el producto (catalog/data-classification.yaml).
+data_classification_max: INTERNAL
+
+# Proveedores de IA concretos y el tipo de destino que representan.
+providers: []
+#  - name: <proveedor>
+#    destination_type: enterprise_llm
+
+# Agentes habilitados; `capabilities` son los permisos concedidos.
+agents: []
+#  - agent_id: <id>
+#    type: DEVELOPER
+#    provider: <proveedor>
+#    tool: <herramienta>
+#    capabilities: [analysis, code_modification, test_generation, test_execution, git_read, commit]
+#    max_autonomy_level: 3
+
+environments: [local, production]

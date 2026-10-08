@@ -1,0 +1,26 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/change-request.schema.yaml
+title: Solicitud de cambio
+
+type: object
+allOf:
+  - $ref: "common.schema.yaml#/$defs/document_base"
+  - if:
+      properties: { status: { enum: [APPROVED, IMPLEMENTING, VALIDATING, DONE] } }
+    then:
+      required: [reentry_phase]
+      properties:
+        approved_by: { $ref: "common.schema.yaml#/$defs/non_empty" }
+
+required: [reason, impact_level]
+properties:
+  document_type: { const: CHANGE_REQUEST }
+  document_id:
+    type: string
+    pattern: "^CHANGE-[0-9]{3}[A-Z]?$"
+  status: { $ref: "enums.schema.yaml#/$defs/change_status" }
+  reason: { $ref: "common.schema.yaml#/$defs/non_empty" }
+  requested_by: { type: string }
+  impact_level: { $ref: "enums.schema.yaml#/$defs/risk_level" }
+  reentry_phase: { $ref: "enums.schema.yaml#/$defs/phase" }
+unevaluatedProperties: false

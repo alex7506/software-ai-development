@@ -1,0 +1,7 @@
+# Todas las políticas de agents/policies/agent-policies.yaml están siempre activas.
+# Aquí solo se añaden políticas propias, más restrictivas.
+local_policies: []
+#  - id: local_no_direct_db_access
+#    severity: BLOCKING
+#    description: Ningún agente accede a la base de datos fuera del emulador local.
+#    extends: data_classification_respected

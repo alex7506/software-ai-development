@@ -1,0 +1,35 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/ai-dev-methodology.schema.yaml
+title: .ai-dev/methodology.yaml
+description: Identidad del proyecto, versión fijada de la metodología, modo de rigor y perfil tecnológico.
+
+type: object
+additionalProperties: false
+required: [methodology, project, mode]
+properties:
+  methodology:
+    type: object
+    additionalProperties: false
+    required: [id, version]
+    properties:
+      id: { const: software-ai-development }
+      version: { $ref: "common.schema.yaml#/$defs/semver" }
+  project:
+    type: object
+    additionalProperties: false
+    required: [id, name]
+    properties:
+      id:
+        type: string
+        pattern: "^[a-z0-9][a-z0-9-]*$"
+      name: { $ref: "common.schema.yaml#/$defs/non_empty" }
+      description: { type: string }
+  mode: { $ref: "enums.schema.yaml#/$defs/mode" }
+  technology_profile:
+    type: [string, "null"]
+    description: Nombre de un perfil de technology-profiles/ o un perfil propio del proyecto.
+  adopted_at:
+    description: Fecha de adopción en un proyecto existente; la trazabilidad se exige desde entonces.
+    oneOf:
+      - { $ref: "common.schema.yaml#/$defs/date" }
+      - { type: "null" }

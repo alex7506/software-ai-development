@@ -1,2 +1,31 @@
-$id: agent
-required: [agent_id, type, capabilities, permissions]
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://ai-dev.local/schemas/agent.schema.yaml
+title: Agente registrado
+description: Un agente concreto (cualquier proveedor o herramienta) habilitado en el proyecto. `capabilities` son los permisos concedidos.
+
+type: object
+additionalProperties: false
+required: [agent_id, type, provider, capabilities, max_autonomy_level]
+properties:
+  agent_id:
+    type: string
+    pattern: "^[a-z0-9][a-z0-9-]*$"
+  type: { $ref: "enums.schema.yaml#/$defs/agent_type" }
+  provider:
+    description: Debe coincidir con un `name` de configuration.yaml#providers.
+    type: string
+  tool:
+    description: Herramienta o entorno (p. ej. claude-code, cursor, gemini-cli).
+    type: string
+  model: { type: string }
+  capabilities:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    items: { $ref: "enums.schema.yaml#/$defs/capability" }
+    not:
+      contains: { const: approval }
+  max_autonomy_level:
+    type: integer
+    minimum: 0
+    maximum: 4
