@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { adapterStatus } from "./adapters.js";
 import { AI_DEV_DIR, AI_DEV_FILES, REQUIREMENTS_FILE, type AiDevFile, type Project } from "./project.js";
 import { error, info, warning, type Issue } from "./issues.js";
-import { contentHash, isApproved, latestApproval } from "./rules.js";
+import { contentHash, isApproved, isRequirementApproved, latestApproval, latestApproved, requirementsHash } from "./rules.js";
 import { schemaForDocumentType, type SchemaRegistry } from "./schema.js";
 import { readYaml } from "./yaml.js";
 
@@ -63,7 +63,12 @@ export function validateProject(p: Project, registry: SchemaRegistry, cliVersion
   if (existsSync(reqFile)) {
     const result = registry.validate("requirements", readYaml(reqFile));
     result.errors.forEach((e) => issues.push(error("schema", e, REQUIREMENTS_FILE)));
-    if (result.valid) duplicates(p.requirements().map((r) => r.id)).forEach((id) => issues.push(error("duplicate_id", `Requisito duplicado: ${id}`, REQUIREMENTS_FILE)));
+    if (result.valid) {
+      const reqs = p.requirements();
+      duplicates(reqs.map((r) => r.id)).forEach((id) => issues.push(error("duplicate_id", `Requisito duplicado: ${id}`, REQUIREMENTS_FILE)));
+      const problem = requirementsApprovalProblem(p);
+      if (problem) issues.push(error("requirements_approval", problem, REQUIREMENTS_FILE));
+    }
   }
 
   // Documentos
@@ -128,7 +133,7 @@ export function validateProject(p: Project, registry: SchemaRegistry, cliVersion
   }
   if (!envIgnored(p)) issues.push(warning("env_not_ignored", "El .gitignore no excluye .env: riesgo de subir secretos.", ".gitignore"));
 
-  if (!issues.length) issues.push(info("ok", `Proyecto válido: ${docs.length} documentos, ${p.requirements().length} requisitos.`));
+  if (!issues.length) issues.push(info("ok", `Proyecto válido: ${plural(docs.length, "documento")}, ${plural(p.requirements().length, "requisito")}.`));
   return issues;
 }
 
@@ -147,3 +152,17 @@ function duplicates(values: string[]): string[] {
   const seen = new Set<string>();
   return [...new Set(values.filter((v) => (seen.has(v) ? true : (seen.add(v), false))))];
 }
+
+/** Requisitos aprobados sin aprobación registrada o modificados después de aprobarse. */
+export function requirementsApprovalProblem(p: Project): string | null {
+  const reqs = p.requirements();
+  if (!reqs.some((r) => isRequirementApproved(r.status))) return null;
+  const approval = latestApproved(p, "REQUIREMENTS");
+  if (!approval) return "Hay requisitos aprobados sin aprobación registrada. Un responsable debe ejecutar `ai-dev approve REQUIREMENTS`.";
+  if (approval.target_hash !== requirementsHash(reqs)) {
+    return "Los requisitos aprobados cambiaron después de su aprobación. Un responsable debe volver a ejecutar `ai-dev approve REQUIREMENTS`.";
+  }
+  return null;
+}
+
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;

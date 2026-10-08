@@ -3,7 +3,7 @@ import { nextId } from "./ids.js";
 import { CliError } from "./issues.js";
 import { checkPhase, requiredDeliverables } from "./phases.js";
 import type { Approval, Project } from "./project.js";
-import { contentHash } from "./rules.js";
+import { contentHash, requirementsHash } from "./rules.js";
 import { saveValidated, reviewStatus } from "./documents.js";
 import type { SchemaRegistry } from "./schema.js";
 
@@ -39,7 +39,10 @@ export function recordApproval(p: Project, registry: SchemaRegistry, cliVersion:
   const base = { id: nextId("APR", p.approvals.map((a) => a.id)), by: req.by.trim(), role: req.role, decision: req.decision, at: now.toISOString(), ...(req.comment ? { comment: req.comment } : {}) };
 
   let approval: Approval;
-  if (p.cat.phases.order.includes(req.target)) {
+  if (req.target === "REQUIREMENTS") {
+    approval = { ...base, target_type: "REQUIREMENTS", target: "REQUIREMENTS" };
+    approveRequirements(p, registry, approval);
+  } else if (p.cat.phases.order.includes(req.target)) {
     approval = { ...base, target_type: "PHASE", target: req.target };
     approvePhase(p, registry, cliVersion, approval, sod);
   } else {
@@ -89,4 +92,19 @@ function approvePhase(p: Project, registry: SchemaRegistry, cliVersion: string, 
       if (authored.length) throw new CliError(`${approval.by} es autor de ${authored.map((d) => d.id).join(", ")}; el modo ${p.mode} exige otro aprobador.`);
     }
   }
+}
+
+/** Decide sobre los requisitos PROPOSED y fija la huella de los aprobados. Solo PRODUCT_OWNER. */
+function approveRequirements(p: Project, registry: SchemaRegistry, approval: Approval): void {
+  const approver = p.cat.phases.phases.DEFINITION?.approver ?? "PRODUCT_OWNER";
+  if (approval.role !== approver) throw new CliError(`Los requisitos los aprueba ${approver}, no ${approval.role}.`);
+  const file = p.requirementsFile();
+  if (!file?.requirements?.length) throw new CliError("requirements.yaml no tiene requisitos que aprobar.");
+  const next: Record<Approval["decision"], string | null> = { APPROVED: "APPROVED", REJECTED: "REJECTED", CHANGES_REQUESTED: null };
+  const to = next[approval.decision];
+  if (to) for (const r of file.requirements) if (r.status === "PROPOSED") r.status = to;
+  const check = registry.validate("requirements", file);
+  if (!check.valid) throw new CliError(`requirements.yaml es inválido:\n  ${check.errors.join("\n  ")}`);
+  if (approval.decision === "APPROVED") approval.target_hash = requirementsHash(file.requirements);
+  if (to) p.saveRequirements(file);
 }

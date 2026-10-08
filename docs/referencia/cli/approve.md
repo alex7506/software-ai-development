@@ -12,7 +12,7 @@ ai-dev approve <objetivo> [opciones]
 
 | Argumento | Descripción |
 |---|---|
-| `objetivo` | Fase (p. ej. DEFINITION) o ID de documento |
+| `objetivo` | Fase (p. ej. DEFINITION), REQUIREMENTS o ID de documento |
 
 **Opciones**
 

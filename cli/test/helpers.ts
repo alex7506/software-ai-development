@@ -64,19 +64,31 @@ export class Sandbox {
     this.writeYaml(".ai-dev/state.yaml", { ...this.yaml<Record<string, unknown>>(".ai-dev/state.yaml"), ...changes });
   }
 
-  requirements(reqs: { id: string; status: string }[]): void {
-    this.writeYaml("docs/01-product/requirements.yaml", {
-      project: this.yaml<{ project: { id: string } }>(".ai-dev/methodology.yaml").project.id,
-      prd_ref: "PRD-001",
-      requirements: reqs.map((r) => ({
-        id: r.id,
-        title: `Requisito ${r.id}`,
-        description: "Descripción",
-        status: r.status,
-        priority: "MUST",
-        acceptance_criteria: [{ id: "AC-1", description: "Se cumple" }],
-      })),
+  /**
+   * Escribe requisitos. Los que deben quedar aprobados pasan por `ai-dev approve REQUIREMENTS`
+   * de una persona (PRODUCT_OWNER), como en un proyecto real.
+   */
+  async requirements(reqs: { id: string; status: string }[]): Promise<void> {
+    const rel = "docs/01-product/requirements.yaml";
+    const toReq = (r: { id: string; status: string }) => ({
+      id: r.id,
+      title: `Requisito ${r.id}`,
+      description: "Descripción",
+      status: r.status,
+      priority: "MUST",
+      acceptance_criteria: [{ id: "AC-1", description: "Se cumple" }],
     });
+    const base = { project: this.yaml<{ project: { id: string } }>(".ai-dev/methodology.yaml").project.id, prd_ref: "PRD-001" };
+    const approved = reqs.filter((r) => ["APPROVED", "IMPLEMENTED", "VERIFIED"].includes(r.status));
+    if (approved.length) {
+      this.writeYaml(rel, { ...base, requirements: approved.map((r) => toReq({ ...r, status: "PROPOSED" })) });
+      const r = await this.approve("REQUIREMENTS", "Ana Pérez", "PRODUCT_OWNER");
+      if (r.code !== 0) throw new Error(r.err);
+    }
+    const current = approved.length ? this.yaml<{ requirements: { id: string; status: string }[] }>(rel).requirements : [];
+    for (const req of current) req.status = approved.find((a) => a.id === req.id)!.status;
+    const rest = reqs.filter((r) => !approved.includes(r)).map(toReq);
+    this.writeYaml(rel, { ...base, requirements: [...current, ...rest] });
   }
 
   git(...args: string[]): string {

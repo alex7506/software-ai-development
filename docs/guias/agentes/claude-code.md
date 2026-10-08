@@ -7,7 +7,7 @@
 ## Permisos que se añaden
 | Tipo | Reglas | Efecto |
 |---|---|---|
-| `deny` | `Bash(ai-dev approve *)` | Claude no puede aprobar |
+| `deny` | `Bash(ai-dev approve *)`, `Bash(ai-dev review *)` | Claude no puede aprobar |
 | `deny` | `Edit(/.ai-dev/approvals.yaml)`, `Edit(/.ai-dev/state.yaml)` | No puede alterar aprobaciones ni estado a mano |
 | `deny` | `Read(.env)`, `Read(.env.*)` (excepto `.env.example`) | No lee secretos |
 | `deny` | `Bash(git push --force *)` | Sin push forzado |

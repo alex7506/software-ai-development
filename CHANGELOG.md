@@ -1,7 +1,19 @@
 # CHANGELOG
 
 ## 0.9.0 — 2026-10-08
-Fases 0 a 3: fundamentos, contenido del estándar, CLI `ai-dev` y adaptadores de asistentes de IA. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
+Fases 0 a 4: fundamentos, contenido del estándar, CLI `ai-dev`, adaptadores de asistentes de IA y piloto MiAdmin. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
+
+### Añadido (Fase 4)
+- Piloto real e independiente: MiAdmin (bóveda en el navegador, modo LITE) recorrió el ciclo completo hasta la release v0.1.0.
+- `ai-dev approve REQUIREMENTS`: aprobación humana de requisitos con huella del contenido aprobado; `validate` y `phase check` la exigen.
+- `ai-dev review`: sesión interactiva de aprobación que avanza fases, bloqueada para agentes.
+- Tutorial del manual (`docs/tutorial/primer-proyecto.md`) reproducido por una prueba de extremo a extremo, y registro de fricciones del piloto.
+
+### Corregido (Fase 4)
+- Los requisitos podían marcarse como aprobados editando el YAML, sin decisión humana.
+- `review` ofrecía los documentos en orden de carpeta en lugar del orden de las fases.
+- `status` pedía aprobar EVOLUTION, que es la fase final.
+- Pluralización en la salida de `validate`.
 
 ### Añadido (Fase 3)
 - Adaptadores para AGENTS.md (base), Claude Code, Cursor, GitHub Copilot y Gemini CLI, generados desde una sola fuente (`adapters/core.md`) con el catálogo y la configuración del proyecto.

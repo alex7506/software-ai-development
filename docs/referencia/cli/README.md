@@ -11,6 +11,7 @@ CLI determinista de Software AI Development: instala, valida, traza y gobierna p
 | [`submit`](submit.md) | Envía un documento a revisión para que una persona lo apruebe. |
 | [`revise`](revise.md) | Reabre un documento aprobado para modificarlo: vuelve a revisión y sube su versión. |
 | [`approve`](approve.md) | Registra una decisión humana sobre una fase o un documento. Requiere terminal interactiva: los agentes no aprueban. |
+| [`review`](review.md) | Sesión interactiva de aprobación: decide sobre documentos en revisión, requisitos y la fase actual, y avanza mientras todo esté listo. Solo personas. |
 | [`validate`](validate.md) | Valida .ai-dev/, requisitos y documentos contra los esquemas y las reglas de la metodología. |
 | [`trace`](trace.md) | Calcula la trazabilidad (requisitos → tareas → commits) y el estado de integridad. |
 | [`status`](status.md) | Muestra fase, estado, tareas y aprobaciones pendientes. |

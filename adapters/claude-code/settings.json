@@ -3,6 +3,8 @@
     "deny": [
       "Bash(ai-dev approve *)",
       "Bash(npx ai-dev approve *)",
+      "Bash(ai-dev review *)",
+      "Bash(npx ai-dev review *)",
       "Edit(/.ai-dev/approvals.yaml)",
       "Edit(/.ai-dev/state.yaml)",
       "Read(.env)",

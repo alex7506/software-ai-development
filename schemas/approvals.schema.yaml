@@ -21,9 +21,9 @@ $defs:
         type: string
         pattern: "^APR-[0-9]{3,}$"
       target_type:
-        enum: [PHASE, DOCUMENT, TASK, CHANGE, RELEASE]
+        enum: [PHASE, DOCUMENT, TASK, CHANGE, RELEASE, REQUIREMENTS]
       target:
-        description: Nombre de fase (PHASE) o ID del artefacto.
+        description: Nombre de fase (PHASE), REQUIREMENTS o ID del artefacto.
         type: string
       target_version:
         description: Versión del documento aprobada; un cambio posterior invalida la aprobación.

@@ -57,3 +57,17 @@ export function latestApproval(project: Project, target: string, since?: string 
     .sort((a, b) => a.at.localeCompare(b.at))
     .at(-1);
 }
+
+/** Huella de los requisitos aprobados (sin su estado): detecta cambios de contenido tras aprobarlos. */
+export function requirementsHash(requirements: { id: string; status: string }[]): string {
+  const approved = requirements
+    .filter((r) => isRequirementApproved(r.status))
+    .map(({ status: _status, ...rest }) => rest)
+    .sort((a, b) => a.id.localeCompare(b.id));
+  return createHash("sha256").update(JSON.stringify(approved)).digest("hex").slice(0, 16);
+}
+
+/** Última aprobación con decisión APPROVED para un objetivo. */
+export function latestApproved(project: Project, target: string) {
+  return project.approvals.filter((a) => a.target === target && a.decision === "APPROVED").at(-1);
+}

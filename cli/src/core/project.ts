@@ -45,7 +45,7 @@ export interface StateFile {
 
 export interface Approval {
   id: string;
-  target_type: "PHASE" | "DOCUMENT" | "TASK" | "CHANGE" | "RELEASE";
+  target_type: "PHASE" | "DOCUMENT" | "TASK" | "CHANGE" | "RELEASE" | "REQUIREMENTS";
   target: string;
   target_version?: string;
   target_hash?: string;
@@ -217,6 +217,11 @@ export class Project {
   requirementsFile(): RequirementsFile | null {
     const path = this.path(REQUIREMENTS_FILE);
     return existsSync(path) ? readYaml<RequirementsFile>(path) : null;
+  }
+
+  saveRequirements(file: RequirementsFile): void {
+    const path = this.path(REQUIREMENTS_FILE);
+    writeYaml(path, file, existsSync(path) ? leadingComments(path) : undefined);
   }
 
   requirements(): Requirement[] {

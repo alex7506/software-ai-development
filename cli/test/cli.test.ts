@@ -177,7 +177,7 @@ describe("fases", () => {
     const s = new Sandbox();
     await initLite(s);
     s.setState({ phase: "DEFINITION" });
-    s.requirements([{ id: "FR-001", status: "PROPOSED" }]);
+    await s.requirements([{ id: "FR-001", status: "PROPOSED" }]);
     const r = await s.run(["phase", "check"]);
     expect(r.out).toContain("Requisitos sin decidir (PROPOSED): FR-001");
     expect(r.out).toContain("ai-dev new PRD");
@@ -188,7 +188,7 @@ describe("tareas", () => {
   async function withRequirement(status = "APPROVED") {
     const s = new Sandbox();
     await initLite(s);
-    s.requirements([{ id: "FR-001", status }]);
+    await s.requirements([{ id: "FR-001", status }]);
     const t = await s.run(["task", "new", "--title", "Registro de usuarios", "--implements", "FR-001", "--criterion", "Un usuario se registra con email"]);
     expect(t.out).toContain("Creada TASK-001");
     return s;
@@ -225,7 +225,7 @@ describe("tareas", () => {
 
     const bare = await s.run(["task", "new", "--title", "Sin criterios", "--implements", "FR-001"]);
     expect(bare.out).toContain("Creada TASK-002");
-    s.requirements([{ id: "FR-001", status: "APPROVED" }]);
+    await s.requirements([{ id: "FR-001", status: "APPROVED" }]);
     expect((await s.run(["task", "ready", "TASK-002"])).err).toContain("AC-1 no está definido");
   });
 
@@ -273,7 +273,7 @@ describe("tareas", () => {
   it("en STANDARD exige una revisión de otra persona", async () => {
     const s = new Sandbox();
     await s.run(["init", "--name", "P", "--mode", "STANDARD", "--author", "Carla Dev"]);
-    s.requirements([{ id: "FR-001", status: "APPROVED" }]);
+    await s.requirements([{ id: "FR-001", status: "APPROVED" }]);
     await s.run(["task", "new", "--title", "T", "--implements", "FR-001", "--criterion", "c", "--executor", "HUMAN", "--assignee", "Carla Dev"]);
     for (const step of ["ready", "start", "validate"]) await s.run(["task", step, "TASK-001"]);
     await s.run(["task", "evidence", "TASK-001", "--criterion", "AC-1", "--type", "MANUAL_CHECK", "--ref", "revisado"]);
@@ -287,7 +287,7 @@ describe("trazabilidad", () => {
   it("detecta referencias rotas, requisitos huérfanos y relaciones sin confirmar", async () => {
     const s = new Sandbox();
     await initLite(s);
-    s.requirements([{ id: "FR-001", status: "APPROVED" }, { id: "FR-002", status: "APPROVED" }]);
+    await s.requirements([{ id: "FR-001", status: "APPROVED" }, { id: "FR-002", status: "APPROVED" }]);
     await s.run(["task", "new", "--title", "T1", "--implements", "FR-001", "--criterion", "c"]);
 
     expect((await s.run(["trace"])).out).toContain("INTEGRITY_OK");
@@ -311,7 +311,7 @@ describe("trazabilidad", () => {
   it("con --git lee los trailers Task de los commits", async () => {
     const s = new Sandbox();
     await initLite(s);
-    s.requirements([{ id: "FR-001", status: "APPROVED" }]);
+    await s.requirements([{ id: "FR-001", status: "APPROVED" }]);
     await s.run(["task", "new", "--title", "T1", "--implements", "FR-001", "--criterion", "c"]);
     s.git("init", "-q");
     s.git("add", "-A");
@@ -329,7 +329,7 @@ describe("contexto, estado y diagnóstico", () => {
   it("context reúne la tarea, sus requisitos y las reglas que aplican", async () => {
     const s = new Sandbox();
     await initLite(s);
-    s.requirements([{ id: "FR-001", status: "APPROVED" }]);
+    await s.requirements([{ id: "FR-001", status: "APPROVED" }]);
     await s.run(["task", "new", "--title", "Registro", "--implements", "FR-001", "--criterion", "Se registra", "--risk", "HIGH", "--data", "CONFIDENTIAL"]);
     const r = await s.run(["context", "TASK-001"]);
     expect(r.code).toBe(0);
