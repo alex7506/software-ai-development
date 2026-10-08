@@ -1,0 +1,2 @@
+$id: requirement
+required: [requirement_id, description, type, status]

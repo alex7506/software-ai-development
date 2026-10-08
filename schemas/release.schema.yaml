@@ -1,0 +1,2 @@
+$id: release
+required: [release_id, version, validation_status, traceability_status]

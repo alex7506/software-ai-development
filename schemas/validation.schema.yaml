@@ -1,0 +1,2 @@
+$id: validation
+required: [validation_id, status, evidence]

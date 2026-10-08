@@ -1,0 +1,6 @@
+version: 1.0.0
+provider_agnostic: true
+lifecycle: [RECEIVE, VALIDATE_CONTEXT, ANALYZE, PLAN, CHECK_PERMISSIONS, EXECUTE, TEST, REPORT]
+outputs: [SUCCESS, PARTIAL_SUCCESS, BLOCKED, FAILED, WAITING_APPROVAL, REQUIRES_REVIEW]
+max_retry: 3
+orchestrator_owns: [state, context, permissions, policies, approvals, validation, traceability, documentation, git]

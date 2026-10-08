@@ -1,0 +1,2 @@
+$id: agent
+required: [agent_id, type, capabilities, permissions]

@@ -1,0 +1,13 @@
+version: 1.0.0
+agent_types:
+  - ANALYST
+  - ARCHITECT
+  - DEVELOPER
+  - TESTER
+  - SECURITY
+  - REVIEWER
+  - DOCUMENTATION
+  - DEVOPS
+  - DATA
+  - GENERAL
+selection_requires: [contract, capability, technology_fit, permission, policy, data_classification, risk, availability]

@@ -1,0 +1,2 @@
+$id: document
+required: [document_id, document_type, title, version, status, project]

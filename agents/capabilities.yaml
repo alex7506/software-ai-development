@@ -1,0 +1,7 @@
+levels:
+  0: NONE
+  1: ASSISTED
+  2: CONTROLLED
+  3: AUTONOMOUS_LIMITED
+  4: AUTONOMOUS_POLICY
+capabilities: [analysis, requirements_analysis, architecture_design, code_generation, code_modification, test_generation, test_execution, security_analysis, dependency_analysis, documentation, git_read, git_write, commit, deployment, production_deployment, db_read, db_write, destructive_operation]

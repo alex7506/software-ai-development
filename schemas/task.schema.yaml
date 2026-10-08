@@ -1,0 +1,2 @@
+$id: task
+required: [task_id, objective, status, acceptance_criteria]

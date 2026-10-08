@@ -1,0 +1,3 @@
+project_id: piloto-task-manager
+context_policy: minimum_sufficient_context
+max_auto_fix_attempts: 3

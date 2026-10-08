@@ -1,0 +1,13 @@
+version: 1.0.0
+rules:
+  - no_scope_expansion
+  - no_permission_escalation
+  - no_policy_bypass
+  - no_secrets
+  - no_unapproved_dependencies
+  - no_silent_technology_substitution
+  - no_security_control_removal
+  - no_test_disabling
+  - no_traceability_bypass
+  - no_infinite_retry
+max_retry: 3
