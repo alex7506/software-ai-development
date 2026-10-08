@@ -6,7 +6,7 @@ Datos exactos, generados automáticamente. Para entender el porqué, ver [Concep
 
 ## CLI
 
-[Índice de comandos](cli/README.md)
+[Índice de comandos](cli/)
 
 ## Catálogo
 

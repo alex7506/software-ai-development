@@ -11,7 +11,7 @@ export function generateReference(cat: Catalog, program: Command): Map<string, s
   files.set(
     "README.md",
     `${HEADER}# Referencia\n\nDatos exactos, generados automáticamente. Para entender el porqué, ver [Conceptos](../conceptos/).\n\n` +
-      `## CLI\n\n[Índice de comandos](cli/README.md)\n\n## Catálogo\n\n` +
+      `## CLI\n\n[Índice de comandos](cli/)\n\n## Catálogo\n\n` +
       CATALOG_PAGES.map(([file, title]) => `- [${title}](catalogo/${file})`).join("\n") +
       "\n",
   );

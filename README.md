@@ -2,7 +2,9 @@
 
 Metodología profesional, reutilizable y agnóstica de proveedores para desarrollar software con asistencia de IA, con su herramienta determinista `ai-dev`.
 
-**Versión 1.1.0**, validada con un proyecto real ([MiAdmin](https://github.com/alex7506/miadmin)). Empieza por el [manual](docs/index.md): [instalar](docs/guias/instalar.md) y [tutorial](docs/tutorial/primer-proyecto.md).
+**Versión 1.1.0**, validada con un proyecto real ([MiAdmin](https://github.com/alex7506/miadmin)).
+
+📖 **Manual de usuario:** https://alex7506.github.io/software-ai-development/ — [instalar](https://alex7506.github.io/software-ai-development/guias/instalar) · [tutorial](https://alex7506.github.io/software-ai-development/tutorial/primer-proyecto)
 
 ## Principio central
 La metodología define **cómo** se desarrolla software; no depende de OpenAI, Anthropic, Google, Microsoft, AWS, Azure, un LLM, IDE, agente, framework o nube concretos. Las tecnologías concretas entran como perfiles tecnológicos y adaptadores.
@@ -20,7 +22,7 @@ INTAKE → DISCOVERY → DEFINITION → DESIGN → ARCHITECTURE → TECHNOLOGY �
 | `technology-profiles/` | Plantilla genérica de perfil tecnológico y un perfil de referencia (Google). |
 | `adapters/` | Plantillas para AGENTS.md, Claude Code, Cursor, Copilot y Gemini CLI. |
 | `cli/` | CLI determinista `ai-dev` y pruebas de integridad del estándar. |
-| `docs/` | Manual de usuario: conceptos, roles, guías y referencia generada. |
+| `docs/` | Manual de usuario (fuente del sitio web): conceptos, roles, guías, tutorial y referencia generada. |
 | `governance/` | Gobierno y evolución de la metodología. |
 
 ## Uso en proyectos
@@ -31,7 +33,7 @@ ai-dev init --name "Mi Proyecto" --mode STANDARD
 ai-dev status
 ```
 
-Empieza por el [manual de usuario](docs/index.md).
+Empieza por el [manual de usuario](https://alex7506.github.io/software-ai-development/).
 
 ## Convenciones
 Prosa en español; claves, enums, identificadores y comandos en inglés. Archivos de datos en `.yaml`.
