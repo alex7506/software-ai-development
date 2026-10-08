@@ -33,7 +33,9 @@ La evidencia referencia artefactos verificables (salida de comandos, commits, in
 - Se registra en `.ai-dev/approvals.yaml` (`schemas/approvals.schema.yaml`) con objetivo, decisión (APPROVED / REJECTED / CHANGES_REQUESTED), persona, rol, fecha y comentario.
 - En modos con `separation_of_duties`, quien produjo o ejecutó un entregable no lo aprueba.
 - En modo CRITICAL, las fases de `dual_approval_phases` requieren dos aprobaciones de personas distintas, una de ellas del SECURITY_OFFICER cuando el cambio afecte a seguridad o datos.
-- Aprobar un entregable fija su versión: cualquier cambio posterior lo devuelve a IN_REVIEW.
+- Aprobar un entregable fija su versión y una huella de su contenido: cualquier cambio posterior invalida la aprobación y obliga a revisarlo de nuevo (`ai-dev revise`).
+- Los requisitos se aprueban como conjunto (`ai-dev approve REQUIREMENTS`, rol PRODUCT_OWNER); la huella cubre el contenido de los requisitos aprobados, no su estado.
+- Quien asume varios roles puede revisar todo lo pendiente en una sesión interactiva (`ai-dev review`); cada decisión se registra por separado y sigue siendo explícita.
 
 ## Reintentos
 Un ciclo automático de corrección es: ejecutar → fallar → corregir. Al alcanzar `catalog/limits.yaml#max_auto_fix_attempts` la tarea pasa a REQUIRES_REVIEW con el registro de los intentos.

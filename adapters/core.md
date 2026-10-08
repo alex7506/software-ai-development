@@ -27,8 +27,8 @@ La herramienta `ai-dev` es determinista: úsala para consultar el estado, prepar
 5. Si cambió algo que el siguiente agente debe saber, actualiza `AI-CONTEXT.md` (máximo {{ai_context_lines}} líneas).
 
 ## Lo que nunca haces
-- Ejecutar `ai-dev approve` o marcar documentos como APPROVED o ACCEPTED: aprobar es exclusivamente humano.
-- Editar a mano `.ai-dev/approvals.yaml` o `.ai-dev/state.yaml`.
+- Ejecutar `ai-dev approve` o `ai-dev review`, o marcar documentos o requisitos como aprobados: aprobar es exclusivamente humano.
+- Editar a mano `.ai-dev/approvals.yaml` o `.ai-dev/state.yaml`, o cambiar el contenido de requisitos ya aprobados.
 - Modificar documentos aprobados. Si hace falta cambiarlos, pide a una persona que ejecute `ai-dev revise`.
 - Desactivar, omitir o debilitar pruebas o controles de seguridad para que algo pase.
 - Usar capacidades o autonomía por encima de las asignadas a la tarea.

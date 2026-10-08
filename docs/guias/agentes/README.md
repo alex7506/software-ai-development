@@ -35,10 +35,11 @@ El contenido generado va entre `<!-- ai-dev:begin … -->` y `<!-- ai-dev:end --
 ## Qué está garantizado y qué no
 | Protección | Cómo se aplica | Alcance |
 |---|---|---|
-| Nadie aprueba sin estar en una terminal | `ai-dev approve` exige terminal interactiva y confirmar el nombre | Todos los asistentes |
+| Nadie aprueba sin estar en una terminal | `ai-dev approve` y `ai-dev review` exigen terminal interactiva y confirmar el nombre | Todos los asistentes |
+| Detectar requisitos aprobados a mano o modificados | Huella de los requisitos aprobados, revisada por `ai-dev validate` | Todos |
 | Detectar documentos editados tras aprobarse | Huella del contenido en `approvals.yaml`, revisada por `ai-dev validate` | Todos |
 | Detectar aprobaciones escritas a mano | `ai-dev validate` exige el registro correspondiente | Todos |
-| Bloquear `ai-dev approve`, la edición de `approvals.yaml`/`state.yaml` y la lectura de `.env` | Reglas de permisos | **Solo Claude Code** |
+| Bloquear `ai-dev approve` y `ai-dev review`, la edición de `approvals.yaml`/`state.yaml` y la lectura de `.env` | Reglas de permisos | **Solo Claude Code** |
 | Seguir el flujo de trabajo, no ampliar alcance, no inventar | Instrucciones del adaptador | Depende de que el asistente las siga |
 
 Las instrucciones guían, pero no obligan. Lo que de verdad protege el proyecto son las comprobaciones de la CLI y la revisión humana: ejecuta `ai-dev validate` y `ai-dev trace` en la CI.

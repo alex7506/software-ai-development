@@ -6,7 +6,7 @@ import { isApproved, isRequirementApproved, modeIndex, phaseIndex, taskTerminal 
 import type { SchemaRegistry } from "./schema.js";
 import { checkReady } from "./tasks.js";
 import { traceProject } from "./trace.js";
-import { envIgnored, validateProject } from "./validate.js";
+import { envIgnored, requirementsApprovalProblem, validateProject } from "./validate.js";
 
 export interface CheckItem {
   kind: "DELIVERABLE" | "CHECK" | "GATE" | "APPROVAL";
@@ -62,9 +62,9 @@ function deliverableStatus(p: Project, registry: SchemaRegistry, type: string, d
     const reqs = p.requirements();
     if (!reqs.length) return { ok: false, detail: "requirements.yaml no tiene requisitos." };
     const pending = reqs.filter((r) => r.status === "PROPOSED").map((r) => r.id);
-    return pending.length
-      ? { ok: false, detail: `Requisitos sin decidir (PROPOSED): ${pending.join(", ")}.` }
-      : { ok: true, detail: `${reqs.filter((r) => isRequirementApproved(r.status)).length} requisitos aprobados.` };
+    if (pending.length) return { ok: false, detail: `Requisitos sin decidir (PROPOSED): ${pending.join(", ")}. Se aprueban con \`ai-dev approve REQUIREMENTS\`.` };
+    const problem = requirementsApprovalProblem(p);
+    return problem ? { ok: false, detail: problem } : { ok: true, detail: `${reqs.filter((r) => isRequirementApproved(r.status)).length} requisitos aprobados.` };
   }
   if (type === "TECHNOLOGY_PROFILE") {
     const profile = p.methodology.technology_profile;

@@ -2,6 +2,20 @@
 
 Aprobar es **exclusivamente humano**. `ai-dev approve` solo funciona en una terminal interactiva y pide escribir tu nombre para confirmar; si lo ejecuta un agente de IA, se rechaza.
 
+## La forma rápida: una sesión de revisión
+Si eres responsable de varios roles (lo habitual en proyectos pequeños), revisa todo lo pendiente de una vez:
+
+```bash
+ai-dev review --by "Ana Pérez" --roles PRODUCT_OWNER,TECH_LEAD,QA_LEAD
+```
+
+La sesión recorre, en orden:
+1. Los documentos enviados a revisión.
+2. Los requisitos pendientes (`PROPOSED`).
+3. La fase actual: si sus entregables, comprobaciones y gates están completos, te pide aprobarla y **avanza a la siguiente**, y repite.
+
+Para cada elemento respondes `s` (aprobar), `c` (pedir cambios), `r` (rechazar), `o` (omitir) o `t` (terminar). Se detiene en la primera fase que aún no esté lista y te dice qué falta. Cada decisión queda registrada por separado, igual que con `ai-dev approve`.
+
 ## Aprobar un documento
 1. Quien lo redactó lo envía a revisión:
    ```bash
@@ -15,6 +29,15 @@ Aprobar es **exclusivamente humano**. `ai-dev approve` solo funciona en una term
    ```
 
 Con `--request-changes` o `--reject`, el documento vuelve a borrador (o a PROPOSED, en ADR y solicitudes de cambio).
+
+## Aprobar los requisitos
+Los requisitos de `docs/01-product/requirements.yaml` también los aprueba una persona (PRODUCT_OWNER):
+
+```bash
+ai-dev approve REQUIREMENTS --by "Ana Pérez" --role PRODUCT_OWNER
+```
+
+Pasa a `APPROVED` todos los requisitos `PROPOSED` y guarda una huella de los aprobados. Añadir requisitos nuevos o marcar uno como implementado no invalida la aprobación; cambiar el contenido de uno aprobado sí, y `ai-dev validate` lo señala. Un requisito marcado `APPROVED` a mano, sin aprobación registrada, es un error.
 
 ## Modificar algo ya aprobado
 La aprobación guarda una huella del contenido. Si alguien edita el documento después, `ai-dev validate` lo detecta. Para cambiarlo legítimamente:

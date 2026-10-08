@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { Command, CommanderError, Option } from "commander";
 import { adapterStatus, syncAdapters } from "./core/adapters.js";
 import { recordApproval } from "./core/approvals.js";
+import { reviewSession } from "./core/review.js";
 import { DEFAULT_ROOT, loadCatalog, methodologyVersion, type Catalog } from "./core/catalog.js";
 import { buildContext } from "./core/context.js";
 import { createDocument, reviseDocument, submitDocument } from "./core/documents.js";
@@ -105,7 +106,7 @@ export function buildProgram(env: Env): { program: Command; exitCode: () => numb
   program
     .command("approve")
     .description("Registra una decisión humana sobre una fase o un documento. Requiere terminal interactiva: los agentes no aprueban.")
-    .argument("<objetivo>", "Fase (p. ej. DEFINITION) o ID de documento")
+    .argument("<objetivo>", "Fase (p. ej. DEFINITION), REQUIREMENTS o ID de documento")
     .requiredOption("--by <nombre>", "Persona que decide")
     .requiredOption("--role <rol>", "Rol aprobador: PRODUCT_OWNER, TECH_LEAD, QA_LEAD, SECURITY_OFFICER, OPERATOR")
     .option("--reject", "Rechaza en lugar de aprobar")
@@ -120,6 +121,22 @@ export function buildProgram(env: Env): { program: Command; exitCode: () => numb
       if (answer.trim() !== o.by.trim()) throw new CliError("La confirmación no coincide con --by. No se registró nada.");
       const a = recordApproval(project(), schemas(), version, { target, by: o.by, role: o.role, decision, comment: o.comment }, env.now());
       env.out(`Registrado ${a.id}: ${a.decision} de ${a.target} por ${a.by} (${a.role}).`);
+    });
+
+  program
+    .command("review")
+    .description("Sesión interactiva de aprobación: decide sobre documentos en revisión, requisitos y la fase actual, y avanza mientras todo esté listo. Solo personas.")
+    .requiredOption("--by <nombre>", "Persona que decide")
+    .requiredOption("--roles <lista>", "Roles aprobadores que asumes, separados por comas (p. ej. PRODUCT_OWNER,TECH_LEAD,QA_LEAD)", (v: string) => v.split(",").map((s) => s.trim().toUpperCase()).filter(Boolean))
+    .action(async (o) => {
+      if (!env.interactive) {
+        throw new CliError("`ai-dev review` requiere una terminal interactiva con una persona presente. Los agentes de IA no pueden aprobar (política no_self_approval).");
+      }
+      const answer = await env.ask(`Sesión de revisión como ${o.by} (${o.roles.join(", ")}). Escribe tu nombre para confirmar: `);
+      if (answer.trim() !== o.by.trim()) throw new CliError("La confirmación no coincide con --by. No se registró nada.");
+      const r = await reviewSession(project(), schemas(), version, { by: o.by, roles: o.roles, now: env.now, ask: env.ask, out: env.out });
+      env.out(`\nDecisiones: ${r.decisions.length} · Fases avanzadas: ${r.advanced.length ? r.advanced.join(", ") : "ninguna"} · Fase actual: ${r.finalPhase}`);
+      env.out(r.stopReason);
     });
 
   program
