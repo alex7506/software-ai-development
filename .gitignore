@@ -17,3 +17,7 @@ coverage/
 
 # CLI empaquetada
 cli/assets/
+
+# Sitio del manual (VitePress)
+docs/.vitepress/cache/
+docs/.vitepress/dist/
