@@ -33,8 +33,12 @@ relations: []
 ## Fuera de alcance
 - 
 
+## Plazo y criterio de recorte
+<!-- Fecha objetivo y qué se sacrifica primero si no hay tiempo (amplitud funcional, pulido, despliegue…).
+     Recortar el alcance antes de aprobar el intake es mucho más barato que hacerlo durante el desarrollo. -->
+
 ## Restricciones conocidas
-<!-- Plazo, presupuesto, tecnología obligatoria, normativa, equipo. -->
+<!-- Presupuesto, tecnología obligatoria, normativa, equipo. -->
 
 ## Datos que manejará
 <!-- Tipo de datos y clasificación probable (PUBLIC, INTERNAL, CONFIDENTIAL, RESTRICTED). -->

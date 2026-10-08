@@ -6,6 +6,7 @@ export interface Commit {
   date: string;
   message: string;
   tasks: string[];
+  files: string[];
 }
 
 function git(cwd: string, args: string[]): string {
@@ -33,20 +34,27 @@ export function taskTrailers(message: string): string[] {
   return [...message.matchAll(/^Task:\s*(TASK-[0-9]{3}[A-Z]?)\s*$/gim)].map((m) => m[1]!.toUpperCase());
 }
 
-/** Commits del repositorio, opcionalmente desde una fecha (YYYY-MM-DD). Vacío si no hay historial. */
+/** Commits del repositorio con sus archivos, opcionalmente desde una fecha (YYYY-MM-DD). Vacío si no hay historial. */
 export function commits(cwd: string, since?: string | null): Commit[] {
   let raw: string;
   try {
-    raw = git(cwd, ["log", "--format=%H%x1f%an%x1f%aI%x1f%B%x1e", ...(since ? [`--since=${since}`] : [])]);
+    raw = git(cwd, ["log", "--name-only", "--format=%x1e%H%x1f%an%x1f%aI%x1f%B%x1f", ...(since ? [`--since=${since}`] : [])]);
   } catch {
     return [];
   }
   return raw
     .split("\x1e")
-    .map((r) => r.trim())
-    .filter(Boolean)
+    .filter((r) => r.trim())
     .map((record) => {
-      const [hash = "", author = "", date = "", message = ""] = record.split("\x1f");
-      return { hash, author, date, message, tasks: taskTrailers(message) };
+      const [hash = "", author = "", date = "", message = "", files = ""] = record.split("\x1f");
+      return { hash, author, date, message: message.trim(), tasks: taskTrailers(message), files: files.split("\n").map((f) => f.trim()).filter(Boolean) };
     });
+}
+
+/** Documentación y configuración de la metodología y del repositorio: su trabajo pertenece a las fases, no a una tarea concreta. */
+const METHODOLOGY_PATHS = [/^\.gitignore$/, /^README\.md$/, /^CHANGELOG\.md$/, /^docs\//, /^\.ai-dev\//, /^AI-CONTEXT\.md$/, /^AGENTS\.md$/, /^CLAUDE\.md$/, /^GEMINI\.md$/, /^\.claude\//, /^\.cursor\/rules\//, /^\.github\/copilot-instructions\.md$/];
+
+/** Commit que solo toca documentación y configuración de la metodología. */
+export function isMethodologyOnly(commit: Commit): boolean {
+  return commit.files.length > 0 && commit.files.every((f) => METHODOLOGY_PATHS.some((re) => re.test(f)));
 }

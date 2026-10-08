@@ -27,9 +27,14 @@ export function requiredDeliverables(p: Project, phase: string) {
   const def = p.cat.phases.phases[phase];
   if (!def) throw new CliError(`Fase desconocida: ${phase}`);
   const mode = modeIndex(p.cat, p.mode);
-  return (def.deliverables ?? []).filter(
+  const base = (def.deliverables ?? []).filter(
     (d) => modeIndex(p.cat, d.min_mode) <= mode && (!d.when || (d.when !== "on_change" && p.feature(d.when))),
   );
+  // Entregables que el proyecto exige además de los de su modo (configuration.yaml#additional_deliverables).
+  const extra = (p.configuration.additional_deliverables ?? [])
+    .filter((d) => d.phase === phase && !base.some((b) => b.type === d.type))
+    .map((d) => ({ type: d.type, min_mode: p.mode }));
+  return [...base, ...extra];
 }
 
 export function checkPhase(p: Project, registry: SchemaRegistry, cliVersion: string, phase = p.state.phase): PhaseCheck {
@@ -177,4 +182,19 @@ export function reenterPhase(p: Project, changeId: string, now: Date): { from: s
   if (from !== "EVOLUTION") throw new CliError(`Solo se reingresa al ciclo desde EVOLUTION (fase actual: ${from}).`);
   p.saveState({ phase: to, status: "ACTIVE", phase_started_at: now.toISOString() }, now);
   return { from, to };
+}
+
+/**
+ * Cambia el modo de rigor. Solo mientras no exista ninguna aprobación: después, el modo forma parte
+ * de lo aprobado y cambiarlo es una solicitud de cambio.
+ */
+export function setMode(p: Project, mode: string): { from: string; to: string } {
+  if (!p.cat.modes.order.includes(mode)) throw new CliError(`Modo desconocido: ${mode}. Usa ${p.cat.modes.order.join(", ")}.`);
+  const from = p.mode;
+  if (from === mode) throw new CliError(`El proyecto ya está en modo ${mode}.`);
+  if (p.approvals.length) {
+    throw new CliError(`El proyecto ya tiene ${p.approvals.length} aprobaciones: cambiar el modo requiere una solicitud de cambio (ai-dev new CHANGE_REQUEST).`);
+  }
+  p.writeAiDev("methodology", { ...p.methodology, mode });
+  return { from, to: mode };
 }

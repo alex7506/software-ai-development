@@ -1,4 +1,4 @@
-import { commits, isGitRepo } from "./git.js";
+import { commits, isGitRepo, isMethodologyOnly } from "./git.js";
 import { error, warning, type Issue } from "./issues.js";
 import type { Project } from "./project.js";
 import { REQUIREMENTS_FILE } from "./project.js";
@@ -77,7 +77,8 @@ export function traceProject(p: Project, options: { git?: boolean } = {}): Trace
       const history = commits(p.root, p.methodology.adopted_at);
       commitCount = history.length;
       const taskIds = new Set(tasks.map((t) => t.id));
-      const untraced = history.filter((c) => !c.tasks.length);
+      // Los commits que solo tocan documentación de la metodología pertenecen a las fases, no a una tarea.
+      const untraced = history.filter((c) => !c.tasks.length && !isMethodologyOnly(c));
       if (untraced.length && tasks.length) {
         add("WARNINGS", "untraced_commits", `${untraced.length} de ${history.length} commits no tienen trailer "Task: TASK-NNN".`);
       }

@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 1.0.0 — 2026-10-08
+Primera versión estable. La metodología y `ai-dev` se validaron con un proyecto real e independiente (MiAdmin) que recorrió el ciclo completo hasta una release; esta versión resuelve todas las fricciones que dejó el piloto.
+
+### Añadido
+- `additional_deliverables` en `.ai-dev/configuration.yaml`: el proyecto puede exigir entregables además de los de su modo (p. ej. QUALITY_SECURITY en STANDARD).
+- Tipo de destino `consumer_llm_no_training` para planes individuales con el entrenamiento desactivado (hasta datos INTERNAL), y guía para clasificar proveedores de IA.
+- `ai-dev mode <MODO> --reason`: cambio de modo permitido solo antes de la primera aprobación.
+- Sección "Plazo y criterio de recorte" en la plantilla de intake.
+- Auditoría de dependencias (`npm audit --audit-level=high`) en la CI de la CLI.
+
+### Cambiado
+- `trace --git` no cuenta como commits sin tarea los que solo tocan documentación y configuración de la metodología o del repositorio.
+- `released_at` deja de formar parte de la huella de aprobación: se puede fijar la fecha de publicación después de aprobar la release. Las aprobaciones registradas con la 0.9.0 siguen siendo válidas.
+- Herramientas de la CLI actualizadas (Vitest 5, tsup 8.5, tsx 4.23, TypeScript 5.9) para eliminar vulnerabilidades altas y críticas.
+- Documentado: un responsable único usa STANDARD con entregables adicionales en lugar de CRITICAL; los documentos aprobados no se reabren para cerrar incógnitas resueltas después; la CLI aplica su propia versión de la metodología.
+
 ## 0.9.0 — 2026-10-08
 Fases 0 a 4: fundamentos, contenido del estándar, CLI `ai-dev`, adaptadores de asistentes de IA y piloto MiAdmin. La versión baja a 0.9.0 hasta validar la herramienta con un proyecto real independiente; 1.0.0 se publicará tras completarlo.
 

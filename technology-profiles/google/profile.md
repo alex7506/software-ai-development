@@ -2,7 +2,7 @@
 profile_id: google
 name: Ecosistema Google (Firebase)
 status: REFERENCE
-methodology_version: 0.9.0
+methodology_version: 1.0.0
 ---
 
 # Perfil tecnológico — Ecosistema Google (Firebase)

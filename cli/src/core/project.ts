@@ -31,6 +31,7 @@ export interface ConfigurationFile {
   environments?: string[];
   gate_commands?: Record<string, string>;
   adapters?: string[];
+  additional_deliverables?: { phase: string; type: string; reason: string }[];
 }
 
 export interface StateFile {

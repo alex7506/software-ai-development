@@ -12,7 +12,7 @@ import { gitUserName } from "./core/git.js";
 import { resolveDocumentType } from "./core/ids.js";
 import { CliError, hasErrors } from "./core/issues.js";
 import { formatIssues, summary, table } from "./core/output.js";
-import { advancePhase, checkPhase, reenterPhase } from "./core/phases.js";
+import { advancePhase, checkPhase, reenterPhase, setMode } from "./core/phases.js";
 import { Project } from "./core/project.js";
 import { initProject } from "./core/scaffold.js";
 import { SchemaRegistry } from "./core/schema.js";
@@ -210,6 +210,18 @@ export function buildProgram(env: Env): { program: Command; exitCode: () => numb
       const issues = runDoctor(env.cwd, catalog(), schemas(), version);
       env.out(formatIssues(issues));
       if (hasErrors(issues)) code = 1;
+    });
+
+  program
+    .command("mode")
+    .description("Cambia el modo de rigor mientras el proyecto no tenga ninguna aprobación; después requiere una solicitud de cambio.")
+    .argument("<modo>", "LITE, STANDARD o CRITICAL")
+    .requiredOption("--reason <texto>", "Motivo del cambio (inclúyelo en el mensaje del commit)")
+    .action((mode: string, o) => {
+      const p = project();
+      const r = setMode(p, mode.toUpperCase());
+      env.out(`Modo ${r.from} → ${r.to}. Motivo: ${o.reason}`);
+      env.out("Regenera las instrucciones de los asistentes con `ai-dev adapters sync` y registra el motivo en el commit.");
     });
 
   const adapters = program.command("adapters").description("Genera y comprueba los archivos de instrucciones de cada asistente de IA.");
