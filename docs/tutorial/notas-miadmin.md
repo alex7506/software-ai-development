@@ -10,7 +10,7 @@ MiAdmin recorrió el ciclo completo en modo LITE, de INTAKE a EVOLUTION, en un d
 
 | Resultado | Fricciones |
 |---|---|
-| Corregidas en la herramienta, con prueba | 1, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 17, 18 |
+| Corregidas en la herramienta, con prueba | 1, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 17, 18, 19, 20 |
 | Controles que funcionaron como se esperaba | 14, 15 |
 | Decisiones documentadas de no actuar | 2, 9, 16 |
 | Pendientes | — |
@@ -39,3 +39,5 @@ El hallazgo más importante fue la 7: los requisitos podían aprobarse sin inter
 | 16 | DEVELOPMENT | Una incógnita de un documento aprobado (proveedor de IA en el INTAKE) se resolvió después; actualizar el INTAKE invalidaría su aprobación y obligaría a `revise` + nueva aprobación por un cambio menor. | Se registró en `.ai-dev/configuration.yaml`, que es su lugar definitivo, pero el INTAKE sigue mostrando la incógnita abierta. | Decisión (1.0.0): un documento aprobado es una foto de su momento; las resoluciones se registran donde vive el dato (estándar de trabajo). |
 | 17 | EVOLUTION | `ai-dev status` pedía aprobar EVOLUTION, que es la fase final y no se cierra. | Mensaje engañoso al terminar el ciclo. | **Corregido**: `status` explica que en EVOLUTION los cambios entran con CHANGE_REQUEST y `phase reenter`. |
 | 18 | 1.0.0 | Al excluir `released_at` de la huella cambió su cálculo y las aprobaciones de la 0.9.0 dejaron de coincidir (detectado al validar MiAdmin con la CLI nueva). Además, la CLI aplica siempre su propia versión de la metodología aunque el proyecto fije otra. | Un cambio interno invalidaba aprobaciones humanas legítimas. | **Corregido**: se aceptan también las huellas de la 0.9.0, con prueba. La versión fijada solo se avisa (`doctor`, `validate`); usar la CLI de la misma versión que fija el proyecto queda documentado como limitación. |
+| 19 | EVOLUTION (CHANGE-001) | El commit que sube la versión de la release toca `package.json` sin pertenecer a ninguna tarea, y `trace --git` lo contaba como commit sin trazar. | La integridad bajaba a WARNINGS por trabajo legítimo de release. | **Corregido** (1.1.0): trailers `Release: REL-NNN` y `Change: CHANGE-NNN`, con comprobación de que el documento existe. |
+| 20 | EVOLUTION (CHANGE-001) | Aprobar una solicitud de cambio y reingresar al ciclo exigía una sesión de revisión y un `phase reenter` manual antes de la siguiente sesión. | Una sesión humana más por cada cambio. | **Corregido** (1.1.0): `ai-dev review` reingresa automáticamente tras aprobar el cambio y continúa; `phase reenter` marca el cambio como IMPLEMENTING y no lo aplica dos veces. |

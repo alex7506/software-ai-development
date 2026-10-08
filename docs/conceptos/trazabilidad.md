@@ -25,6 +25,8 @@ Añade filtro por prioridad
 Task: TASK-030
 ```
 
+El trabajo de release (por ejemplo, subir la versión) usa `Release: REL-001`, y el de una solicitud de cambio sin tarea, `Change: CHANGE-001`. Los commits que solo tocan documentación de la metodología no necesitan trailer.
+
 Con eso, la herramienta construye el grafo completo sin que nadie mantenga una matriz a mano.
 
 ## Qué detecta

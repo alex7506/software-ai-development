@@ -6,6 +6,8 @@ export interface Commit {
   date: string;
   message: string;
   tasks: string[];
+  /** Otros documentos que el commit declara con trailers `Release:` o `Change:`. */
+  refs: string[];
   files: string[];
 }
 
@@ -34,6 +36,11 @@ export function taskTrailers(message: string): string[] {
   return [...message.matchAll(/^Task:\s*(TASK-[0-9]{3}[A-Z]?)\s*$/gim)].map((m) => m[1]!.toUpperCase());
 }
 
+/** Releases y solicitudes de cambio declaradas con trailers `Release: REL-NNN` o `Change: CHANGE-NNN`. */
+export function documentTrailers(message: string): string[] {
+  return [...message.matchAll(/^(?:Release|Change):\s*((?:REL|CHANGE)-[0-9]{3}[A-Z]?)\s*$/gim)].map((m) => m[1]!.toUpperCase());
+}
+
 /** Commits del repositorio con sus archivos, opcionalmente desde una fecha (YYYY-MM-DD). Vacío si no hay historial. */
 export function commits(cwd: string, since?: string | null): Commit[] {
   let raw: string;
@@ -47,7 +54,7 @@ export function commits(cwd: string, since?: string | null): Commit[] {
     .filter((r) => r.trim())
     .map((record) => {
       const [hash = "", author = "", date = "", message = "", files = ""] = record.split("\x1f");
-      return { hash, author, date, message: message.trim(), tasks: taskTrailers(message), files: files.split("\n").map((f) => f.trim()).filter(Boolean) };
+      return { hash, author, date, message: message.trim(), tasks: taskTrailers(message), refs: documentTrailers(message), files: files.split("\n").map((f) => f.trim()).filter(Boolean) };
     });
 }
 

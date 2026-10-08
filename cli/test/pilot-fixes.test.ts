@@ -113,3 +113,29 @@ describe("compatibilidad de huellas con la 0.9.0", () => {
     expect(hashMatches({ ...doc, data: { ...doc.data, title: "Otra" } }, legacy)).toBe(false);
   });
 });
+
+describe("fricción 19: commits de release o de cambio", () => {
+  it("se trazan con Release: o Change: y se comprueba que el documento exista", async () => {
+    const s = new Sandbox();
+    await init(s);
+    await s.requirements([{ id: "FR-001", status: "PROPOSED" }]);
+    await s.run(["task", "new", "--title", "T", "--implements", "FR-001", "--criterion", "c"]);
+    await s.run(["new", "RELEASE", "--title", "Release"]);
+    s.git("init", "-q");
+    s.git("add", "-A");
+    s.git("commit", "-qm", "Documentación");
+    writeFileSync(s.path("package.json"), "{}\n");
+    s.git("add", "-A");
+    s.git("commit", "-qm", "Versión 0.2.0\n\nRelease: REL-001");
+    let r = JSON.parse((await s.run(["trace", "--git", "--json"])).out);
+    expect(r.issues.map((i: { code: string }) => i.code)).not.toContain("untraced_commits");
+    expect(r.status).toBe("INTEGRITY_OK");
+
+    writeFileSync(s.path("package.json"), "{ }\n");
+    s.git("add", "-A");
+    s.git("commit", "-qm", "Cambio\n\nChange: CHANGE-404");
+    r = JSON.parse((await s.run(["trace", "--git", "--json"])).out);
+    expect(r.issues.map((i: { code: string }) => i.code)).toContain("unknown_document_in_commit");
+    expect(r.status).toBe("DEGRADED");
+  });
+});

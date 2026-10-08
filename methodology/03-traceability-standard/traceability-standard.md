@@ -14,7 +14,7 @@ relations:
     target: TASK-001A
 ```
 
-Los commits se vinculan a tareas con el trailer `Task: TASK-011`.
+Los commits se vinculan a tareas con el trailer `Task: TASK-011`; el trabajo de release o de una solicitud de cambio, con `Release: REL-001` o `Change: CHANGE-001`.
 
 ## Integridad
 INTEGRITY_OK · WARNINGS · DEGRADED · BLOCKED (`catalog/states.yaml#integrity_status`). El mínimo exigido depende del modo (`catalog/modes.yaml`).

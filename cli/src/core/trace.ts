@@ -78,9 +78,13 @@ export function traceProject(p: Project, options: { git?: boolean } = {}): Trace
       commitCount = history.length;
       const taskIds = new Set(tasks.map((t) => t.id));
       // Los commits que solo tocan documentación de la metodología pertenecen a las fases, no a una tarea.
-      const untraced = history.filter((c) => !c.tasks.length && !isMethodologyOnly(c));
+      // El trabajo de release o de una solicitud de cambio se traza con `Release:` o `Change:`.
+      const untraced = history.filter((c) => !c.tasks.length && !c.refs.length && !isMethodologyOnly(c));
       if (untraced.length && tasks.length) {
-        add("WARNINGS", "untraced_commits", `${untraced.length} de ${history.length} commits no tienen trailer "Task: TASK-NNN".`);
+        add("WARNINGS", "untraced_commits", `${untraced.length} de ${history.length} commits no tienen trailer "Task: TASK-NNN" (o "Release:"/"Change:" para trabajo de release o de cambio).`);
+      }
+      for (const c of history) {
+        for (const ref of c.refs.filter((r) => !ids.has(r))) add("DEGRADED", "unknown_document_in_commit", `El commit ${c.hash.slice(0, 7)} referencia ${ref}, que no existe.`);
       }
       for (const c of history) {
         for (const t of c.tasks.filter((t) => !taskIds.has(t))) add("DEGRADED", "unknown_task_in_commit", `El commit ${c.hash.slice(0, 7)} referencia ${t}, que no existe.`);
