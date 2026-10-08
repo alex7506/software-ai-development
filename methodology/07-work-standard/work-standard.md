@@ -25,7 +25,7 @@ La evidencia referencia artefactos verificables (salida de comandos, commits, in
 
 ## Commits y ramas
 - Cada commit vinculado a una tarea incluye el trailer `Task: TASK-NNN`. El trabajo de release (versión, notas) usa `Release: REL-NNN` y el de una solicitud de cambio sin tarea, `Change: CHANGE-NNN`.
-- Los commits que solo tocan documentación y configuración de la metodología (`docs/`, `.ai-dev/`, `AI-CONTEXT.md`, archivos de asistentes, `README.md`, `CHANGELOG.md`, `.gitignore`) no necesitan trailer.
+- Los commits que solo tocan documentación y configuración de la metodología (`docs/`, `.ai-dev/`, `AI-CONTEXT.md`, archivos de asistentes, `README.md`, `CHANGELOG.md`, `LICENSE`, `.gitignore`) no necesitan trailer.
 - Si intervino IA en el commit, incluye además un trailer de coautoría o `AI-Assisted: <agente/modelo>`.
 - Una rama por tarea o por grupo coherente de tareas; nunca trabajo directo en la rama principal en modos STANDARD y CRITICAL.
 

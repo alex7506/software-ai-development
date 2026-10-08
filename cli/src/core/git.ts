@@ -59,7 +59,7 @@ export function commits(cwd: string, since?: string | null): Commit[] {
 }
 
 /** Documentación y configuración de la metodología y del repositorio: su trabajo pertenece a las fases, no a una tarea concreta. */
-const METHODOLOGY_PATHS = [/^\.gitignore$/, /^README\.md$/, /^CHANGELOG\.md$/, /^docs\//, /^\.ai-dev\//, /^AI-CONTEXT\.md$/, /^AGENTS\.md$/, /^CLAUDE\.md$/, /^GEMINI\.md$/, /^\.claude\//, /^\.cursor\/rules\//, /^\.github\/copilot-instructions\.md$/];
+const METHODOLOGY_PATHS = [/^\.gitignore$/, /^README\.md$/, /^CHANGELOG\.md$/, /^LICENSE(\.md)?$/, /^docs\//, /^\.ai-dev\//, /^AI-CONTEXT\.md$/, /^AGENTS\.md$/, /^CLAUDE\.md$/, /^GEMINI\.md$/, /^\.claude\//, /^\.cursor\/rules\//, /^\.github\/copilot-instructions\.md$/];
 
 /** Commit que solo toca documentación y configuración de la metodología. */
 export function isMethodologyOnly(commit: Commit): boolean {
