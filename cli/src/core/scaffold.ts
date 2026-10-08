@@ -1,5 +1,6 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { syncAdapters } from "./adapters.js";
 import type { Catalog } from "./catalog.js";
 import { createDocument } from "./documents.js";
 import { slugify, today } from "./ids.js";
@@ -16,6 +17,8 @@ export interface InitOptions {
   author: string;
   /** Fase inicial; solo admitida al adoptar un proyecto existente. */
   phase?: string;
+  /** Adaptadores a generar; por defecto, los de la plantilla de configuración. */
+  adapters?: string[];
   methodologyVersion: string;
   now: Date;
 }
@@ -80,7 +83,7 @@ export function initProject(cat: Catalog, root: string, opts: InitOptions): Init
     d.technology_profile = opts.profile ?? null;
     d.adopted_at = adopted ? today(opts.now) : null;
   });
-  place(".ai-dev/configuration.yaml", `${AI_DEV_DIR}/${AI_DEV_FILES.configuration}`);
+  place(".ai-dev/configuration.yaml", `${AI_DEV_DIR}/${AI_DEV_FILES.configuration}`, opts.adapters ? (d) => void (d.adapters = opts.adapters) : undefined);
   place(".ai-dev/policies.yaml", `${AI_DEV_DIR}/${AI_DEV_FILES.policies}`);
   place(".ai-dev/state.yaml", `${AI_DEV_DIR}/${AI_DEV_FILES.state}`, (d) => {
     if (opts.phase) d.phase = opts.phase;
@@ -104,6 +107,12 @@ export function initProject(cat: Catalog, root: string, opts: InitOptions): Init
     const project = Project.at(root, cat);
     const intake = createDocument(project, "PROJECT_INTAKE", { title: `Intake ${opts.name}`, author: opts.author, now: opts.now });
     result.created.push(intake.rel);
+  }
+
+  for (const r of syncAdapters(Project.at(root, cat))) {
+    if (r.action === "UNCHANGED") result.kept.push(r.target);
+    else if (r.action === "SKIPPED_MODIFIED" || r.action === "SKIPPED_INVALID") result.kept.push(`${r.target} (no se modificó: ${r.status})`);
+    else result.created.push(r.action === "CREATED" ? r.target : `${r.target} (${r.action === "APPENDED" ? "bloque añadido" : "permisos añadidos"})`);
   }
   return result;
 }

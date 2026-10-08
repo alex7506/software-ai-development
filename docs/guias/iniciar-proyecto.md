@@ -19,6 +19,7 @@ ai-dev init --name "Mi Proyecto" --mode STANDARD
 | `--profile` | Perfil tecnológico, si ya lo sabes (p. ej. `google`). Se puede decidir después, en la fase TECHNOLOGY. |
 | `--author` | Tu nombre. Por defecto se toma de `git config user.name`. |
 | `--id` | Identificador del proyecto. Por defecto se deriva del nombre. |
+| `--adapters` | Asistentes de IA para los que generar instrucciones (por defecto, todos). Ver [Trabajar con asistentes de IA](agentes/). |
 
 `init` crea:
 
@@ -28,6 +29,7 @@ docs/00-intake/INTAKE-001-…md   tu primer documento
 docs/01-product/requirements.yaml
 AI-CONTEXT.md             resumen para los agentes de IA
 .gitignore                con .env excluido
+AGENTS.md, CLAUDE.md, GEMINI.md, .cursor/, .github/   instrucciones para cada asistente de IA
 ```
 
 Si lo vuelves a ejecutar, no sobrescribe nada: solo crea lo que falte.
@@ -37,6 +39,8 @@ Abre `.ai-dev/configuration.yaml` y completa:
 - **features**: si el producto tiene interfaz, API, datos persistentes o IA como funcionalidad. Decide qué documentos se exigen.
 - **providers** y **agents**: qué asistentes de IA vas a usar y con qué permisos (ver [Riesgo y autonomía](../conceptos/riesgo-y-autonomia.md)).
 - **gate_commands**: los comandos que verifican calidad, por ejemplo `TEST: npm test`. `ai-dev task complete` los ejecuta.
+
+Después ejecuta `ai-dev adapters sync` para que las instrucciones de los asistentes reflejen los cambios.
 
 ## 4. Primera fase: INTAKE
 Completa `docs/00-intake/INTAKE-001-…md` con el problema, el objetivo y el alcance. Después:

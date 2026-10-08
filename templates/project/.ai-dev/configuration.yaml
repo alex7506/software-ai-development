@@ -29,4 +29,7 @@ gate_commands: {}
 #  TEST: npm test
 #  SECURITY: npm audit --audit-level=high
 
+# Adaptadores de asistentes de IA que se generan (`ai-dev adapters sync`). agents-md siempre se incluye.
+adapters: [agents-md, claude-code, cursor, copilot, gemini]
+
 environments: [local, production]

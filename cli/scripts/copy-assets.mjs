@@ -8,7 +8,7 @@ const repo = join(cli, "..");
 const assets = join(cli, "assets");
 
 rmSync(assets, { recursive: true, force: true });
-for (const entry of ["VERSION", "methodology/catalog", "schemas", "templates", "agents", "technology-profiles"]) {
+for (const entry of ["VERSION", "methodology/catalog", "schemas", "templates", "agents", "technology-profiles", "adapters"]) {
   cpSync(join(repo, entry), join(assets, entry), { recursive: true });
 }
 console.log(`Metodología copiada en ${assets}`);

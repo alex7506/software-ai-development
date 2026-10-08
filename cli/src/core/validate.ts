@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
+import { adapterStatus } from "./adapters.js";
 import { AI_DEV_DIR, AI_DEV_FILES, REQUIREMENTS_FILE, type AiDevFile, type Project } from "./project.js";
 import { error, info, warning, type Issue } from "./issues.js";
 import { contentHash, isApproved, latestApproval } from "./rules.js";
@@ -120,6 +121,10 @@ export function validateProject(p: Project, registry: SchemaRegistry, cliVersion
     const lines = readFileSync(aiContext, "utf8").split("\n").length;
     const max = p.limit("max_ai_context_md_lines");
     if (lines > max) issues.push(warning("ai_context_too_long", `AI-CONTEXT.md tiene ${lines} líneas (máximo ${max}); resume y referencia documentos.`, "AI-CONTEXT.md"));
+  }
+  for (const a of adapterStatus(p).filter((a) => a.status !== "UP_TO_DATE")) {
+    const fix = a.status === "MODIFIED" ? "Editaron el bloque generado; muévelo fuera del bloque o usa `ai-dev adapters sync --force`." : "Ejecuta `ai-dev adapters sync`.";
+    issues.push((a.status === "INVALID" ? error : warning)(`adapter_${a.status.toLowerCase()}`, `Adaptador ${a.adapter}: ${a.target} está ${a.status}. ${fix}`, a.target));
   }
   if (!envIgnored(p)) issues.push(warning("env_not_ignored", "El .gitignore no excluye .env: riesgo de subir secretos.", ".gitignore"));
 

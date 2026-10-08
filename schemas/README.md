@@ -19,6 +19,7 @@ Los esquemas **no copian** valores del catálogo. Referencian `enums.schema.yaml
 | `executor` | `lifecycle.yaml#executors` |
 | `task_kind` | `definitions.yaml#task_kinds` |
 | `project_feature` | `phases.yaml#project_features` |
+| `adapter` | `adapters/registry.yaml#adapters` |
 
 ## Archivos
 | Esquema | Valida |

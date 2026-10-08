@@ -1,0 +1,37 @@
+version: 0.9.0
+description: >
+  Adaptadores: traducen las reglas de la metodología al archivo que lee cada asistente de IA.
+  Todos se generan desde core.md con `ai-dev adapters sync`. El contenido gestionado va entre
+  marcadores `ai-dev:begin` / `ai-dev:end`; el texto fuera de ellos es del proyecto y no se toca.
+  Sin `block`, el bloque es core.md completo; con `block`, ese archivo (que suele importar AGENTS.md).
+
+# Adaptador obligatorio: los demás lo referencian o lo replican.
+base: agents-md
+
+adapters:
+  agents-md:
+    name: AGENTS.md
+    tools: [OpenAI Codex, Google Jules, Gemini CLI, Cursor, Aider, Zed y otros compatibles con AGENTS.md]
+    files:
+      - { template: agents-md/AGENTS.md, target: AGENTS.md, kind: markdown }
+  claude-code:
+    name: Claude Code
+    tools: [Claude Code]
+    files:
+      - { template: claude-code/CLAUDE.md, target: CLAUDE.md, kind: markdown, block: claude-code/block.md }
+      - { template: claude-code/settings.json, target: .claude/settings.json, kind: json-merge }
+  cursor:
+    name: Cursor
+    tools: [Cursor]
+    files:
+      - { template: cursor/ai-dev.mdc, target: .cursor/rules/ai-dev.mdc, kind: markdown }
+  copilot:
+    name: GitHub Copilot
+    tools: [GitHub Copilot]
+    files:
+      - { template: copilot/copilot-instructions.md, target: .github/copilot-instructions.md, kind: markdown }
+  gemini:
+    name: Gemini CLI
+    tools: [Gemini CLI]
+    files:
+      - { template: gemini/GEMINI.md, target: GEMINI.md, kind: markdown, block: gemini/block.md }

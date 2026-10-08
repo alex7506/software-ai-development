@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { adapterStatus } from "./adapters.js";
 import { isGitRepo } from "./git.js";
 import { CliError, hasErrors } from "./issues.js";
 import type { Project } from "./project.js";
@@ -105,8 +105,12 @@ function runCheck(p: Project, registry: SchemaRegistry, cliVersion: string, chec
       const errors = validateProject(p, registry, cliVersion).filter((i) => i.level === "ERROR");
       return errors.length ? { ok: false, detail: `${errors.length} errores en \`ai-dev validate\`.` } : { ok: true, detail: "`ai-dev validate` sin errores." };
     }
-    case "adapters_generated":
-      return existsSync(p.path("AGENTS.md")) ? { ok: true, detail: "AGENTS.md presente." } : { ok: false, detail: "Genera los adaptadores con `ai-dev adapters sync`." };
+    case "adapters_generated": {
+      const pending = adapterStatus(p).filter((a) => a.status !== "UP_TO_DATE");
+      return pending.length
+        ? { ok: false, detail: `Adaptadores pendientes: ${pending.map((a) => `${a.target} (${a.status})`).join(", ")}. Ejecuta \`ai-dev adapters sync\`.` }
+        : { ok: true, detail: "Adaptadores generados y al día." };
+    }
     case "secrets_excluded":
       return envIgnored(p) ? { ok: true, detail: ".env excluido en .gitignore." } : { ok: false, detail: "Añade .env al .gitignore." };
     case "planned_tasks_closed": {

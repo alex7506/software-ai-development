@@ -10,7 +10,7 @@ Funciona con cualquier asistente de IA (Claude, Gemini, Copilot, Cursor, Codex�
 |---|---|---|
 | [Conceptos](conceptos/) | Entender cómo funciona la metodología y por qué | Disponible |
 | [Roles](roles/) | Saber qué te toca hacer según tu papel en el proyecto | Disponible |
-| [Guías](guias/) | Resolver tareas concretas: instalar, iniciar un proyecto, gestionar tareas, aprobar | Disponible (las de asistentes de IA, próximamente) |
+| [Guías](guias/) | Resolver tareas concretas: instalar, iniciar un proyecto, gestionar tareas, aprobar, configurar asistentes de IA | Disponible |
 | [Referencia](referencia/) | Consultar comandos, estados, fases y plantillas exactos (generada automáticamente) | Disponible |
 | Tutorial | Aprender haciendo: un proyecto completo de principio a fin | Próximamente |
 

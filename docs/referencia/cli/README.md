@@ -16,6 +16,7 @@ CLI determinista de Software AI Development: instala, valida, traza y gobierna p
 | [`status`](status.md) | Muestra fase, estado, tareas y aprobaciones pendientes. |
 | [`context`](context.md) | Genera el contexto mínimo suficiente de una tarea para entregárselo a cualquier agente. |
 | [`doctor`](doctor.md) | Diagnostica la instalación: Node, Git, versión fijada frente a la CLI y validez de .ai-dev/. |
+| [`adapters`](adapters.md) | Genera y comprueba los archivos de instrucciones de cada asistente de IA. |
 | [`phase`](phase.md) | Comprueba, avanza o reingresa fases del ciclo. |
 | [`task`](task.md) | Crea tareas y gestiona su ciclo de vida. |
 
