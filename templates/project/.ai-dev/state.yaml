@@ -4,4 +4,5 @@ status: ACTIVE
 current_task: null
 pending_decisions: []
 blocked_reason: null
+phase_started_at: "{{datetime}}"
 updated_at: "{{datetime}}"

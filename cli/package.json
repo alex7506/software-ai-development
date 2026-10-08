@@ -8,18 +8,31 @@
     "node": ">=20"
   },
   "scripts": {
+    "build": "node scripts/copy-assets.mjs && tsup",
+    "dev": "tsx src/bin.ts",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "docs:gen": "tsx scripts/gen-docs.ts"
   },
   "dependencies": {
     "ajv": "8.17.1",
     "ajv-formats": "3.0.1",
+    "commander": "12.1.0",
     "gray-matter": "4.0.3",
     "yaml": "2.6.1"
   },
   "devDependencies": {
     "@types/node": "22.10.2",
+    "tsup": "8.3.5",
+    "tsx": "4.19.2",
     "typescript": "5.7.2",
     "vitest": "2.1.8"
-  }
+  },
+  "bin": {
+    "ai-dev": "dist/bin.js"
+  },
+  "files": [
+    "dist",
+    "assets"
+  ]
 }

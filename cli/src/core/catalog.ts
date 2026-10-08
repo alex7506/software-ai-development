@@ -1,11 +1,31 @@
-import { readdirSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readYaml } from "./yaml.js";
 
 type Dict<T = unknown> = Record<string, T>;
 
-export const DEFAULT_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
+/**
+ * Raíz de la metodología, buscando hacia arriba desde este módulo. Dentro del repositorio
+ * (desarrollo o `npm link`) se usa la metodología viva; instalada, la copia de `<paquete>/assets`.
+ */
+function resolveRoot(): string {
+  const start = dirname(fileURLToPath(import.meta.url));
+  const has = (dir: string) => existsSync(join(dir, "methodology/catalog/states.yaml"));
+  for (const sub of ["", "assets"]) {
+    for (let dir = start; ; dir = dirname(dir)) {
+      if (has(join(dir, sub))) return join(dir, sub);
+      if (dirname(dir) === dir) break;
+    }
+  }
+  throw new Error("No se encontró la metodología (methodology/catalog).");
+}
+
+export const DEFAULT_ROOT = resolveRoot();
+
+export function methodologyVersion(root = DEFAULT_ROOT): string {
+  return readFileSync(join(root, "VERSION"), "utf8").trim();
+}
 
 export interface Catalog {
   root: string;

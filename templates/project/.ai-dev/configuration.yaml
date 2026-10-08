@@ -22,4 +22,11 @@ agents: []
 #    capabilities: [analysis, code_modification, test_generation, test_execution, git_read, commit]
 #    max_autonomy_level: 3
 
+# Comando que verifica cada gate; `ai-dev task complete` los ejecuta. Sin comando, la verificación es manual.
+gate_commands: {}
+#  CODE: npm run lint
+#  BUILD: npm run build
+#  TEST: npm test
+#  SECURITY: npm audit --audit-level=high
+
 environments: [local, production]

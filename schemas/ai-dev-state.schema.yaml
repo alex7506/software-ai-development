@@ -17,4 +17,7 @@ properties:
     type: array
     items: { type: string }
   blocked_reason: { type: [string, "null"] }
+  phase_started_at:
+    description: Inicio de la fase actual; solo cuentan las aprobaciones de fase posteriores.
+    $ref: "common.schema.yaml#/$defs/datetime"
   updated_at: { $ref: "common.schema.yaml#/$defs/datetime" }

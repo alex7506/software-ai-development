@@ -28,6 +28,10 @@ $defs:
       target_version:
         description: Versión del documento aprobada; un cambio posterior invalida la aprobación.
         $ref: "common.schema.yaml#/$defs/semver"
+      target_hash:
+        description: Huella del contenido aprobado; si el documento cambia, la aprobación deja de valer.
+        type: string
+        pattern: "^[0-9a-f]{16}$"
       decision: { $ref: "enums.schema.yaml#/$defs/approval_decision" }
       by: { $ref: "common.schema.yaml#/$defs/non_empty" }
       role: { $ref: "enums.schema.yaml#/$defs/human_role" }
