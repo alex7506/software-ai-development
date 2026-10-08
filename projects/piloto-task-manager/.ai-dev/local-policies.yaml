@@ -1,5 +1,5 @@
 policies:
   - no_scope_expansion
-  - no_secret_storage
+  - no_secrets
   - approval_required_for_production
   - approval_required_for_architecture_changes

@@ -1,0 +1,62 @@
+version: 0.9.0
+description: Enums de estado canónicos. Ningún otro archivo define estados propios.
+
+document_status:
+  values: [DRAFT, IN_REVIEW, APPROVED, OBSOLETE]
+  transitions:
+    DRAFT: [IN_REVIEW]
+    IN_REVIEW: [DRAFT, APPROVED]
+    APPROVED: [IN_REVIEW, OBSOLETE]
+    OBSOLETE: []
+  notes: APPROVED requiere approved_by humano. Un documento generado por IA nunca nace APPROVED.
+
+requirement_status:
+  values: [PROPOSED, APPROVED, IMPLEMENTED, VERIFIED, REJECTED, DEPRECATED]
+
+task_status:
+  values: [PENDING, READY, IN_PROGRESS, BLOCKED, WAITING_APPROVAL, REQUIRES_REVIEW, VALIDATING, COMPLETED, FAILED, CANCELLED]
+  terminal: [COMPLETED, CANCELLED]
+  transitions:
+    PENDING: [READY, BLOCKED, CANCELLED]
+    READY: [IN_PROGRESS, BLOCKED, CANCELLED]
+    IN_PROGRESS: [BLOCKED, WAITING_APPROVAL, REQUIRES_REVIEW, VALIDATING, FAILED, CANCELLED]
+    BLOCKED: [PENDING, READY, CANCELLED]
+    WAITING_APPROVAL: [IN_PROGRESS, CANCELLED]
+    REQUIRES_REVIEW: [IN_PROGRESS, VALIDATING, CANCELLED]
+    VALIDATING: [COMPLETED, IN_PROGRESS, FAILED]
+    FAILED: [READY, CANCELLED]
+    COMPLETED: []
+    CANCELLED: []
+  notes: >
+    Un bloqueo por dependencia se expresa con status BLOCKED y el campo blocked_by (lista de IDs),
+    nunca con estados compuestos como BLOCKED_BY_PREVIOUS_TASK.
+
+project_status:
+  values: [ACTIVE, WAITING_APPROVAL, BLOCKED, ON_HOLD, CLOSED]
+  notes: El estado del proyecto es independiente de su fase (ver phases.yaml).
+
+change_status:
+  values: [PROPOSED, ANALYZING, APPROVED, REJECTED, IMPLEMENTING, VALIDATING, DONE]
+
+adr_status:
+  values: [PROPOSED, ACCEPTED, REJECTED, SUPERSEDED, DEPRECATED]
+
+check_result:
+  values: [PASS, FAIL, BLOCKED, N_A]
+
+validation_outcome:
+  values: [APPROVED, APPROVED_WITH_WARNINGS, REJECTED, BLOCKED, REQUIRES_HUMAN_REVIEW]
+
+integrity_status:
+  values: [INTEGRITY_OK, WARNINGS, DEGRADED, BLOCKED]
+  notes: Ordenados de mejor a peor; un umbral mínimo admite su valor y los anteriores.
+
+agent_output:
+  values: [SUCCESS, PARTIAL_SUCCESS, BLOCKED, FAILED, WAITING_APPROVAL, REQUIRES_REVIEW]
+
+authorization_decision:
+  values: [ALLOW, DENY, REQUIRES_APPROVAL]
+
+relation_types:
+  values: [IMPLEMENTS, DEPENDS_ON, AFFECTS, DERIVED_FROM, VALIDATES, TESTS, DOCUMENTS, REPLACES, SUPERSEDES, CONFLICTS_WITH, BLOCKS, REQUIRES]
+  notes: Una relación inferida por IA debe declarar confidence (0–1) y no cuenta para INTEGRITY_OK hasta ser confirmada por una persona.

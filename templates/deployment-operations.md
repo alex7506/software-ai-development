@@ -6,7 +6,7 @@
 - document_id:
 - document_type:
 - version: 1.0.0
-- status: BORRADOR
+- status: DRAFT
 - project:
 - source_of_truth:
 

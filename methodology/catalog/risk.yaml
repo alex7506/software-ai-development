@@ -1,0 +1,35 @@
+version: 0.9.0
+description: >
+  Niveles de riesgo de una operación. El riesgo efectivo es el máximo entre el riesgo de la capacidad
+  (agents/capabilities.yaml), el de la clasificación de datos implicada y el del entorno.
+  La autonomía efectiva es el mínimo entre la del nivel de riesgo y max_autonomy_level del modo.
+
+levels:
+  LOW:
+    max_autonomy_level: 4
+    approval: none
+    examples: [Leer código, analizar, generar borradores de documentos]
+  MEDIUM:
+    max_autonomy_level: 3
+    approval: post_review
+    examples: [Modificar código en una rama, generar pruebas, commits locales]
+  HIGH:
+    max_autonomy_level: 2
+    approval: pre_approval
+    examples: [Añadir dependencias, cambiar arquitectura, push a remoto, escribir en bases de datos no productivas]
+  CRITICAL:
+    max_autonomy_level: 1
+    approval: pre_approval_human_executes
+    examples: [Despliegue a producción, operaciones destructivas, datos RESTRICTED, cambios de permisos o secretos]
+
+approval_types:
+  none: Se ejecuta sin aprobación; queda registrada.
+  post_review: Se ejecuta y una persona revisa antes de integrarse.
+  pre_approval: Requiere aprobación humana registrada antes de ejecutarse.
+  pre_approval_human_executes: Requiere aprobación y la ejecuta o confirma interactivamente una persona.
+
+environments:
+  local: LOW
+  development: MEDIUM
+  staging: HIGH
+  production: CRITICAL

@@ -1,0 +1,31 @@
+version: 0.9.0
+description: >
+  Clasificación de datos y destinos permitidos. Un dato solo puede enviarse a un destino listado en
+  allowed_destinations. El proyecto declara qué proveedores concretos pertenecen a cada tipo de destino
+  en .ai-dev/configuration.yaml (providers).
+
+destination_types:
+  local_model: Modelo ejecutado en infraestructura controlada por la organización.
+  enterprise_llm: LLM externo con contrato que excluye entrenamiento y garantiza retención limitada.
+  public_llm: LLM externo sin garantías contractuales de privacidad.
+  third_party_tool: Servicio externo distinto de un LLM (CI, analítica, monitorización).
+
+levels:
+  PUBLIC:
+    description: Información publicable sin daño.
+    risk: LOW
+    allowed_destinations: [local_model, enterprise_llm, public_llm, third_party_tool]
+  INTERNAL:
+    description: Uso interno; su divulgación causa daño menor (código propietario, documentación interna).
+    risk: MEDIUM
+    allowed_destinations: [local_model, enterprise_llm, third_party_tool]
+  CONFIDENTIAL:
+    description: Datos personales, de clientes o de negocio sensibles.
+    risk: HIGH
+    allowed_destinations: [local_model, enterprise_llm]
+    requires: Anonimización o minimización antes de enviarse a enterprise_llm.
+  RESTRICTED:
+    description: Secretos, credenciales, datos de salud, financieros o regulados.
+    risk: CRITICAL
+    allowed_destinations: []
+    requires: Nunca se incluye en prompts, logs, commits ni documentos; solo se referencia por nombre de variable.

@@ -1,6 +1,7 @@
 # TASK-002 — Crear aplicación Next.js
 
-Status: BLOCKED_BY_PREVIOUS_TASK
+Status: BLOCKED
+Blocked by: TASK-001A
 
 ## Dependency
 TASK-001A.

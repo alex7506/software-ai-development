@@ -1,3 +1,3 @@
-# Schema Validator V1.0
+# Schema Validator
 
 Valida documentos y configuraciones contra esquemas deterministas antes de considerarlos válidos.

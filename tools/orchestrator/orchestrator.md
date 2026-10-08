@@ -1,7 +1,11 @@
-# Orchestrator V1.0
+# Orchestrator
 
-REQUEST → IDENTIFY → LOAD STATE → CREATE/LOCATE TASK → RESOLVE CONTEXT → SELECT EXECUTOR → CHECK POLICY → AUTHORIZE → EXECUTE → STRUCTURED RESULT → CHANGE & IMPACT → VALIDATE → DOCUMENT → TRACEABILITY → GIT → UPDATE STATE → NEXT ACTION
+> Especificación. Ciclo canónico de ejecución: `methodology/catalog/lifecycle.yaml`.
 
-Executors: LLM, Agent, CLI, Script, API, IDE, Human, Deterministic Tool.
+REQUEST → IDENTIFY → LOAD_STATE → LOCATE_TASK → RESOLVE_CONTEXT → ANALYZE → PLAN → SELECT_EXECUTOR → AUTHORIZE → EXECUTE → TEST → REVIEW → VALIDATE → DOCUMENT → TRACE → COMMIT → UPDATE_STATE → NEXT_ACTION
+
+El protocolo operativo IA y el contrato de agente son vistas de este ciclo.
+
+Executors: LLM, AGENT, CLI, SCRIPT, API, IDE, HUMAN, DETERMINISTIC_TOOL.
 
 Sin contexto no se ejecuta. Sin autorización no se ejecuta. Sin validación no se completa. Sin trazabilidad no se libera.

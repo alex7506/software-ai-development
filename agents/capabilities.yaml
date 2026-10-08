@@ -1,7 +1,35 @@
-levels:
-  0: NONE
-  1: ASSISTED
-  2: CONTROLLED
-  3: AUTONOMOUS_LIMITED
-  4: AUTONOMOUS_POLICY
-capabilities: [analysis, requirements_analysis, architecture_design, code_generation, code_modification, test_generation, test_execution, security_analysis, dependency_analysis, documentation, git_read, git_write, commit, deployment, production_deployment, db_read, db_write, destructive_operation]
+version: 0.9.0
+description: >
+  Niveles de autonomía y capacidades. Cada capacidad declara su riesgo base (methodology/catalog/risk.yaml).
+  Capacidad ≠ permiso ≠ autorización: tener una capacidad no concede permiso para usarla.
+
+autonomy_levels:
+  0: { id: MANUAL,             description: La persona ejecuta; la IA no interviene. }
+  1: { id: ASSISTED,           description: La IA sugiere; la persona decide y ejecuta. }
+  2: { id: CONTROLLED,         description: La IA ejecuta cada acción tras aprobación previa. }
+  3: { id: AUTONOMOUS_LIMITED, description: La IA ejecuta dentro del alcance de la tarea; revisión posterior. }
+  4: { id: AUTONOMOUS_POLICY,  description: La IA ejecuta según política sin revisión por acción. }
+
+capabilities:
+  analysis:               { risk: LOW }
+  requirements_analysis:  { risk: LOW }
+  architecture_design:    { risk: HIGH }
+  documentation:          { risk: LOW }
+  code_generation:        { risk: MEDIUM }
+  code_modification:      { risk: MEDIUM }
+  test_generation:        { risk: MEDIUM }
+  test_execution:         { risk: LOW }
+  security_analysis:      { risk: LOW }
+  dependency_analysis:    { risk: LOW }
+  dependency_change:      { risk: HIGH }
+  git_read:               { risk: LOW }
+  git_write:              { risk: MEDIUM }
+  commit:                 { risk: MEDIUM }
+  git_push:               { risk: HIGH }
+  deployment:             { risk: HIGH }
+  production_deployment:  { risk: CRITICAL }
+  db_read:                { risk: MEDIUM }
+  db_write:               { risk: HIGH }
+  secrets_management:     { risk: CRITICAL }
+  destructive_operation:  { risk: CRITICAL }
+  approval:               { risk: CRITICAL, human_only: true }

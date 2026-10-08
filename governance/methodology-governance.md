@@ -1,4 +1,4 @@
-# Gobierno y Evolución de la Metodología V1.0
+# Gobierno y Evolución de la Metodología
 
 La metodología, su instalación y los proyectos tienen ciclos separados.
 

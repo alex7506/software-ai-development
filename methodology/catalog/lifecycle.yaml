@@ -1,0 +1,58 @@
+version: 0.9.0
+description: >
+  Ciclo de ejecución canónico de una solicitud (lo implementa el orquestador). El protocolo operativo IA
+  y el contrato de agente son vistas parciales de este ciclo, no ciclos independientes.
+
+steps:
+  - REQUEST
+  - IDENTIFY
+  - LOAD_STATE
+  - LOCATE_TASK
+  - RESOLVE_CONTEXT
+  - ANALYZE
+  - PLAN
+  - SELECT_EXECUTOR
+  - AUTHORIZE
+  - EXECUTE
+  - TEST
+  - REVIEW
+  - VALIDATE
+  - DOCUMENT
+  - TRACE
+  - COMMIT
+  - UPDATE_STATE
+  - NEXT_ACTION
+
+views:
+  ai_operating_protocol:
+    description: Lo que hace el agente o la persona que ejecuta (methodology/01-ai-operating-protocol).
+    mapping:
+      Solicitud: REQUEST
+      Contexto: RESOLVE_CONTEXT
+      Análisis: ANALYZE
+      Plan: PLAN
+      Autorización: AUTHORIZE
+      Implementación: EXECUTE
+      Pruebas: TEST
+      Revisión: REVIEW
+      Documentación: DOCUMENT
+      Cierre: UPDATE_STATE
+  agent_contract:
+    description: Lo que todo agente debe cumplir (agents/contracts/agent-contract.yaml).
+    mapping:
+      RECEIVE: REQUEST
+      VALIDATE_CONTEXT: RESOLVE_CONTEXT
+      ANALYZE: ANALYZE
+      PLAN: PLAN
+      CHECK_PERMISSIONS: AUTHORIZE
+      EXECUTE: EXECUTE
+      TEST: TEST
+      REPORT: VALIDATE
+
+executors: [LLM, AGENT, CLI, SCRIPT, API, IDE, HUMAN, DETERMINISTIC_TOOL]
+
+hard_rules:
+  - Sin contexto no se ejecuta.
+  - Sin autorización no se ejecuta.
+  - Sin validación no se completa.
+  - Sin trazabilidad no se libera.
