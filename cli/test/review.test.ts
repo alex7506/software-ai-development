@@ -1,3 +1,5 @@
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { Sandbox } from "./helpers.js";
 
@@ -110,6 +112,24 @@ describe("ai-dev review", () => {
     const r = await review(s, ["s", "t"]);
     expect(r.out).toContain("APPROVED: VAL-001");
     expect(r.out).not.toContain("APPROVED: REL-001");
+  });
+
+  it("en EVOLUTION, aprobar una solicitud de cambio reingresa al ciclo en su fase y sigue", async () => {
+    const s = new Sandbox();
+    await lite(s);
+    s.setState({ phase: "EVOLUTION" });
+    await s.run(["new", "CHANGE_REQUEST", "--title", "Rediseño"]);
+    const file = join("docs/08-decisions/changes", readdirSync(s.path("docs/08-decisions/changes"))[0]!);
+    s.editDocument(file, (d) => (d.data.reentry_phase = "PLANNING"));
+    await s.run(["submit", "CHANGE-001"]);
+    const r = await review(s, ["s"]);
+    expect(r.out).toContain("APPROVED: CHANGE-001");
+    expect(r.out).toContain("CHANGE-001 aprobado: reingreso al ciclo en PLANNING");
+    expect(r.out).toContain("PLANNING aún no está lista");
+    expect(s.yaml<{ phase: string }>(".ai-dev/state.yaml").phase).toBe("PLANNING");
+    expect(s.read(file)).toContain("status: IMPLEMENTING");
+    expect((await s.run(["validate"])).code).toBe(0);
+    expect((await s.run(["phase", "reenter", "--change", "CHANGE-001"])).err).toContain("Solo se reingresa");
   });
 
   it("se detiene si la fase la aprueba un rol que la persona no asumió", async () => {

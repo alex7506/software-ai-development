@@ -180,7 +180,11 @@ export function reenterPhase(p: Project, changeId: string, now: Date): { from: s
   const to = String(change.data.reentry_phase);
   const from = p.state.phase;
   if (from !== "EVOLUTION") throw new CliError(`Solo se reingresa al ciclo desde EVOLUTION (fase actual: ${from}).`);
+  if (change.data.status !== "APPROVED") throw new CliError(`${changeId} ya se aplicó (estado ${String(change.data.status)}).`);
   p.saveState({ phase: to, status: "ACTIVE", phase_started_at: now.toISOString() }, now);
+  // El cambio pasa a implementación: el estado no forma parte de la huella aprobada.
+  change.data.status = "IMPLEMENTING";
+  p.saveDocument(change);
   return { from, to };
 }
 

@@ -1,7 +1,7 @@
 import { recordApproval } from "./approvals.js";
 import { reviewStatus } from "./documents.js";
 import { CliError } from "./issues.js";
-import { advancePhase, checkPhase } from "./phases.js";
+import { advancePhase, checkPhase, reenterPhase } from "./phases.js";
 import type { Approval, Project } from "./project.js";
 import type { SchemaRegistry } from "./schema.js";
 
@@ -80,9 +80,16 @@ export async function reviewSession(p: Project, registry: SchemaRegistry, cliVer
       }
     }
 
-    // 3. Fase actual.
+    // 3. Fase actual. En EVOLUTION, una solicitud de cambio aprobada reingresa al ciclo.
     const phase = p.state.phase;
-    if (phase === p.cat.phases.order.at(-1)) return finish(p, summary, `${phase} es la última fase.`);
+    if (phase === p.cat.phases.order.at(-1)) {
+      const change = p.documents().find((d) => d.type === "CHANGE_REQUEST" && d.data.status === "APPROVED");
+      if (!change) return finish(p, summary, `${phase} es la última fase.`);
+      const { to } = reenterPhase(p, change.id, opts.now());
+      summary.advanced.push(`${phase} → ${to}`);
+      opts.out(`  → ${change.id} aprobado: reingreso al ciclo en ${to}.`);
+      continue;
+    }
     const check = checkPhase(p, registry, cliVersion, phase);
     if (!check.ready) {
       const missing = check.items.filter((i) => !i.ok && i.kind !== "APPROVAL").map((i) => `  - ${i.kind} ${i.name}: ${i.detail}`);
