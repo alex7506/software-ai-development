@@ -1,4 +1,4 @@
-version: 1.2.3
+version: 1.3.0
 description: >
   Niveles de riesgo de una operación. El riesgo efectivo es el máximo entre el riesgo de la capacidad
   (agents/capabilities.yaml), el de la clasificación de datos implicada y el del entorno.

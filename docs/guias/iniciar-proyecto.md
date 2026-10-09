@@ -39,6 +39,7 @@ Abre `.ai-dev/configuration.yaml` y completa:
 - **features**: si el producto tiene interfaz, API, datos persistentes o IA como funcionalidad. Decide qué documentos se exigen.
 - **providers** y **agents**: qué asistentes de IA vas a usar y con qué permisos (ver [Riesgo y autonomía](../conceptos/riesgo-y-autonomia.md)).
 - **gate_commands**: los comandos que verifican calidad, por ejemplo `TEST: npm test`. `ai-dev task complete` los ejecuta.
+- **format_command** (opcional): el formateador del proyecto, por ejemplo `npx prettier --write`. La CLI lo ejecuta sobre los archivos que escribe (tareas, estado, documentos nuevos) para que el gate de formato no falle por su estilo.
 
 Después ejecuta `ai-dev adapters sync` para que las instrucciones de los asistentes reflejen los cambios.
 

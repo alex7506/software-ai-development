@@ -10,6 +10,7 @@ import { createDocument, reviseDocument, submitDocument } from "./core/documents
 import { runDoctor } from "./core/doctor.js";
 import { gitUserName } from "./core/git.js";
 import { resolveDocumentType } from "./core/ids.js";
+import { formatWritten } from "./core/format.js";
 import { CliError, hasErrors } from "./core/issues.js";
 import { formatIssues, summary, table } from "./core/output.js";
 import { advancePhase, checkPhase, reenterPhase, setMode } from "./core/phases.js";
@@ -440,5 +441,7 @@ export async function runCli(args: string[], env: Env): Promise<number> {
       return 1;
     }
     throw e;
+  } finally {
+    for (const warning of formatWritten()) env.err(`⚠ ${warning}`);
   }
 }

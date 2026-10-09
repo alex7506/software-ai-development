@@ -1,3 +1,4 @@
+import { formatFiles } from "./format.js";
 import { today } from "./ids.js";
 import { nextId } from "./ids.js";
 import { CliError } from "./issues.js";
@@ -46,6 +47,10 @@ export function recordApproval(p: Project, registry: SchemaRegistry, cliVersion:
     approval = { ...base, target_type: "PHASE", target: req.target };
     approvePhase(p, registry, cliVersion, approval, sod);
   } else {
+    // Se formatea antes de calcular la huella: si el formateador cambiara el cuerpo después,
+    // la aprobación quedaría desfasada nada más registrarla.
+    formatFiles(p.root, [p.document(req.target).file]);
+    p.invalidate();
     const doc = p.document(req.target);
     if (doc.type === "TASK") throw new CliError("Las tareas no se aprueban: se revisan al cerrarlas con `ai-dev task complete --reviewed-by`.");
     if (sod && doc.data.author === base.by) throw new CliError(`${base.by} es autor de ${doc.id}; el modo ${p.mode} exige que lo apruebe otra persona.`);

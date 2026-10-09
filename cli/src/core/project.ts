@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import type { Catalog } from "./catalog.js";
+import { markWritten } from "./format.js";
 import { CliError } from "./issues.js";
 import { leadingComments, parseMarkdown, readYaml, stringifyMarkdown, writeYaml, type MarkdownDocument } from "./yaml.js";
 
@@ -30,6 +31,7 @@ export interface ConfigurationFile {
   limits?: Record<string, number>;
   environments?: string[];
   gate_commands?: Record<string, string>;
+  format_command?: string;
   adapters?: string[];
   additional_deliverables?: { phase: string; type: string; reason: string }[];
   document_folders?: Record<string, string>;
@@ -132,6 +134,7 @@ export class Project {
   writeAiDev(file: AiDevFile, data: unknown): void {
     const path = this.aiDevPath(file);
     writeYaml(path, data, existsSync(path) ? leadingComments(path) : undefined);
+    markWritten(this.root, path);
   }
 
   get methodology(): MethodologyFile {
@@ -215,6 +218,7 @@ export class Project {
 
   saveDocument(doc: DocumentRecord): void {
     writeFileSync(doc.file, stringifyMarkdown(doc));
+    markWritten(this.root, doc.file);
     this.docsCache = null;
   }
 
@@ -230,6 +234,7 @@ export class Project {
   saveRequirements(file: RequirementsFile): void {
     const path = this.path(REQUIREMENTS_FILE);
     writeYaml(path, file, existsSync(path) ? leadingComments(path) : undefined);
+    markWritten(this.root, path);
   }
 
   requirements(): Requirement[] {
