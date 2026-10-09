@@ -80,7 +80,7 @@ function deliverableStatus(p: Project, registry: SchemaRegistry, type: string, d
     if (!tasks.length) return { ok: false, detail: "No hay tareas." };
     const notReady = tasks.filter((t) => !taskTerminal(p.cat, String(t.data.status)) && hasErrors(checkReady(p, registry, t, { ignoreDependencies: true })));
     const covered = new Set(tasks.flatMap((t) => ((t.data.relations as { type: string; target: string }[]) ?? []).filter((r) => r.type === "IMPLEMENTS").map((r) => r.target)));
-    const uncovered = p.requirements().filter((r) => isRequirementApproved(r.status) && !covered.has(r.id)).map((r) => r.id);
+    const uncovered = p.requirements().filter((r) => isRequirementApproved(r.status) && r.baseline !== true && !covered.has(r.id)).map((r) => r.id);
     const problems = [
       notReady.length ? `sin Definition of Ready: ${notReady.map((t) => t.id).join(", ")}` : "",
       uncovered.length ? `requisitos sin tarea: ${uncovered.join(", ")}` : "",

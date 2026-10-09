@@ -62,7 +62,8 @@ export function traceProject(p: Project, options: { git?: boolean } = {}): Trace
 
   // Tras PLANNING, todo requisito aprobado debe tener al menos una tarea que lo implemente.
   if (phaseIndex(p.cat, p.state.phase) > phaseIndex(p.cat, "PLANNING")) {
-    for (const r of requirements.filter((r) => isRequirementApproved(r.status))) {
+    // Los requisitos de línea base se implementaron antes de adoptar la metodología: no tienen tarea.
+    for (const r of requirements.filter((r) => isRequirementApproved(r.status) && r.baseline !== true)) {
       if (!implemented.get(r.id)?.some((from) => from.startsWith("TASK-"))) {
         add("DEGRADED", "orphan_requirement", `${r.id} está aprobado y ninguna tarea lo implementa.`, REQUIREMENTS_FILE);
       }

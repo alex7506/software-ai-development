@@ -1,6 +1,6 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { syncAdapters } from "./adapters.js";
+import { enabledAdapters, syncAdapters } from "./adapters.js";
 import type { Catalog } from "./catalog.js";
 import { createDocument } from "./documents.js";
 import { slugify, today } from "./ids.js";
@@ -109,10 +109,35 @@ export function initProject(cat: Catalog, root: string, opts: InitOptions): Init
     result.created.push(intake.rel);
   }
 
-  for (const r of syncAdapters(Project.at(root, cat))) {
+  const project = Project.at(root, cat);
+  const ignored = excludeFromFormatter(project);
+  if (ignored) result.created.push(ignored);
+
+  for (const r of syncAdapters(project)) {
     if (r.action === "UNCHANGED") result.kept.push(r.target);
     else if (r.action === "SKIPPED_MODIFIED" || r.action === "SKIPPED_INVALID") result.kept.push(`${r.target} (no se modificó: ${r.status})`);
     else result.created.push(r.action === "CREATED" ? r.target : `${r.target} (${r.action === "APPENDED" ? "bloque añadido" : "permisos añadidos"})`);
   }
   return result;
+}
+
+/**
+ * Los formateadores (Prettier) reescribirían los bloques generados y los documentos aprobados, y
+ * `ai-dev` lo detectaría como una edición manual. Si el proyecto usa Prettier, se excluyen.
+ */
+function excludeFromFormatter(project: Project): string | null {
+  const pkgPath = project.path("package.json");
+  const ignorePath = project.path(".prettierignore");
+  const usesPrettier =
+    existsSync(ignorePath) ||
+    ["prettier.config.js", "prettier.config.mjs", ".prettierrc", ".prettierrc.json", ".prettierrc.yaml"].some((f) => existsSync(project.path(f))) ||
+    (existsSync(pkgPath) && /"prettier"\s*:/.test(readFileSync(pkgPath, "utf8")));
+  if (!usesPrettier) return null;
+  const targets = [".ai-dev/", ...enabledAdapters(project).flatMap((a) => project.cat.adapters.adapters[a]!.files.map((f) => f.target))];
+  const current = existsSync(ignorePath) ? readFileSync(ignorePath, "utf8").split("\n").map((l) => l.trim()) : [];
+  const missing = targets.filter((t) => !current.includes(t));
+  if (!missing.length) return null;
+  const prefix = current.length && current.at(-1) !== "" ? "\n" : "";
+  appendFileSync(ignorePath, `${prefix}# Generados por ai-dev: el formateador no debe reescribirlos\n${missing.join("\n")}\n`);
+  return ".prettierignore (archivos generados por ai-dev)";
 }

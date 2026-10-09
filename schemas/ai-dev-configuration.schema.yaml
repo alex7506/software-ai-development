@@ -43,6 +43,11 @@ properties:
     propertyNames:
       enum: [CODE, BUILD, TEST, SECURITY]
     additionalProperties: { type: string, minLength: 1 }
+  document_folders:
+    description: Carpeta (relativa a docs/) donde el proyecto guarda cada tipo de documento, si difiere de la canónica. "" es la raíz de docs/. Útil al adoptar proyectos con su propia estructura.
+    type: object
+    propertyNames: { $ref: "enums.schema.yaml#/$defs/document_type" }
+    additionalProperties: { type: string }
   additional_deliverables:
     description: Entregables que el proyecto exige además de los de su modo (p. ej. QUALITY_SECURITY en STANDARD). `phase check` los aplica.
     type: array
