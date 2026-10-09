@@ -1,4 +1,4 @@
-version: 1.2.1
+version: 1.2.2
 description: >
   Ciclo canónico del proyecto y matriz de fases. Es el único orden válido del ciclo.
   Un entregable es obligatorio si el modo del proyecto >= min_mode (ver modes.yaml) y, cuando

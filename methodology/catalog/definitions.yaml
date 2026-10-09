@@ -1,4 +1,4 @@
-version: 1.2.1
+version: 1.2.2
 description: >
   Definition of Ready y Definition of Done de una tarea. Cada criterio tiene un id estable;
   `automated: true` indica que la CLI puede verificarlo sin intervención humana.

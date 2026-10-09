@@ -31,4 +31,6 @@ export function slugify(text: string): string {
     .slice(0, 50);
 }
 
-export const today = (now: Date) => now.toISOString().slice(0, 10);
+/** Fecha de calendario local (YYYY-MM-DD): la del día en que trabaja la persona, no la de UTC. */
+export const today = (now: Date) =>
+  `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;

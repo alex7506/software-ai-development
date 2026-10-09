@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.2 — 2026-10-08
+### Corregido
+- Las fechas (adopción, creación de documentos, evidencia) se calculaban en UTC: por la tarde en América ya figuraba el día siguiente, y `trace --git` excluía los commits del día real de la adopción. Ahora se usa la fecha local. Detectado en ADSO Cloud (Colombia, UTC−5).
+
 ## 1.2.1 — 2026-10-08
 ### Corregido
 - `trace --git` ignoraba los commits del día de la adopción hechos antes de la hora actual: git interpreta una fecha sin hora como ese día a la hora actual. Ahora se usa el inicio del día. Detectado al cerrar la tarea de adopción de ADSO Cloud.
