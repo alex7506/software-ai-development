@@ -32,6 +32,7 @@ export interface ConfigurationFile {
   gate_commands?: Record<string, string>;
   adapters?: string[];
   additional_deliverables?: { phase: string; type: string; reason: string }[];
+  document_folders?: Record<string, string>;
 }
 
 export interface StateFile {
@@ -174,6 +175,12 @@ export class Project {
     const base = Number(this.cat.limits[name]);
     const local = this.hasAiDev("configuration") ? this.configuration.limits?.[name] : undefined;
     return local === undefined ? base : Math.min(base, local);
+  }
+
+  /** Carpeta (relativa a docs/) de un tipo de documento: la del proyecto o la canónica. */
+  folderFor(type: string): string {
+    const custom = this.hasAiDev("configuration") ? this.configuration.document_folders?.[type] : undefined;
+    return custom ?? this.cat.documentTypes.types[type]?.folder ?? "";
   }
 
   feature(name: string): boolean {

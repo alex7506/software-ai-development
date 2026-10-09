@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 1.2.0 — 2026-10-08
+Adopción de proyectos existentes con estructura propia, aprendida al adoptar la metodología en ADSO Cloud (plataforma en producción con 18 ADR y 22 especificaciones).
+
+### Añadido
+- `document_folders` en `.ai-dev/configuration.yaml`: el proyecto declara dónde guarda cada tipo de documento (p. ej. ADR en `docs/adr/`) y `validate` y `new` lo respetan.
+- `baseline: true` en los requisitos implementados antes de la adopción: no se les exige una tarea que los implemente.
+- `init` excluye de Prettier los archivos generados cuando el proyecto lo usa.
+- Manual publicado como sitio web y guía de adopción ampliada (carpetas propias, línea base, formateadores y validación en CI).
+
 ## 1.1.0 — 2026-10-08
 Primera versión pública. Incorpora lo aprendido al recorrer con MiAdmin una solicitud de cambio completa (CHANGE-001, release v0.2.0).
 

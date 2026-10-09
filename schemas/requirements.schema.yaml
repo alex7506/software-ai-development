@@ -36,6 +36,9 @@ $defs:
         minItems: 1
         items: { $ref: "common.schema.yaml#/$defs/acceptance_criterion" }
       relations: { $ref: "common.schema.yaml#/$defs/relations" }
+      baseline:
+        type: boolean
+        description: Implementado antes de adoptar la metodología; no se le exige una tarea que lo implemente.
       source:
         type: string
         description: Origen del requisito (intake, entrevista, CHANGE-NNN).

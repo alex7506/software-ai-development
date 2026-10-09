@@ -44,7 +44,7 @@ export function createDocument(p: Project, type: string, opts: NewDocumentOption
     else doc.data[key] = value;
   }
 
-  const file = p.path("docs", def.folder, `${id}-${slugify(opts.title) || "documento"}.md`);
+  const file = p.path("docs", p.folderFor(type), `${id}-${slugify(opts.title) || "documento"}.md`);
   if (existsSync(file)) throw new CliError(`Ya existe ${relative(p.root, file)}.`);
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, stringifyMarkdown(doc));

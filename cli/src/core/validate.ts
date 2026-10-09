@@ -84,7 +84,9 @@ export function validateProject(p: Project, registry: SchemaRegistry, cliVersion
     }
     for (const e of registry.validate(schemaForDocumentType(p.cat, doc.type), doc.data).errors) issues.push(error("schema", e, doc.rel));
     if (!doc.id.startsWith(`${def.id_prefix}-`)) issues.push(error("id_prefix", `El ID ${doc.id} no usa el prefijo ${def.id_prefix} de ${doc.type}.`, doc.rel));
-    if (!doc.rel.startsWith(`docs/${def.folder}/`)) issues.push(warning("folder", `${doc.type} debería estar en docs/${def.folder}/.`, doc.rel));
+    const folder = p.folderFor(doc.type);
+    const prefix = folder ? `docs/${folder}/` : "docs/";
+    if (!doc.rel.startsWith(prefix)) issues.push(warning("folder", `${doc.type} debería estar en ${prefix} (o declara su carpeta en document_folders).`, doc.rel));
     if (doc.data.project !== methodology.project.id) issues.push(error("project_mismatch", `El documento declara project=${String(doc.data.project)}, pero el proyecto es ${methodology.project.id}.`, doc.rel));
 
     if (isApproved(doc)) {
