@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.3.0 — 2026-10-09
+### Añadido
+- `format_command` en `.ai-dev/configuration.yaml`: la CLI ejecuta el formateador del proyecto (p. ej. `npx prettier --write`) sobre los archivos que escribe (tareas, estado, requisitos, documentos nuevos), y `approve` formatea el documento antes de fijar su huella para que la aprobación no quede desfasada. Si el formateador falla, se avisa y lo escrito se conserva.
+
+### Corregido
+- Tras `task evidence`, el gate CODE fallaba en `task complete` cuando el proyecto comprueba el formato: el YAML de la CLI y Prettier eligen comillas distintas para algunos textos. Detectado en ADSO Cloud (TASK-002).
+
 ## 1.2.3 — 2026-10-08
 ### Corregido
 - `trace --git` contaba los commits de fusión como commits sin tarea, incluido el que crea la CI de GitHub para probar un PR: la validación fallaba en la CI aunque pasara en local. Los commits de fusión ya no se cuentan. Detectado en el PR de adopción de ADSO Cloud.

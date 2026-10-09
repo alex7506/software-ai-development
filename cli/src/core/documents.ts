@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
+import { markWritten } from "./format.js";
 import { nextId, slugify, today } from "./ids.js";
 import { CliError } from "./issues.js";
 import type { DocumentRecord, Project } from "./project.js";
@@ -48,6 +49,7 @@ export function createDocument(p: Project, type: string, opts: NewDocumentOption
   if (existsSync(file)) throw new CliError(`Ya existe ${relative(p.root, file)}.`);
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, stringifyMarkdown(doc));
+  markWritten(p.root, file);
   p.invalidate();
   return p.document(id);
 }

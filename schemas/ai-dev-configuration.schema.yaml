@@ -43,6 +43,10 @@ properties:
     propertyNames:
       enum: [CODE, BUILD, TEST, SECURITY]
     additionalProperties: { type: string, minLength: 1 }
+  format_command:
+    description: Formateador del proyecto (p. ej. "npx prettier --write"). La CLI lo ejecuta, con las rutas al final, sobre los archivos que escribe, para que el gate CODE no falle por su estilo.
+    type: string
+    minLength: 1
   document_folders:
     description: Carpeta (relativa a docs/) donde el proyecto guarda cada tipo de documento, si difiere de la canónica. "" es la raíz de docs/. Útil al adoptar proyectos con su propia estructura.
     type: object
