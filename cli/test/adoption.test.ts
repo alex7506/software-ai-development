@@ -96,3 +96,12 @@ describe("trazabilidad desde la fecha de adopción", () => {
     expect(r.stats.commits).toBe(1);
   });
 });
+
+describe("fechas locales", () => {
+  it("today() usa el calendario local, no UTC", async () => {
+    const { today } = await import("../src/core/ids.js");
+    // 23:30 del 8 de octubre en hora local: en UTC ya puede ser el día 9.
+    const late = new Date(2026, 9, 8, 23, 30);
+    expect(today(late)).toBe("2026-10-08");
+  });
+});
