@@ -47,7 +47,8 @@ export function commits(cwd: string, since?: string | null): Commit[] {
   try {
     // Una fecha sin hora la interpreta git como ese día a la hora actual: se fija el inicio del día.
     const from = since && /^\d{4}-\d{2}-\d{2}$/.test(since) ? `${since}T00:00:00` : since;
-    raw = git(cwd, ["log", "--name-only", "--format=%x1e%H%x1f%an%x1f%aI%x1f%B%x1f", ...(from ? [`--since=${from}`] : [])]);
+    // Los commits de fusión (incluido el que crea la CI de un PR) no aportan cambios propios: se excluyen.
+    raw = git(cwd, ["log", "--no-merges", "--name-only", "--format=%x1e%H%x1f%an%x1f%aI%x1f%B%x1f", ...(from ? [`--since=${from}`] : [])]);
   } catch {
     return [];
   }

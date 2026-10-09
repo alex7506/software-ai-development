@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.3 — 2026-10-08
+### Corregido
+- `trace --git` contaba los commits de fusión como commits sin tarea, incluido el que crea la CI de GitHub para probar un PR: la validación fallaba en la CI aunque pasara en local. Los commits de fusión ya no se cuentan. Detectado en el PR de adopción de ADSO Cloud.
+
 ## 1.2.2 — 2026-10-08
 ### Corregido
 - Las fechas (adopción, creación de documentos, evidencia) se calculaban en UTC: por la tarde en América ya figuraba el día siguiente, y `trace --git` excluía los commits del día real de la adopción. Ahora se usa la fecha local. Detectado en ADSO Cloud (Colombia, UTC−5).

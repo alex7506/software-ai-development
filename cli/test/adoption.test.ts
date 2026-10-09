@@ -105,3 +105,26 @@ describe("fechas locales", () => {
     expect(today(late)).toBe("2026-10-08");
   });
 });
+
+describe("commits de fusión", () => {
+  it("no cuentan como commits sin tarea (p. ej. el que crea la CI de un PR)", async () => {
+    const s = new Sandbox();
+    s.git("init", "-q", "-b", "main");
+    await adopt(s);
+    await s.requirements([{ id: "FR-001", status: "PROPOSED" }]);
+    await s.run(["task", "new", "--title", "T", "--implements", "FR-001", "--criterion", "c"]);
+    s.git("add", "-A");
+    s.git("commit", "-qm", "Base\n\nTask: TASK-001");
+    s.git("checkout", "-qb", "rama");
+    writeFileSync(s.path("src/main.ts"), "export {};\n");
+    s.git("commit", "-qam", "Cambio\n\nTask: TASK-001");
+    s.git("checkout", "-q", "main");
+    writeFileSync(s.path("src/otro.ts"), "export {};\n");
+    s.git("add", "-A");
+    s.git("commit", "-qm", "Otro\n\nTask: TASK-001");
+    s.git("merge", "-q", "--no-ff", "--no-edit", "rama");
+    const r = JSON.parse((await s.run(["trace", "--git", "--json"])).out);
+    expect(r.stats.commits).toBe(3);
+    expect(r.issues.map((i: { code: string }) => i.code)).not.toContain("untraced_commits");
+  });
+});

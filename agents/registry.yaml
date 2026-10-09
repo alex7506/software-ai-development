@@ -1,4 +1,4 @@
-version: 1.2.2
+version: 1.2.3
 description: >
   Registro de agentes. Los tipos de agente se definen en methodology/catalog/roles.yaml (agent_types).
   Un agente concreto (cualquier proveedor, modelo o herramienta) se registra en el proyecto con agent.schema.yaml.

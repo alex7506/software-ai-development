@@ -1,4 +1,4 @@
-version: 1.2.2
+version: 1.2.3
 description: >
   Roles humanos y tipos de agente. Un rol con human_only true nunca puede ser asumido por un agente.
   agents/registry.yaml toma los tipos de agente de este archivo.
