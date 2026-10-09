@@ -31,6 +31,34 @@ export function gitUserName(cwd: string): string | null {
   }
 }
 
+/**
+ * IDs de los documentos (`TASK-007-titulo.md` → TASK-007) que existen en la punta de cada rama
+ * local y remota bajo `folder`. Sirve para no repetir un ID que otra rama paralela ya usa.
+ * Las ramas remotas son las del último `git fetch`. Vacío fuera de un repositorio git.
+ */
+export function documentIdsInBranches(cwd: string, folder: string): string[] {
+  let refs: string[];
+  try {
+    refs = git(cwd, ["for-each-ref", "--format=%(refname)", "refs/heads", "refs/remotes"]).split("\n").filter((r) => r && !r.endsWith("/HEAD"));
+  } catch {
+    return [];
+  }
+  const ids = new Set<string>();
+  for (const ref of refs) {
+    let files: string;
+    try {
+      files = git(cwd, ["ls-tree", "-r", "--name-only", ref, "--", folder]);
+    } catch {
+      continue;
+    }
+    for (const file of files.split("\n")) {
+      const m = /(?:^|\/)([A-Z]+-\d{3,}[A-Z]?)-[^/]*\.md$/.exec(file);
+      if (m) ids.add(m[1]!);
+    }
+  }
+  return [...ids];
+}
+
 /** Tareas declaradas con trailers `Task: TASK-NNN` (se admiten varias). */
 export function taskTrailers(message: string): string[] {
   return [...message.matchAll(/^Task:\s*(TASK-[0-9]{3}[A-Z]?)\s*$/gim)].map((m) => m[1]!.toUpperCase());
