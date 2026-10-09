@@ -1,6 +1,6 @@
 {
   "name": "ai-dev",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "CLI determinista de Software AI Development Methodology",
   "type": "module",
   "private": true,

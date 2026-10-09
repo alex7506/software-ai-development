@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.2.1 — 2026-10-08
+### Corregido
+- `trace --git` ignoraba los commits del día de la adopción hechos antes de la hora actual: git interpreta una fecha sin hora como ese día a la hora actual. Ahora se usa el inicio del día. Detectado al cerrar la tarea de adopción de ADSO Cloud.
+
+### Cambiado
+- Las versiones de corrección (PATCH) de la metodología se pueden adoptar sin solicitud de cambio.
+
 ## 1.2.0 — 2026-10-08
 Adopción de proyectos existentes con estructura propia, aprendida al adoptar la metodología en ADSO Cloud (plataforma en producción con 18 ADR y 22 especificaciones).
 
