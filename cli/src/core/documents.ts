@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { markWritten } from "./format.js";
+import { documentIdsInBranches } from "./git.js";
 import { nextId, slugify, today } from "./ids.js";
 import { CliError } from "./issues.js";
 import type { DocumentRecord, Project } from "./project.js";
@@ -18,11 +19,12 @@ export interface NewDocumentOptions {
   fields?: Record<string, unknown>;
 }
 
-/** Crea un documento desde su plantilla con el siguiente ID libre, en la carpeta canónica de su tipo. */
+/** Crea un documento desde su plantilla con el siguiente ID libre (en esta rama y en las demás), en la carpeta canónica de su tipo. */
 export function createDocument(p: Project, type: string, opts: NewDocumentOptions): DocumentRecord {
   const def = p.cat.documentTypes.types[type];
   if (!def) throw new CliError(`Tipo de documento desconocido: ${type}`);
-  const id = nextId(def.id_prefix, p.documents().map((d) => d.id));
+  // También cuentan los IDs de otras ramas: dos ramas paralelas no deben crear el mismo TASK-NNN.
+  const id = nextId(def.id_prefix, [...p.documents().map((d) => d.id), ...documentIdsInBranches(p.root, "docs")]);
   const m = p.methodology;
   const values: Record<string, string> = {
     id,
