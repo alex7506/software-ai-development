@@ -38,6 +38,6 @@ Resumen breve y actualizado de lo que un agente necesita al empezar: propósito,
 5. **Trazabilidad progresiva**: el código previo no se traza retroactivamente; la trazabilidad completa se exige a partir de la adopción. `ai-dev trace` ignora commits anteriores a `adopted_at`.
 
 ## Actualización de la versión de la metodología
-Los proyectos no se actualizan automáticamente. Actualizar la versión fijada es un CHANGE_REQUEST del proyecto: se revisa el CHANGELOG de la metodología, se aplica la nueva versión, se regeneran los adaptadores y se ejecuta `ai-dev validate`.
+Los proyectos no se actualizan automáticamente. Una versión de corrección (PATCH, por ejemplo 1.2.0 → 1.2.1) solo corrige fallos: se actualiza sin solicitud de cambio, indicándolo en el commit. Actualizar a una versión MINOR o MAJOR es un CHANGE_REQUEST del proyecto: se revisa el CHANGELOG de la metodología, se aplica la nueva versión, se regeneran los adaptadores y se ejecuta `ai-dev validate`.
 
 La CLI aplica siempre la metodología de su propia versión: usa una CLI de la misma versión que fija el proyecto. Si no coinciden, `ai-dev validate` y `ai-dev doctor` lo avisan. Las aprobaciones registradas con versiones anteriores siguen siendo válidas.

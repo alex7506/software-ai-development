@@ -45,7 +45,9 @@ export function documentTrailers(message: string): string[] {
 export function commits(cwd: string, since?: string | null): Commit[] {
   let raw: string;
   try {
-    raw = git(cwd, ["log", "--name-only", "--format=%x1e%H%x1f%an%x1f%aI%x1f%B%x1f", ...(since ? [`--since=${since}`] : [])]);
+    // Una fecha sin hora la interpreta git como ese día a la hora actual: se fija el inicio del día.
+    const from = since && /^\d{4}-\d{2}-\d{2}$/.test(since) ? `${since}T00:00:00` : since;
+    raw = git(cwd, ["log", "--name-only", "--format=%x1e%H%x1f%an%x1f%aI%x1f%B%x1f", ...(from ? [`--since=${from}`] : [])]);
   } catch {
     return [];
   }

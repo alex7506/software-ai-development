@@ -56,7 +56,7 @@ Para que ningún PR rompa la metodología, añade un paso que instale la versió
 ```yaml
       - name: Metodología (ai-dev)
         run: |
-          git clone --depth 1 --branch v1.2.0 https://github.com/alex7506/software-ai-development.git /tmp/ai-dev
+          git clone --depth 1 --branch v1.2.1 https://github.com/alex7506/software-ai-development.git /tmp/ai-dev
           (cd /tmp/ai-dev/cli && npm ci && npm run build)
           node /tmp/ai-dev/cli/dist/bin.js validate
           node /tmp/ai-dev/cli/dist/bin.js trace --git

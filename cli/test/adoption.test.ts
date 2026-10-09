@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { Sandbox } from "./helpers.js";
@@ -74,5 +75,24 @@ describe("formateadores", () => {
     const s = new Sandbox();
     await s.run(["init", "--name", "Sin prettier", "--mode", "LITE"]);
     expect(existsSync(s.path(".prettierignore"))).toBe(false);
+  });
+});
+
+describe("trazabilidad desde la fecha de adopción", () => {
+  it("cuenta los commits del mismo día de la adopción, hechos antes de la hora actual", async () => {
+    const s = new Sandbox();
+    s.git("init", "-q");
+    await adopt(s);
+    await s.requirements([{ id: "FR-001", status: "PROPOSED" }]);
+    await s.run(["task", "new", "--title", "T", "--implements", "FR-001", "--criterion", "c"]);
+    // Commit fechado hoy a primera hora: antes de la corrección, `--since=<hoy>` lo excluía.
+    const today = s.yaml<{ adopted_at: string }>(".ai-dev/methodology.yaml").adopted_at;
+    s.git("add", "-A");
+    execFileSync("git", ["commit", "-qm", "Trabajo\n\nTask: TASK-001"], {
+      cwd: s.dir,
+      env: { ...process.env, GIT_AUTHOR_NAME: "T", GIT_AUTHOR_EMAIL: "t@t", GIT_COMMITTER_NAME: "T", GIT_COMMITTER_EMAIL: "t@t", GIT_AUTHOR_DATE: `${today}T00:00:30`, GIT_COMMITTER_DATE: `${today}T00:00:30` },
+    });
+    const r = JSON.parse((await s.run(["trace", "--git", "--json"])).out);
+    expect(r.stats.commits).toBe(1);
   });
 });
