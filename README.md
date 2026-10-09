@@ -2,7 +2,7 @@
 
 Metodología profesional, reutilizable y agnóstica de proveedores para desarrollar software con asistencia de IA, con su herramienta determinista `ai-dev`.
 
-**Versión 1.1.0**, validada con un proyecto real ([MiAdmin](https://github.com/alex7506/miadmin)).
+**Versión 1.2.0**, validada con un proyecto real ([MiAdmin](https://github.com/alex7506/miadmin)).
 
 📖 **Manual de usuario:** https://alex7506.github.io/software-ai-development/ — [instalar](https://alex7506.github.io/software-ai-development/guias/instalar) · [tutorial](https://alex7506.github.io/software-ai-development/tutorial/primer-proyecto)
 

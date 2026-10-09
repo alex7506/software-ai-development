@@ -1,4 +1,4 @@
-version: 1.1.0
+version: 1.2.0
 description: >
   Ciclo de ejecución canónico de una solicitud (lo implementa el orquestador). El protocolo operativo IA
   y el contrato de agente son vistas parciales de este ciclo, no ciclos independientes.
