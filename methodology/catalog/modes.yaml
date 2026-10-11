@@ -1,4 +1,4 @@
-version: 1.3.0
+version: 1.3.1
 description: >
   Modos de rigor. Un entregable de phases.yaml es obligatorio cuando el modo del proyecto es igual
   o superior a su min_mode. El modo se fija en .ai-dev/methodology.yaml y cambiarlo requiere un CHANGE_REQUEST.

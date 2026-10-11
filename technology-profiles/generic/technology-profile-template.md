@@ -2,7 +2,7 @@
 profile_id: <id-en-minusculas>
 name: <Nombre del perfil>
 status: DRAFT            # DRAFT | REFERENCE
-methodology_version: 1.3.0
+methodology_version: 1.3.1
 ---
 
 # Perfil tecnológico — <Nombre>

@@ -128,3 +128,37 @@ describe("commits de fusión", () => {
     expect(r.issues.map((i: { code: string }) => i.code)).not.toContain("untraced_commits");
   });
 });
+
+describe("IDs entre ramas paralelas", () => {
+  it("task new no repite un ID que ya usa otra rama (local o remota)", async () => {
+    const s = new Sandbox();
+    s.git("init", "-q", "-b", "main");
+    await adopt(s);
+    await s.requirements([{ id: "FR-001", status: "PROPOSED" }]);
+    s.git("add", "-A");
+    s.git("commit", "-qm", "Base");
+    const nueva = async (title: string) => {
+      const r = await s.run(["task", "new", "--title", title, "--implements", "FR-001", "--criterion", "c"]);
+      expect(r.code, r.err).toBe(0);
+      return /Creada (TASK-\d+)/.exec(r.out)?.[1];
+    };
+
+    s.git("checkout", "-qb", "rama-a");
+    expect(await nueva("En la rama A")).toBe("TASK-001");
+    s.git("add", "-A");
+    s.git("commit", "-qm", "Tarea A");
+
+    // Una rama remota (de otra persona, ya traída con fetch) con su propia tarea.
+    s.git("checkout", "-q", "main");
+    s.git("checkout", "-qb", "rama-b");
+    expect(await nueva("En la rama B")).toBe("TASK-002");
+    s.git("add", "-A");
+    s.git("commit", "-qm", "Tarea B");
+    s.git("update-ref", "refs/remotes/origin/rama-b", "HEAD");
+    s.git("checkout", "-q", "main");
+    s.git("branch", "-qD", "rama-b");
+
+    s.git("checkout", "-qb", "rama-c");
+    expect(await nueva("En la rama C")).toBe("TASK-003");
+  });
+});

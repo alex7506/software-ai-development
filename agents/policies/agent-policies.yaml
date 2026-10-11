@@ -1,4 +1,4 @@
-version: 1.3.0
+version: 1.3.1
 description: >
   Catálogo de políticas. Las políticas locales de un proyecto (.ai-dev/policies.yaml) solo pueden
   referenciar estos IDs, añadir políticas más restrictivas o endurecer parámetros; nunca desactivarlas.

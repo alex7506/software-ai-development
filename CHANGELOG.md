@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.1 — 2026-10-09
+### Corregido
+- Dos ramas paralelas podían crear el mismo ID (`task new`, `new`): el siguiente ID solo miraba la rama actual, y al fusionar quedaban dos TASK-007. Ahora también cuenta los documentos de las demás ramas locales y remotas (las remotas, según el último `git fetch`). Detectado en ADSO Cloud (TASK-007 y TASK-010 repetidas).
+
 ## 1.3.0 — 2026-10-09
 ### Añadido
 - `format_command` en `.ai-dev/configuration.yaml`: la CLI ejecuta el formateador del proyecto (p. ej. `npx prettier --write`) sobre los archivos que escribe (tareas, estado, requisitos, documentos nuevos), y `approve` formatea el documento antes de fijar su huella para que la aprobación no quede desfasada. Si el formateador falla, se avisa y lo escrito se conserva.
